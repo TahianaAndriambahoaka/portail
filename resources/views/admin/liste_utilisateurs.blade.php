@@ -63,7 +63,7 @@
                           <th></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="listeUtilisateurs">
                       @for ($i = 0; $i < count($utilisateurs); $i++)
                         <tr>
                           <td style="text-align: center"><image src="{{asset('images/photo_de_profil/'.$utilisateurs[$i]->photo_de_profil)}}" alt="Photo_de_profil" style="height: 75px; width: 75px;"/></td>
@@ -272,6 +272,7 @@
       const id_fonction = document.getElementById('fonctionAff').value;
       var listeId = [];
       const fonctions = <?php echo json_encode($fonctions) ?>;
+      const utilisateurs = <?php echo json_encode($utilisateurs) ?>;
       for (let i = 0; i < fonctions.length; i++) {
         if (id_fonction == 'tous') {
           listeId.push(i);
@@ -281,7 +282,17 @@
           }
         }
       }
-      console.log(listeId);
+      var contenu = "";
+      for (let i = 0; i < listeId.length; i++) {
+        contenu +=  `<tr>`+
+                      `<td style='text-align: center'><image src='{{asset('images/photo_de_profil/${utilisateurs[listeId[i]].photo_de_profil}')}}' alt='Photo_de_profil' style='height: 75px; width: 75px;'/></td>`+
+                      `<td>${utilisateurs[listeId[i]].nom}</td>`+
+                      `<td>${utilisateurs[listeId[i]].prenom}</td>`+
+                      `<td style='text-align: center'>${fonctions[listeId[i]].nom}</td> `+
+                      `<td> <button type='button' class='btn btn-inverse-warning btn-fw' data-bs-toggle='modal' data-bs-target='#modal${utilisateurs[listeId[i]].id}'>Plus</button></td>`+
+                    `</tr>`;
+      }
+      document.getElementById('listeUtilisateurs').innerHTML = contenu;
     }
   </script>
 </body>
