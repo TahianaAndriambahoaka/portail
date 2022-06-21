@@ -10,6 +10,7 @@ use App\Models\region;
 use App\Models\utilisateur;
 use Illuminate\Support\Facades\Session;
 use App\Models\login;
+use App\Models\utilisateur_supprime;
 
 class administrateur extends Controller
 {
@@ -56,5 +57,16 @@ class administrateur extends Controller
             $districts[] = district::getById($utilisateurs[$i]->id_district)[0];
         }
         return view('admin.liste_utilisateurs', ['utilisateurs'=>$utilisateurs, 'fonctions'=>$fonctions, "regions" => $regions, "districts" => $districts, 'allFonctions'=>fonction::getAll()]);
+    }
+    public function suppression_utilisateur(Request $request) {
+        try {
+            $id_utilisateur = $request->input('id_utilisateur');
+            $motif = $request->input('motif');
+            $id_login = login::getByIdUtilisateur($id_utilisateur)[0]->id;
+            utilisateur_supprime::add($id_login, $motif, date('Y-m-d'));
+            return back()->with('success', "Utilisateur supprimé!");
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 }

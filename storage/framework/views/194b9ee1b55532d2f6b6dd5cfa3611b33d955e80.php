@@ -36,7 +36,7 @@
                 <div class="card-body">
                   <h3>Liste des utilisateurs</h3><br>
                   <h5>Afficher par fonction :
-                      <select class="input100" style="border-color: rgba(0, 0, 0, 0.178);" name="fonctionAff" id="fonctionAff" onchange="changeFonctionAff()">
+                      <select class="input100" style="border-color: rgba(0, 0, 0, 0.178);" id="fonctionAff" onchange="changeFonctionAff()">
                         <option value="tous" selected>Tous</option>
                         <?php for($i = 0; $i < count($allFonctions); $i++): ?>
                           <option value="<?php echo e($allFonctions[$i]->id); ?>"><?php echo e($allFonctions[$i]->nom); ?></option>
@@ -91,7 +91,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Plus d'informations sur la demande d'inscription</h5>
+                            <h5 class="modal-title">Plus d'informations sur l'utilisateur</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
@@ -158,7 +158,94 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modalModif<?php echo e($utilisateurs[$i]->id); ?>" data-bs-dismiss="modal">Modifier sa fonction</button>
+                          <button type="submit" class="btn btn-inverse-danger btn-fw" data-bs-toggle="modal" data-bs-target="#modalValiderSuppression<?php echo e($utilisateurs[$i]->id); ?>" data-bs-dismiss="modal">Supprimer</button>
+                          <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modalModif<?php echo e($utilisateurs[$i]->id); ?>" data-bs-dismiss="modal">Modifier sa fonction</button>
+                          <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          <?php endfor; ?>
+          <?php for($i = 0; $i < count($utilisateurs); $i++): ?>
+            <div class="modal fade" id="modalModif<?php echo e($utilisateurs[$i]->id); ?>" style="border-radius: 10%">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Formulaire de modification de profil</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="">
+                              <p>
+                                  <image src="<?php echo e(asset('images/photo_de_profil/'.$utilisateurs[$i]->photo_de_profil)); ?>" alt="Photo_de_profil" style="height: 150px; width: 150px; float: right"/>
+                              </p>
+                              <p>
+                                  <b>Nom : </b>
+                                  <?php echo e($utilisateurs[$i]->nom); ?>
+
+                              </p>
+                              <p>
+                                  <b>Prénom(s) : </b>
+                                  <?php echo e($utilisateurs[$i]->prenom); ?>
+
+                              </p>
+                              <p>
+                                  <b>Fonction : </b>
+                                  <select class="input100" style="border-color: rgba(0, 0, 0, 0.178);" name="fonctionAff">
+                                    <?php for($j = 0; $j < count($allFonctions); $j++): ?>
+                                      <?php if($fonctions[$i]->id ==  $allFonctions[$j]->id): ?>
+                                        <option value="<?php echo e($allFonctions[$j]->id); ?>" selected><?php echo e($allFonctions[$j]->nom); ?></option>
+                                      <?php else: ?>
+                                        <option value="<?php echo e($allFonctions[$j]->id); ?>"><?php echo e($allFonctions[$j]->nom); ?></option>
+                                      <?php endif; ?>
+                                    <?php endfor; ?>
+                                  </select>
+                              </p>
+                              <p>
+                                  <b>Région : </b>
+                                  <?php echo e($regions[$i]->nom); ?>
+
+                              </p>
+                              <p>
+                                  <b>District : </b>
+                                  <?php echo e($districts[$i]->nom); ?>
+
+                              </p>
+                              <p>
+                                  <b>Ministère : </b>
+                                  <?php echo e($utilisateurs[$i]->ministere); ?>
+
+                              </p>
+                              <p>
+                                  <b>Direction : </b>
+                                  <?php echo e($utilisateurs[$i]->direction); ?>
+
+                              </p>
+                              <p>
+                                  <b>Lieu de travail : </b>
+                                  <?php echo e($utilisateurs[$i]->lieu_de_travail); ?>
+
+                              </p>
+                              <p>
+                                  <b>Téléphone 1 : </b>
+                                  <a href="tel:<?php echo e($utilisateurs[$i]->telephone1); ?>"><?php echo e($utilisateurs[$i]->telephone1); ?></a>
+                              </p>
+                              <p>
+                                  <b>Téléphone 2 : </b>
+                                  <a href="tel:<?php echo e($utilisateurs[$i]->telephone2); ?>"><?php echo e($utilisateurs[$i]->telephone2); ?></a>
+                              </p>
+                              <p>
+                                  <b>Téléphone 3 : </b>
+                                  <a href="tel:<?php echo e($utilisateurs[$i]->telephone3); ?>"><?php echo e($utilisateurs[$i]->telephone3); ?></a>
+                              </p>
+                              <p>
+                                  <b>Adresse mail : </b>
+                                  <a href="mailto:<?php echo e($utilisateurs[$i]->email); ?>"><?php echo e($utilisateurs[$i]->email); ?></a>
+                              </p>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modalValiderMofification<?php echo e($utilisateurs[$i]->id); ?>" data-bs-dismiss="modal">Modifier</button>
                             <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Fermer</button>
                         </div>
                     </div>
@@ -166,83 +253,54 @@
             </div>
           <?php endfor; ?>
           <?php for($i = 0; $i < count($utilisateurs); $i++): ?>
-            <div class="modal fade animate__animated animate__pulse" id="modalModif<?php echo e($utilisateurs[$i]->id); ?>" style="border-radius: 10%">
+            <div class="modal fade" id="modalValiderMofification<?php echo e($utilisateurs[$i]->id); ?>" style="border-radius: 10%">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Plus d'informations sur la demande d'inscription</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="">
-                              <p>
-                                  <image src="<?php echo e(asset('images/photo_de_profil/'.$utilisateurs[$i]->photo_de_profil)); ?>" alt="Photo_de_profil" style="height: 150px; width: 150px; float: right"/>
-                              </p>
-                              <p>
-                                  <b>Nom : </b>
-                                  <?php echo e($utilisateurs[$i]->nom); ?>
-
-                              </p>
-                              <p>
-                                  <b>Prénom(s) : </b>
-                                  <?php echo e($utilisateurs[$i]->prenom); ?>
-
-                              </p>
-                              <p>
-                                  <b>Fonction : </b>
-                                  
-                                  <e class="badge badge-warning"><?php echo e($fonctions[$i]->nom); ?></e>
-                              </p>
-                              <p>
-                                  <b>Région : </b>
-                                  <?php echo e($regions[$i]->nom); ?>
-
-                              </p>
-                              <p>
-                                  <b>District : </b>
-                                  <?php echo e($districts[$i]->nom); ?>
-
-                              </p>
-                              <p>
-                                  <b>Ministère : </b>
-                                  <?php echo e($utilisateurs[$i]->ministere); ?>
-
-                              </p>
-                              <p>
-                                  <b>Direction : </b>
-                                  <?php echo e($utilisateurs[$i]->direction); ?>
-
-                              </p>
-                              <p>
-                                  <b>Lieu de travail : </b>
-                                  <?php echo e($utilisateurs[$i]->lieu_de_travail); ?>
-
-                              </p>
-                              <p>
-                                  <b>Téléphone 1 : </b>
-                                  <a href="tel:<?php echo e($utilisateurs[$i]->telephone1); ?>"><?php echo e($utilisateurs[$i]->telephone1); ?></a>
-                              </p>
-                              <p>
-                                  <b>Téléphone 2 : </b>
-                                  <a href="tel:<?php echo e($utilisateurs[$i]->telephone2); ?>"><?php echo e($utilisateurs[$i]->telephone2); ?></a>
-                              </p>
-                              <p>
-                                  <b>Téléphone 3 : </b>
-                                  <a href="tel:<?php echo e($utilisateurs[$i]->telephone3); ?>"><?php echo e($utilisateurs[$i]->telephone3); ?></a>
-                              </p>
-                              <p>
-                                  <b>Adresse mail : </b>
-                                  <a href="mailto:<?php echo e($utilisateurs[$i]->email); ?>"><?php echo e($utilisateurs[$i]->email); ?></a>
-                              </p>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-target="#modal<?php echo e($utilisateurs[$i]->id); ?>" data-bs-dismiss="modal">Modifier sa fonction</button>
-                            <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Fermer</button>
-                        </div>
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirmation de modification de profil</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <h3>Voulez-vous vraiment modifier la fonction de l'utilisateur?</h3>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-target="#modalValiderMofification<?php echo e($utilisateurs[$i]->id); ?>" data-bs-dismiss="modal">Oui</button>
+                        <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Non</button>
+                      </div>
                     </div>
                 </div>
             </div>
+          <?php endfor; ?>
+          <?php for($i = 0; $i < count($utilisateurs); $i++): ?>
+            <div class="modal fade" id="modalValiderSuppression<?php echo e($utilisateurs[$i]->id); ?>" style="border-radius: 10%">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirmation de suppression d'utilisateur</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <h6>Voulez-vous vraiment supprimer cet utilisateur?</h6>
+                        <h6>Veuillez écrire le motif ci-dessous:</h6>
+                        <p>
+                          <textarea class="form-control" rows="4" id="motifTextarea<?php echo e($utilisateurs[$i]->id); ?>"></textarea>
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-inverse-danger btn-fw" onclick="suppimerUtilisateur(<?php echo e($utilisateurs[$i]->id); ?>)" data-bs-dismiss="modal">Oui</button>
+                        <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Non</button>
+                      </div>
+                    </div>
+                </div>
+            </div>
+          <?php endfor; ?>
+          <?php for($i = 0; $i < count($utilisateurs); $i++): ?>
+            <form action="/administrateur/utilisateur/suppression" method="POST" id="formSuppression">
+              <?php echo csrf_field(); ?>
+              <input type="hidden" name="id_utilisateur" value="<?php echo e($utilisateurs[$i]->id); ?>">
+              <input type="hidden" name="motif" id="motifSuppression<?php echo e($utilisateurs[$i]->id); ?>">
+              <input type="submit" value="Supprimer" id="suppression<?php echo e($utilisateurs[$i]->id); ?>" style="display: none">
+            </form>
           <?php endfor; ?>
 
 
@@ -276,7 +334,7 @@
     }
 
     $(document).ready(function(){
-      $("#form").submit(function(){
+      $("#formSuppression").submit(function(){
         $("#loader").removeClass("visible");
         $("#container").addClass("opacity");
       });
@@ -307,6 +365,12 @@
                     `</tr>`;
       }
       document.getElementById('listeUtilisateurs').innerHTML = contenu;
+    }
+
+    function suppimerUtilisateur(id_utilisateur) {
+      const motif = document.getElementById('motifTextarea'+id_utilisateur).value;
+      document.getElementById('motifSuppression'+id_utilisateur).value = motif;
+      $('#suppression'+id_utilisateur).click();
     }
   </script>
 </body>

@@ -36,7 +36,7 @@
                 <div class="card-body">
                   <h3>Liste des utilisateurs</h3><br>
                   <h5>Afficher par fonction :
-                      <select class="input100" style="border-color: rgba(0, 0, 0, 0.178);" name="fonctionAff" id="fonctionAff" onchange="changeFonctionAff()">
+                      <select class="input100" style="border-color: rgba(0, 0, 0, 0.178);" id="fonctionAff" onchange="changeFonctionAff()">
                         <option value="tous" selected>Tous</option>
                         @for ($i = 0; $i < count($allFonctions); $i++)
                           <option value="{{ $allFonctions[$i]->id }}">{{ $allFonctions[$i]->nom }}</option>
@@ -91,7 +91,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Plus d'informations sur la demande d'inscription</h5>
+                            <h5 class="modal-title">Plus d'informations sur l'utilisateur</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
@@ -151,7 +151,87 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modalModif{{ $utilisateurs[$i]->id }}" data-bs-dismiss="modal">Modifier sa fonction</button>
+                          <button type="submit" class="btn btn-inverse-danger btn-fw" data-bs-toggle="modal" data-bs-target="#modalValiderSuppression{{ $utilisateurs[$i]->id }}" data-bs-dismiss="modal">Supprimer</button>
+                          <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modalModif{{ $utilisateurs[$i]->id }}" data-bs-dismiss="modal">Modifier sa fonction</button>
+                          <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          @endfor
+          @for ($i = 0; $i < count($utilisateurs); $i++)
+            <div class="modal fade" id="modalModif{{ $utilisateurs[$i]->id }}" style="border-radius: 10%">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Formulaire de modification de profil</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="">
+                              <p>
+                                  <image src="{{asset('images/photo_de_profil/'.$utilisateurs[$i]->photo_de_profil)}}" alt="Photo_de_profil" style="height: 150px; width: 150px; float: right"/>
+                              </p>
+                              <p>
+                                  <b>Nom : </b>
+                                  {{ $utilisateurs[$i]->nom }}
+                              </p>
+                              <p>
+                                  <b>Prénom(s) : </b>
+                                  {{ $utilisateurs[$i]->prenom }}
+                              </p>
+                              <p>
+                                  <b>Fonction : </b>
+                                  <select class="input100" style="border-color: rgba(0, 0, 0, 0.178);" name="fonctionAff">
+                                    @for ($j = 0; $j < count($allFonctions); $j++)
+                                      @if ($fonctions[$i]->id ==  $allFonctions[$j]->id)
+                                        <option value="{{ $allFonctions[$j]->id }}" selected>{{ $allFonctions[$j]->nom }}</option>
+                                      @else
+                                        <option value="{{ $allFonctions[$j]->id }}">{{ $allFonctions[$j]->nom }}</option>
+                                      @endif
+                                    @endfor
+                                  </select>
+                              </p>
+                              <p>
+                                  <b>Région : </b>
+                                  {{ $regions[$i]->nom }}
+                              </p>
+                              <p>
+                                  <b>District : </b>
+                                  {{ $districts[$i]->nom }}
+                              </p>
+                              <p>
+                                  <b>Ministère : </b>
+                                  {{ $utilisateurs[$i]->ministere }}
+                              </p>
+                              <p>
+                                  <b>Direction : </b>
+                                  {{ $utilisateurs[$i]->direction }}
+                              </p>
+                              <p>
+                                  <b>Lieu de travail : </b>
+                                  {{ $utilisateurs[$i]->lieu_de_travail }}
+                              </p>
+                              <p>
+                                  <b>Téléphone 1 : </b>
+                                  <a href="tel:{{ $utilisateurs[$i]->telephone1 }}">{{ $utilisateurs[$i]->telephone1 }}</a>
+                              </p>
+                              <p>
+                                  <b>Téléphone 2 : </b>
+                                  <a href="tel:{{ $utilisateurs[$i]->telephone2 }}">{{ $utilisateurs[$i]->telephone2 }}</a>
+                              </p>
+                              <p>
+                                  <b>Téléphone 3 : </b>
+                                  <a href="tel:{{ $utilisateurs[$i]->telephone3 }}">{{ $utilisateurs[$i]->telephone3 }}</a>
+                              </p>
+                              <p>
+                                  <b>Adresse mail : </b>
+                                  <a href="mailto:{{ $utilisateurs[$i]->email }}">{{ $utilisateurs[$i]->email }}</a>
+                              </p>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modalValiderMofification{{ $utilisateurs[$i]->id }}" data-bs-dismiss="modal">Modifier</button>
                             <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Fermer</button>
                         </div>
                     </div>
@@ -159,76 +239,54 @@
             </div>
           @endfor
           @for ($i = 0; $i < count($utilisateurs); $i++)
-            <div class="modal fade animate__animated animate__pulse" id="modalModif{{ $utilisateurs[$i]->id }}" style="border-radius: 10%">
+            <div class="modal fade" id="modalValiderMofification{{ $utilisateurs[$i]->id }}" style="border-radius: 10%">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Plus d'informations sur la demande d'inscription</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="">
-                              <p>
-                                  <image src="{{asset('images/photo_de_profil/'.$utilisateurs[$i]->photo_de_profil)}}" alt="Photo_de_profil" style="height: 150px; width: 150px; float: right"/>
-                              </p>
-                              <p>
-                                  <b>Nom : </b>
-                                  {{ $utilisateurs[$i]->nom }}
-                              </p>
-                              <p>
-                                  <b>Prénom(s) : </b>
-                                  {{ $utilisateurs[$i]->prenom }}
-                              </p>
-                              <p>
-                                  <b>Fonction : </b>
-                                  {{-- <button class="btn btn-info" disabled><b>en tant que {{ $fonctions[$i]->nom }}</b></button> --}}
-                                  <e class="badge badge-warning">{{ $fonctions[$i]->nom }}</e>
-                              </p>
-                              <p>
-                                  <b>Région : </b>
-                                  {{ $regions[$i]->nom }}
-                              </p>
-                              <p>
-                                  <b>District : </b>
-                                  {{ $districts[$i]->nom }}
-                              </p>
-                              <p>
-                                  <b>Ministère : </b>
-                                  {{ $utilisateurs[$i]->ministere }}
-                              </p>
-                              <p>
-                                  <b>Direction : </b>
-                                  {{ $utilisateurs[$i]->direction }}
-                              </p>
-                              <p>
-                                  <b>Lieu de travail : </b>
-                                  {{ $utilisateurs[$i]->lieu_de_travail }}
-                              </p>
-                              <p>
-                                  <b>Téléphone 1 : </b>
-                                  <a href="tel:{{ $utilisateurs[$i]->telephone1 }}">{{ $utilisateurs[$i]->telephone1 }}</a>
-                              </p>
-                              <p>
-                                  <b>Téléphone 2 : </b>
-                                  <a href="tel:{{ $utilisateurs[$i]->telephone2 }}">{{ $utilisateurs[$i]->telephone2 }}</a>
-                              </p>
-                              <p>
-                                  <b>Téléphone 3 : </b>
-                                  <a href="tel:{{ $utilisateurs[$i]->telephone3 }}">{{ $utilisateurs[$i]->telephone3 }}</a>
-                              </p>
-                              <p>
-                                  <b>Adresse mail : </b>
-                                  <a href="mailto:{{ $utilisateurs[$i]->email }}">{{ $utilisateurs[$i]->email }}</a>
-                              </p>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-target="#modal{{ $utilisateurs[$i]->id }}" data-bs-dismiss="modal">Modifier sa fonction</button>
-                            <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Fermer</button>
-                        </div>
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirmation de modification de profil</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <h3>Voulez-vous vraiment modifier la fonction de l'utilisateur?</h3>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-target="#modalValiderMofification{{ $utilisateurs[$i]->id }}" data-bs-dismiss="modal">Oui</button>
+                        <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Non</button>
+                      </div>
                     </div>
                 </div>
             </div>
+          @endfor
+          @for ($i = 0; $i < count($utilisateurs); $i++)
+            <div class="modal fade" id="modalValiderSuppression{{ $utilisateurs[$i]->id }}" style="border-radius: 10%">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Confirmation de suppression d'utilisateur</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <h6>Voulez-vous vraiment supprimer cet utilisateur?</h6>
+                        <h6>Veuillez écrire le motif ci-dessous:</h6>
+                        <p>
+                          <textarea class="form-control" rows="4" id="motifTextarea{{$utilisateurs[$i]->id}}"></textarea>
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-inverse-danger btn-fw" onclick="suppimerUtilisateur({{$utilisateurs[$i]->id}})" data-bs-dismiss="modal">Oui</button>
+                        <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Non</button>
+                      </div>
+                    </div>
+                </div>
+            </div>
+          @endfor
+          @for ($i = 0; $i < count($utilisateurs); $i++)
+            <form action="/administrateur/utilisateur/suppression" method="POST" id="formSuppression">
+              @csrf
+              <input type="hidden" name="id_utilisateur" value="{{ $utilisateurs[$i]->id }}">
+              <input type="hidden" name="motif" id="motifSuppression{{ $utilisateurs[$i]->id }}">
+              <input type="submit" value="Supprimer" id="suppression{{ $utilisateurs[$i]->id }}" style="display: none">
+            </form>
           @endfor
 
 
@@ -262,7 +320,7 @@
     }
 
     $(document).ready(function(){
-      $("#form").submit(function(){
+      $("#formSuppression").submit(function(){
         $("#loader").removeClass("visible");
         $("#container").addClass("opacity");
       });
@@ -293,6 +351,12 @@
                     `</tr>`;
       }
       document.getElementById('listeUtilisateurs').innerHTML = contenu;
+    }
+
+    function suppimerUtilisateur(id_utilisateur) {
+      const motif = document.getElementById('motifTextarea'+id_utilisateur).value;
+      document.getElementById('motifSuppression'+id_utilisateur).value = motif;
+      $('#suppression'+id_utilisateur).click();
     }
   </script>
 </body>

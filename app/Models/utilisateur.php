@@ -27,7 +27,7 @@ class utilisateur extends Model
     }
     public static function getAll() {
         try {
-            return DB::select("select * from utilisateur");
+            return DB::select("select * from utilisateur where id in (select id_utilisateur from login where id not in (select id_login from utilisateur_supprime))");
         } catch (\Throwable $th) {
             throw $th;
         }
