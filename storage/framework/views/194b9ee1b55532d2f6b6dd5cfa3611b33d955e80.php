@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="<?php echo e(asset('admin/vendors/css/vendor.bundle.base.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(asset('admin/css/vertical-layout-light/style.css')); ?>">
   <link rel="stylesheet" href="<?php echo e(asset('admin/vendors/mdi/css/materialdesignicons.min.css')); ?>">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
   <style>
     .visible {
       /* visibility: visible !important; */
@@ -43,6 +44,7 @@
                         <?php endfor; ?>
                       </select>
                   </h5>
+                  <button type="button" class="btn btn-inverse-success btn-fw" data-bs-toggle="modal" data-bs-target="#modalAjoutUtilisateur">Ajouter un nouvel utilisateur</button>
                   <br>
                   <?php if($message = Session::get('success')): ?>
                     <p class="text-center alert alert-success animate__animated animate__bounceInRight" style="margin-left: auto; margin-right: auto"><?php echo e($message); ?></p>
@@ -312,6 +314,110 @@
           <?php endfor; ?>
 
 
+          <div class="modal fade" id="modalAjoutUtilisateur" style="border-radius: 10%">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Formulaire d'insertion d'utilisateur</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                          <div class="form-group row">
+                            <div class="col">
+                              <label>Nom</label>
+                              <div id="the-basics">
+                                <input class="typeahead" type="text" placeholder="Votre nom" required>
+                              </div>
+                            </div>
+                            <div class="col">
+                              <label>Prénom(s)</label>
+                              <div id="bloodhound">
+                                <input class="typeahead" type="text" placeholder="Votre prénom" required>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col">
+                              <label>Fonction</label>
+                              <div id="the-basics">
+                                <input class="typeahead" type="text" placeholder="States of USA">
+                              </div>
+                            </div>
+                            <div class="col">
+                              <label>Région</label>
+                              <div id="bloodhound">
+                                <input class="typeahead" type="text" placeholder="States of USA">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col">
+                              <label>District</label>
+                              <div id="the-basics">
+                                <input class="typeahead" type="text" placeholder="States of USA">
+                              </div>
+                            </div>
+                            <div class="col">
+                              <label>Ministère</label>
+                              <div id="bloodhound">
+                                <input class="typeahead" type="text" placeholder="States of USA">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col">
+                              <label>Direction</label>
+                              <div id="the-basics">
+                                <input class="typeahead" type="text" placeholder="DIrection" required>
+                              </div>
+                            </div>
+                            <div class="col">
+                              <label>Lieu de travail</label>
+                              <div id="bloodhound">
+                                <input class="typeahead" type="text" placeholder="Lieu de travail" required>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col">
+                              <label>Téléphone 1</label>
+                              <div id="the-basics">
+                                <input class="typeahead" type="tel" id="phone1" onchange="process1()" required>
+                              </div>
+                            </div>
+                            <div class="col">
+                              <label>Téléphone 2</label>
+                              <div id="bloodhound">
+                                <input class="typeahead" type="tel" id="phone2" onchange="process2()" required>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <div class="col">
+                              <label>Téléphone 3</label>
+                              <div id="the-basics">
+                                <input class="typeahead" type="tel" id="phone3" onchange="process3()" required>
+                              </div>
+                            </div>
+                            <div class="col">
+                              <label>Adresse mail</label>
+                              <div id="bloodhound">
+                                <input class="typeahead" type="email" placeholder="Adresse mail" required>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-inverse-danger btn-fw" data-bs-dismiss="modal">Ajouter</button>
+                      <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+
 
         </div>
       </div>
@@ -333,6 +439,7 @@
   <script src="<?php echo e(asset('js/bootstrap-animate-css.js')); ?>"></script>
   <script src="<?php echo e(asset('js/bootstrap.min.js')); ?>"></script>
   <script src="<?php echo e(asset('js/jquery-3.3.1.min.js')); ?>"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script>
     function valider(id_demande) {
       $('#valider-'+id_demande).click();
@@ -390,5 +497,55 @@
       $('#modification'+id_utilisateur).click();
     }
   </script>
+
+
+	<script>
+		function getIp(callback) {
+			fetch('https://ipinfo.io/json?token=662221c0429e7f', { headers: { 'Accept': 'application/json' }})
+			.then((resp) => resp.json())
+			.catch(() => {
+				return {
+				country: 'us',
+				};
+			})
+			.then((resp) => callback(resp.country));
+		}		
+
+		const phoneInputField1 = document.querySelector("#phone1");
+		const phoneInput1 = window.intlTelInput(phoneInputField1, {
+			initialCountry: "auto",
+			geoIpLookup: getIp,
+			utilsScript:
+			"https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+		});
+		function process1() {
+			const phoneNumber = phoneInput1.getNumber();
+			document.getElementById('phone1').value = phoneNumber;
+		}
+
+		const phoneInputField2 = document.querySelector("#phone2");
+		const phoneInput2 = window.intlTelInput(phoneInputField2, {
+			initialCountry: "auto",
+			geoIpLookup: getIp,
+			utilsScript:
+			"https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+		});
+		function process2() {
+			const phoneNumber = phoneInput2.getNumber();
+			document.getElementById('phone2').value = phoneNumber;
+		}
+
+		const phoneInputField3 = document.querySelector("#phone3");
+		const phoneInput3 = window.intlTelInput(phoneInputField3, {
+			initialCountry: "auto",
+			geoIpLookup: getIp,
+			utilsScript:
+			"https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+		});
+		function process3() {
+			const phoneNumber = phoneInput3.getNumber();
+			document.getElementById('phone3').value = phoneNumber;
+		}
+	</script>
 </body>
 </html><?php /**PATH D:\stage\portail\resources\views/admin/liste_utilisateurs.blade.php ENDPATH**/ ?>

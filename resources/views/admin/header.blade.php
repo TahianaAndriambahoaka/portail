@@ -12,7 +12,7 @@
         <li class="nav-item dropdown">
           <a class="nav-link" href="/administrateur/deconnexion">
             <button type="button" class="btn btn-inverse-primary btn-fw"><i class="mdi mdi-logout" style="font-weight: bold; font-size: large">Se déconnecter</i></button>
-            <span class="count"></span>
+            {{-- <span class="count"></span> --}}
           </a>
         </li>
       </ul>
