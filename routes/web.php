@@ -32,3 +32,4 @@ Route::get('/administrateur/deconnexion', [administrateur::class, 'deconnexion']
 Route::post('/administrateur/demande-inscription', [administrateur::class, 'validation_refus_demande_inscription'])->middleware('adminSession');
 Route::get('/administrateur/utilisateurs', [administrateur::class, 'liste_utilisateurs'])->middleware('adminSession');
 Route::post('/administrateur/utilisateur/suppression', [administrateur::class, 'suppression_utilisateur'])->middleware('adminSession');
+Route::post('/administrateur/utilisateur/modification-fonction', [administrateur::class, 'modification_fonction_utilisateur'])->middleware('adminSession');

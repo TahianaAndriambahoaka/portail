@@ -191,7 +191,7 @@
                               </p>
                               <p>
                                   <b>Fonction : </b>
-                                  <select class="input100" style="border-color: rgba(0, 0, 0, 0.178);" name="fonctionAff">
+                                  <select class="input100" style="border-color: rgba(0, 0, 0, 0.178);" id="fonctionModif<?php echo e($utilisateurs[$i]->id); ?>">
                                     <?php for($j = 0; $j < count($allFonctions); $j++): ?>
                                       <?php if($fonctions[$i]->id ==  $allFonctions[$j]->id): ?>
                                         <option value="<?php echo e($allFonctions[$j]->id); ?>" selected><?php echo e($allFonctions[$j]->nom); ?></option>
@@ -261,10 +261,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                       </div>
                       <div class="modal-body">
-                        <h3>Voulez-vous vraiment modifier la fonction de l'utilisateur?</h3>
+                        <h4>Voulez-vous vraiment modifier la fonction de l'utilisateur?</h4>
                       </div>
                       <div class="modal-footer">
-                        <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-target="#modalValiderMofification<?php echo e($utilisateurs[$i]->id); ?>" data-bs-dismiss="modal">Oui</button>
+                        <button type="submit" class="btn btn-inverse-warning btn-fw" onclick="modifierFonction(<?php echo e($utilisateurs[$i]->id); ?>)" data-bs-dismiss="modal">Oui</button>
                         <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Non</button>
                       </div>
                     </div>
@@ -300,6 +300,14 @@
               <input type="hidden" name="id_utilisateur" value="<?php echo e($utilisateurs[$i]->id); ?>">
               <input type="hidden" name="motif" id="motifSuppression<?php echo e($utilisateurs[$i]->id); ?>">
               <input type="submit" value="Supprimer" id="suppression<?php echo e($utilisateurs[$i]->id); ?>" style="display: none">
+            </form>
+          <?php endfor; ?>
+          <?php for($i = 0; $i < count($utilisateurs); $i++): ?>
+            <form action="/administrateur/utilisateur/modification-fonction" method="POST" id="formModification">
+              <?php echo csrf_field(); ?>
+              <input type="hidden" name="id_utilisateur" value="<?php echo e($utilisateurs[$i]->id); ?>">
+              <input type="hidden" name="id_fonction" id="nouveauFonction<?php echo e($utilisateurs[$i]->id); ?>">
+              <input type="submit" value="Modifier" id="modification<?php echo e($utilisateurs[$i]->id); ?>" style="display: none">
             </form>
           <?php endfor; ?>
 
@@ -338,6 +346,10 @@
         $("#loader").removeClass("visible");
         $("#container").addClass("opacity");
       });
+      $("#formModification").submit(function(){
+        $("#loader").removeClass("visible");
+        $("#container").addClass("opacity");
+      });
     });
 
     function changeFonctionAff() {
@@ -371,6 +383,11 @@
       const motif = document.getElementById('motifTextarea'+id_utilisateur).value;
       document.getElementById('motifSuppression'+id_utilisateur).value = motif;
       $('#suppression'+id_utilisateur).click();
+    }
+    function modifierFonction(id_utilisateur) {
+      const fonction = document.getElementById('fonctionModif'+id_utilisateur).value;
+      document.getElementById('nouveauFonction'+id_utilisateur).value = fonction;
+      $('#modification'+id_utilisateur).click();
     }
   </script>
 </body>
