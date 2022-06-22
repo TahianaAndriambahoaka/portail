@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 class administrateur extends Controller
 {
     public function demandes_inscription() {
-        $demandes_inscription = demande_inscription::getAll();
+        $demandes_inscription = demande_inscription::getAll(5);
         $fonctions = [];
         $regions = [];
         $districts = [];

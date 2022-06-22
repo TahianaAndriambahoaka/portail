@@ -21,8 +21,9 @@ class demande_inscription extends Model
             throw $th;
         }
     }
-    public static function getAll() {
-        return DB::select("SELECT * FROM demande_inscription");
+    public static function getAll($parPage) {
+        return  DB::table('demande_inscription')->paginate($parPage);
+        // return DB::select("SELECT * FROM demande_inscription");
     }
     public static function getById($id) {
         return DB::select(sprintf("SELECT * FROM demande_inscription WHERE id = %d", $id));

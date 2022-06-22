@@ -76,6 +76,8 @@
                       <?php endfor; ?>
                     </tbody>
                     </table>
+                    <?php echo $demandes_inscription->withQueryString()->links('pagination::bootstrap-5'); ?>
+
                   </div>
                 </div>
               </div>

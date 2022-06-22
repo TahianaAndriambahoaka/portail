@@ -76,6 +76,7 @@
                       @endfor
                     </tbody>
                     </table>
+                    {!! $demandes_inscription->withQueryString()->links('pagination::bootstrap-5') !!}
                   </div>
                 </div>
               </div>
