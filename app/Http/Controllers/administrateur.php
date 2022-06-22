@@ -13,6 +13,7 @@ use App\Models\login;
 use App\Models\utilisateur_supprime;
 use Illuminate\Support\Str;
 use Mail;
+use Illuminate\Support\Facades\DB;
 
 class administrateur extends Controller
 {
@@ -47,8 +48,9 @@ class administrateur extends Controller
         Session::forget('administrateur');
         return view('authentification.login');
     }
-    public function liste_utilisateurs() {
-        $utilisateurs = utilisateur::getAll();
+    public function liste_utilisateurs(Request $request) {
+        $fonction = $request->input('fonction');
+        $utilisateurs = utilisateur::getAll($fonction, 5);
         $fonctions = [];
         $regions = [];
         $districts = [];

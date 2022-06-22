@@ -40,7 +40,11 @@
                       <select class="input100" style="border-color: rgba(0, 0, 0, 0.178);" id="fonctionAff" onchange="changeFonctionAff()">
                         <option value="tous" selected>Tous</option>
                         <?php for($i = 0; $i < count($allFonctions); $i++): ?>
-                          <option value="<?php echo e($allFonctions[$i]->id); ?>"><?php echo e($allFonctions[$i]->nom); ?></option>
+                          <?php if($allFonctions[$i]->id == $_GET['fonction']): ?>
+                            <option value="<?php echo e($allFonctions[$i]->id); ?>" selected><?php echo e($allFonctions[$i]->nom); ?></option>
+                          <?php else: ?>
+                            <option value="<?php echo e($allFonctions[$i]->id); ?>"><?php echo e($allFonctions[$i]->nom); ?></option>
+                          <?php endif; ?>
                         <?php endfor; ?>
                       </select>
                   </h5>
@@ -79,6 +83,8 @@
                       <?php endfor; ?>
                     </tbody>
                     </table>
+                    <?php echo $utilisateurs->withQueryString()->links('pagination::bootstrap-5'); ?>
+
                   </div>
                 </div>
               </div>
@@ -491,29 +497,7 @@
 
     function changeFonctionAff() {
       const id_fonction = document.getElementById('fonctionAff').value;
-      var listeId = [];
-      const fonctions = <?php echo json_encode($fonctions) ?>;
-      const utilisateurs = <?php echo json_encode($utilisateurs) ?>;
-      for (let i = 0; i < fonctions.length; i++) {
-        if (id_fonction == 'tous') {
-          listeId.push(i);
-        } else {
-          if (fonctions[i]['id'] == id_fonction) {
-            listeId.push(i);
-          }
-        }
-      }
-      var contenu = "";
-      for (let i = 0; i < listeId.length; i++) {
-        contenu +=  `<tr>`+
-                      `<td style='text-align: center'><image src='<?php echo e(asset('images/photo_de_profil/${utilisateurs[listeId[i]].photo_de_profil}')); ?>' alt='Photo_de_profil' style='height: 75px; width: 75px;'/></td>`+
-                      `<td>${utilisateurs[listeId[i]].nom}</td>`+
-                      `<td>${utilisateurs[listeId[i]].prenom}</td>`+
-                      `<td style='text-align: center'>${fonctions[listeId[i]].nom}</td> `+
-                      `<td> <button type='button' class='btn btn-inverse-warning btn-fw' data-bs-toggle='modal' data-bs-target='#modal${utilisateurs[listeId[i]].id}'>Plus</button></td>`+
-                    `</tr>`;
-      }
-      document.getElementById('listeUtilisateurs').innerHTML = contenu;
+      window.location.href = '?fonction='+id_fonction;
     }
 
     function suppimerUtilisateur(id_utilisateur) {
