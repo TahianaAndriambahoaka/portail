@@ -36,19 +36,43 @@
               <div class="card">
                 <div class="card-body">
                   <h3>Liste des utilisateurs</h3><br>
-                  <h5>Afficher par fonction :
-                      <select class="input100" style="border-color: rgba(0, 0, 0, 0.178);" id="fonctionAff" onchange="changeFonctionAff()">
-                        <option value="tous" selected>Tous</option>
-                        @for ($i = 0; $i < count($allFonctions); $i++)
-                          @if ($allFonctions[$i]->id == $_GET['fonction'])
-                            <option value="{{ $allFonctions[$i]->id }}" selected>{{ $allFonctions[$i]->nom }}</option>
-                          @else
-                            <option value="{{ $allFonctions[$i]->id }}">{{ $allFonctions[$i]->nom }}</option>
-                          @endif
-                        @endfor
-                      </select>
-                  </h5>
-                  <button type="button" class="btn btn-inverse-success btn-fw" data-bs-toggle="modal" data-bs-target="#modalAjoutUtilisateur">Ajouter un nouvel utilisateur</button>
+                  <div class="row" style="text-align: center">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <button class="btn btn-sm btn-primary" type="button">Fonction</button>
+                          </div>
+                          <select class="form-control" style="border-color: rgba(0, 0, 0, 0.178);" id="fonctionAff" onchange="changeFonctionAff()">
+                            <option value="tous" selected>Tous</option>
+                            @for ($i = 0; $i < count($allFonctions); $i++)
+                              @if ($allFonctions[$i]->id == $_GET['fonction'])
+                                <option value="{{ $allFonctions[$i]->id }}" selected>{{ $allFonctions[$i]->nom }}</option>
+                              @else
+                                <option value="{{ $allFonctions[$i]->id }}">{{ $allFonctions[$i]->nom }}</option>
+                              @endif
+                            @endfor
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <button type="button" class="btn btn-inverse-success btn-fw" data-bs-toggle="modal" data-bs-target="#modalAjoutUtilisateur">Ajouter un nouvel utilisateur</button>
+                    </div>
+                    <div class="col-md-6">
+                          {{-- <div id="the-basics">
+                            <input class="typeahead" type="text" id="search" placeholder="Rechercher dans le tableau ci-dessous">
+                          </div> --}}
+                          <div class="form-group">
+                            <div class="input-group">
+                              <input type="text" class="form-control" placeholder="Rechercher dans le tableau ci-dessous" id="search">
+                              <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary" type="button" id="searchButton">Rechercher</button>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                  </div>
                   <br>
                   @if ($message = Session::get('success'))
                     <p class="text-center alert alert-success animate__animated animate__bounceInRight" style="margin-left: auto; margin-right: auto">{{$message}}</p>
@@ -160,7 +184,7 @@
                         <div class="modal-footer">
                           <button type="submit" class="btn btn-inverse-danger btn-fw" data-bs-toggle="modal" data-bs-target="#modalValiderSuppression{{ $utilisateurs[$i]->id }}" data-bs-dismiss="modal">Supprimer</button>
                           <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modalModif{{ $utilisateurs[$i]->id }}" data-bs-dismiss="modal">Modifier sa fonction</button>
-                          <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Fermer</button>
+                          <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal" autofocus>Fermer</button>
                         </div>
                     </div>
                 </div>
@@ -239,7 +263,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modalValiderMofification{{ $utilisateurs[$i]->id }}" data-bs-dismiss="modal">Modifier</button>
-                            <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Fermer</button>
+                            <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal" autofocus>Fermer</button>
                         </div>
                     </div>
                 </div>
@@ -428,7 +452,7 @@
                     </div>
                     <div class="modal-footer">
                       <button type="submit" class="btn btn-inverse-success btn-fw" data-bs-dismiss="modal" onclick="ajoutUtilisateur()">Ajouter</button>
-                      <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Fermer</button>
+                      <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal" autofocus>Fermer</button>
                     </div>
                 </div>
             </div>
@@ -457,6 +481,26 @@
   <script src="{{asset('js/bootstrap.min.js')}}"></script>
   <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+  <script>
+    $('#search').on('keyup', function() {
+      var value = $(this).val();
+      if (value!='') {
+        $('table tbody tr').hide();
+      } else {
+        $('table tbody tr').show();        
+      }
+      $('table tbody tr td:contains("'+value+'")').parent('tr').show();
+    });
+    $('#searchButton').on('click', function() {
+      var value = $('#search').val().replace(/^\s+|\s+$/gm,'');
+      if (value!='') {
+        $('table tbody tr').hide();
+      } else {
+        $('table tbody tr').show();        
+      }
+      $('table tbody tr td:contains("'+value+'")').parent('tr').show();
+    });
+  </script>
   <script>
     function valider(id_demande) {
       $('#valider-'+id_demande).click();
