@@ -322,18 +322,19 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="">
+                        <form action="/administrateur/inscription-utilisateur" method="POST" id="formAjout">
+                          <?php echo csrf_field(); ?>
                           <div class="form-group row">
                             <div class="col">
                               <label>Nom</label>
                               <div id="the-basics">
-                                <input class="typeahead" type="text" placeholder="Votre nom" required>
+                                <input class="typeahead" type="text" name="nom" placeholder="Votre nom" required>
                               </div>
                             </div>
                             <div class="col">
                               <label>Prénom(s)</label>
                               <div id="bloodhound">
-                                <input class="typeahead" type="text" placeholder="Votre prénom" required>
+                                <input class="typeahead" type="text" name="prenom" placeholder="Votre prénom" required>
                               </div>
                             </div>
                           </div>
@@ -341,13 +342,23 @@
                             <div class="col">
                               <label>Fonction</label>
                               <div id="the-basics">
-                                <input class="typeahead" type="text" placeholder="States of USA">
+                                <select class="typeahead" name="id_fonction" required>
+                                  <option value="">Fonction</option>
+                                  <?php for($i = 0; $i < count($allFonctions); $i++): ?>
+                                      <option value="<?php echo e($allFonctions[$i]->id); ?>"><?php echo e($allFonctions[$i]->nom); ?></option>
+                                  <?php endfor; ?>
+                                </select>
                               </div>
                             </div>
                             <div class="col">
                               <label>Région</label>
                               <div id="bloodhound">
-                                <input class="typeahead" type="text" placeholder="States of USA">
+                                <select class="typeahead" name="id_region" id="id_regionAjout" onchange="showDistricts()" required>
+                                  <option value="">Région</option>
+                                  <?php for($i = 0; $i < count($allRegions); $i++): ?>
+                                      <option value="<?php echo e($allRegions[$i]->id); ?>"><?php echo e($allRegions[$i]->nom); ?></option>
+                                  <?php endfor; ?>
+                                </select>
                               </div>
                             </div>
                           </div>
@@ -355,13 +366,27 @@
                             <div class="col">
                               <label>District</label>
                               <div id="the-basics">
-                                <input class="typeahead" type="text" placeholder="States of USA">
+                                <select class="typeahead" name="id_district" id="id_districtAjout" required>
+                                  <option value="">District</option>
+                                </select>
                               </div>
                             </div>
                             <div class="col">
                               <label>Ministère</label>
                               <div id="bloodhound">
-                                <input class="typeahead" type="text" placeholder="States of USA">
+                                <select class="typeahead" name="ministere" required>
+                                  <option value="">Ministère</option>
+                                  <option value="Ministère de la santé publique">Ministère de la santé publique</option>
+                                  <option value="Ministère de la sécurité publique">Ministère de la sécurité publique</option>
+                                  <option value="Ministère de la Population, de la Protection Sociale et de la Promotion de la Femme">Ministère de la Population, de la Protection Sociale et de la Promotion de la Femme</option>
+                                  <option value="Ministère du Développement Numérique, Transformation Digitale, des Postes et des Télécommunications">Ministère du Développement Numérique, Transformation Digitale, des Postes et des Télécommunications</option>
+                                  <option value="Ministère des Mines et des Ressources Stratégiques">Ministère des Mines et des Ressources Stratégiques</option>
+                                  <option value="Ministère de la Justice">Ministère de la Justice</option>
+                                  <option value="Ministère de l'enseignement supérieur et de la recherche scientifique">Ministère de l'enseignement supérieur et de la recherche scientifique</option>
+                                  <option value="Ministère de l'Environnement et du Développement Durable">Ministère de l'Environnement et du Développement Durable</option>
+                                  <option value="Ministère de la Défense Nationale">Ministère de la Défense Nationale</option>
+                                  <option value="Ministère des Affaires Etrangères">Ministère des Affaires Etrangères</option>
+                                </select>
                               </div>
                             </div>
                           </div>
@@ -369,13 +394,13 @@
                             <div class="col">
                               <label>Direction</label>
                               <div id="the-basics">
-                                <input class="typeahead" type="text" placeholder="DIrection" required>
+                                <input class="typeahead" type="text" name="direction" placeholder="Direction" required>
                               </div>
                             </div>
                             <div class="col">
                               <label>Lieu de travail</label>
                               <div id="bloodhound">
-                                <input class="typeahead" type="text" placeholder="Lieu de travail" required>
+                                <input class="typeahead" type="text" name="lieu_de_travail" placeholder="Lieu de travail" required>
                               </div>
                             </div>
                           </div>
@@ -383,13 +408,13 @@
                             <div class="col">
                               <label>Téléphone 1</label>
                               <div id="the-basics">
-                                <input class="typeahead" type="tel" id="phone1" onchange="process1()" required>
+                                <input class="typeahead" type="tel" name="telephone1" id="phone1" onchange="process1()" required>
                               </div>
                             </div>
                             <div class="col">
                               <label>Téléphone 2</label>
                               <div id="bloodhound">
-                                <input class="typeahead" type="tel" id="phone2" onchange="process2()" required>
+                                <input class="typeahead" type="tel" name="telephone2" id="phone2" onchange="process2()" required>
                               </div>
                             </div>
                           </div>
@@ -397,20 +422,21 @@
                             <div class="col">
                               <label>Téléphone 3</label>
                               <div id="the-basics">
-                                <input class="typeahead" type="tel" id="phone3" onchange="process3()" required>
+                                <input class="typeahead" type="tel" name="telephone3" id="phone3" onchange="process3()" required>
                               </div>
                             </div>
                             <div class="col">
                               <label>Adresse mail</label>
                               <div id="bloodhound">
-                                <input class="typeahead" type="email" placeholder="Adresse mail" required>
+                                <input class="typeahead" type="email" name="email" placeholder="Adresse mail" required>
                               </div>
                             </div>
                           </div>
+                          <input type="submit" value="Insérer" style="display: none" id="idFormAjout">
                         </form>
                     </div>
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-inverse-danger btn-fw" data-bs-dismiss="modal">Ajouter</button>
+                      <button type="submit" class="btn btn-inverse-success btn-fw" data-bs-dismiss="modal" onclick="ajoutUtilisateur()">Ajouter</button>
                       <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Fermer</button>
                     </div>
                 </div>
@@ -454,6 +480,10 @@
         $("#container").addClass("opacity");
       });
       $("#formModification").submit(function(){
+        $("#loader").removeClass("visible");
+        $("#container").addClass("opacity");
+      });
+      $("#formAjout").submit(function(){
         $("#loader").removeClass("visible");
         $("#container").addClass("opacity");
       });
@@ -546,6 +576,21 @@
 			const phoneNumber = phoneInput3.getNumber();
 			document.getElementById('phone3').value = phoneNumber;
 		}
+
+    function showDistricts() {
+			const id_region = document.getElementById('id_regionAjout').value;
+			const districts = <?php echo json_encode($allDistricts); ?>;
+			var districts_aff = "<option value=''>District</option>";
+			for (let i = 0; i < districts.length; i++) {
+				if (districts[i]['id_region'] == id_region) {
+					districts_aff += "<option value='"+districts[i]['id']+"'>"+districts[i]['nom']+"</option>";
+				}
+			}
+			document.getElementById('id_districtAjout').innerHTML = districts_aff;
+		}
+    function ajoutUtilisateur() {
+      $('#idFormAjout').click();
+    }
 	</script>
 </body>
 </html><?php /**PATH D:\stage\portail\resources\views/admin/liste_utilisateurs.blade.php ENDPATH**/ ?>

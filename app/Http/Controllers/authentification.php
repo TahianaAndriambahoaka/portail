@@ -69,7 +69,7 @@ class authentification extends Controller
             })->save($destinationPath.'/'.$photo_de_profil);
         }
         try {
-            demande_inscription::add($nom, $prenom, $email, $telephone1, $telephone2, $telephone3, $id_district, $id_region, $ministere, $direction, $lieu_de_travail, $photo_de_profil, $id_fonction, date('y-m-d h:i'));
+            demande_inscription::add($nom, $prenom, $email, $telephone1, $telephone2, $telephone3, $id_district, $id_region, $ministere, $direction, $lieu_de_travail, $photo_de_profil, $id_fonction, date('y-m-d'));
             return back()->with('success',"Demande d'inscription envoyée avec succès!");
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
