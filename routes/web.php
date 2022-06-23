@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\administrateur;
+use App\Http\Controllers\atr;
 use App\Http\Controllers\authentification;
+use App\Http\Controllers\utilisateur;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,3 +37,6 @@ Route::post('/administrateur/utilisateur/suppression', [administrateur::class, '
 Route::post('/administrateur/utilisateur/modification-fonction', [administrateur::class, 'modification_fonction_utilisateur'])->middleware('adminSession');
 Route::post('/administrateur/inscription-utilisateur', [administrateur::class, 'inscription'])->middleware('adminSession');
 Route::get('/administrateur/utilisateursWS', [administrateur::class, 'utilisateursWS'])->middleware('adminSession');
+
+Route::get('/ATR/profil', [atr::class, 'profil'])->middleware('utilisateurSession');
+Route::get('/utilisateur/deconnexion', [utilisateur::class, 'deconnexion'])->middleware('utilisateurSession');

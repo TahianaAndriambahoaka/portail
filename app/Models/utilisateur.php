@@ -103,4 +103,7 @@ class utilisateur extends Model
             throw $th;
         }
     }
+    public static function getById($id) {
+        return DB::select(sprintf("SELECT * FROM utilisateur WHERE id = %d", $id));
+    }
 }

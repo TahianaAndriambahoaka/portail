@@ -14,7 +14,7 @@ class login extends Model
         $sql1 = sprintf($sql1, $login, $mot_de_passe);
         $sql1 = DB::select($sql1);
 
-        $sql2 = "SELECT * FROM login WHERE login = '%s' and mot_de_passe = sha2('%s', 256)";
+        $sql2 = "SELECT * FROM login WHERE login = '%s' and mot_de_passe = sha2('%s', 256) AND id NOT IN (select id_login from utilisateur_supprime)";
         $sql2 = sprintf($sql2, $login, $mot_de_passe);
 
         if (count($sql1) > 0) {

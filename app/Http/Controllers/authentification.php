@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\demande_inscription;
 use App\Models\district;
 use App\Models\fonction;
-use App\Models\login;
 use App\Models\region;
+use App\Models\utilisateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Image;
+use App\Models\login;
 
 class authentification extends Controller
 {
@@ -24,7 +25,26 @@ class authentification extends Controller
                 Session::put('administrateur', $auth[0]);
                 return redirect('/administrateur/liste-demandes-inscription');
             } else {
-                echo 'utilisateur';
+                $login = $auth[0];
+                Session::put('id_utilisateur', $login->id_utilisateur);
+                Session::put('id_login', $login->id);
+                $id_fonction = $login->id_fonction;
+                $fonctions = fonction::getAll();
+                for ($i=0; $i < count($fonctions); $i++) { 
+                    if ($fonctions[$i]->id == $id_fonction) {
+                        if ($fonctions[$i]->nom == 'ATR') {
+                            return redirect('/ATR/profil');
+                        } elseif ($fonctions[$i]->nom == 'GCR') {
+                            return view('gcr.profil', ['allRegions'=>region::getAll(), 'allDistricts'=>district::getAll(), 'allFonctions'=>fonction::getAll()]);
+                        } elseif ($fonctions[$i]->nom == 'RLS') {
+                            return view('rls.profil', ['allRegions'=>region::getAll(), 'allDistricts'=>district::getAll(), 'allFonctions'=>fonction::getAll()]);
+                        } else {
+                            return back()->with('error',"Une erreur s'est produite!");
+                        }
+                    }
+                }
+                // $utilisateur = utilisateur::getById($login->id_utilisateur);
+                return back()->with('error',"Adresse mail ou mot de passe incorrect!");
             }
         } else {
             return back()->with('error',"Adresse mail ou mot de passe incorrect!");
