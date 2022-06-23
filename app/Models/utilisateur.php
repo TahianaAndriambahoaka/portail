@@ -64,4 +64,43 @@ class utilisateur extends Model
             throw $th;
         }
     }
+    public static function getAllWS($fonction) {
+        try {
+            // return DB::select("select * from utilisateur where id in (select id_utilisateur from login where id not in (select id_login from utilisateur_supprime))");
+            $resultats = [];
+            if ($fonction == 'tous') {
+                $resultats =  DB::table('utilisateur')
+                                ->whereIn('id', function($query){
+                                    $query->select('id_utilisateur')
+                                    ->from('login')
+                                    ->whereNotIn('id', function($query){
+                                        $query->select('id_login')
+                                        ->from('utilisateur_supprime');
+                                    });
+                                })
+                                ->get();
+            } else {
+                $resultats =  DB::table('utilisateur')
+                                ->join('login', 'utilisateur.id', '=', 'login.id_utilisateur')
+                                ->whereNotIn('login.id', function($query){
+                                    $query->select('id_login')
+                                    ->from('utilisateur_supprime');
+                                })
+                                ->where('login.id_fonction', '=', $fonction)
+                                ->whereIn('utilisateur.id', function($query){
+                                    $query->select('id_utilisateur')
+                                    ->from('login')
+                                    ->whereNotIn('id', function($query){
+                                        $query->select('id_login')
+                                        ->from('utilisateur_supprime');
+                                    });
+                                })
+                                ->select('utilisateur.*')
+                                ->get();
+            }
+            return $resultats;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

@@ -43,7 +43,7 @@
                           <div class="input-group-prepend">
                             <button class="btn btn-sm btn-primary" type="button">Fonction</button>
                           </div>
-                          <select class="form-control" style="border-color: rgba(0, 0, 0, 0.178);" id="fonctionAff" onchange="changeFonctionAff()">
+                          <select class="form-control" id="fonctionAff" onchange="window.location.href = '?fonction='+document.getElementById('fonctionAff').value">
                             <option value="tous" selected>Tous</option>
                             <?php for($i = 0; $i < count($allFonctions); $i++): ?>
                               <?php if($allFonctions[$i]->id == $_GET['fonction']): ?>
@@ -60,15 +60,22 @@
                       <button type="button" class="btn btn-inverse-success btn-fw" data-bs-toggle="modal" data-bs-target="#modalAjoutUtilisateur">Ajouter un nouvel utilisateur</button>
                     </div>
                     <div class="col-md-6">
-                          
-                          <div class="form-group">
-                            <div class="input-group">
-                              <input type="text" class="form-control" placeholder="Rechercher dans le tableau ci-dessous" id="search">
-                              <div class="input-group-append">
-                                <button class="btn btn-sm btn-primary" type="button" id="searchButton">Rechercher</button>
-                              </div>
-                            </div>
+                      <div class="form-group">
+                        <div class="input-group">
+                          <?php if($_GET['fonction'] == 'tous'): ?>
+                            <input type="text" class="form-control" placeholder="Rechercher les utilisateurs avec tous les profils" id="search">
+                          <?php else: ?>
+                            <?php for($i = 0; $i < count($allFonctions); $i++): ?>
+                                <?php if($allFonctions[$i]->id == $_GET['fonction']): ?>
+                                  <input type="text" class="form-control" placeholder="Rechercher les utilisateurs avec le profil <?php echo e($allFonctions[$i]->nom); ?>" id="search">
+                                <?php endif; ?>
+                            <?php endfor; ?>
+                          <?php endif; ?>
+                          <div class="input-group-append">
+                            <button class="btn btn-sm btn-primary" type="button" id="searchButton">Rechercher</button>
                           </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <br>
@@ -115,361 +122,9 @@
           </div>
 
 
+          <?php echo $__env->make('admin.modals', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-          <?php for($i = 0; $i < count($utilisateurs); $i++): ?>
-            <div class="modal fade" id="modal<?php echo e($utilisateurs[$i]->id); ?>" style="border-radius: 10%">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Plus d'informations sur l'utilisateur</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="">
-                              <p>
-                                  <image src="<?php echo e(asset('images/photo_de_profil/'.$utilisateurs[$i]->photo_de_profil)); ?>" alt="Photo_de_profil" style="height: 150px; width: 150px; float: right"/>
-                              </p>
-                              <p>
-                                  <b>Nom : </b>
-                                  <?php echo e($utilisateurs[$i]->nom); ?>
-
-                              </p>
-                              <p>
-                                  <b>Prénom(s) : </b>
-                                  <?php echo e($utilisateurs[$i]->prenom); ?>
-
-                              </p>
-                              <p>
-                                  <b>Fonction : </b>
-                                  
-                                  <e class="badge badge-warning"><?php echo e($fonctions[$i]->nom); ?></e>
-                              </p>
-                              <p>
-                                  <b>Région : </b>
-                                  <?php echo e($regions[$i]->nom); ?>
-
-                              </p>
-                              <p>
-                                  <b>District : </b>
-                                  <?php echo e($districts[$i]->nom); ?>
-
-                              </p>
-                              <p>
-                                  <b>Ministère : </b>
-                                  <?php echo e($utilisateurs[$i]->ministere); ?>
-
-                              </p>
-                              <p>
-                                  <b>Direction : </b>
-                                  <?php echo e($utilisateurs[$i]->direction); ?>
-
-                              </p>
-                              <p>
-                                  <b>Lieu de travail : </b>
-                                  <?php echo e($utilisateurs[$i]->lieu_de_travail); ?>
-
-                              </p>
-                              <p>
-                                  <b>Téléphone 1 : </b>
-                                  <a href="tel:<?php echo e($utilisateurs[$i]->telephone1); ?>"><?php echo e($utilisateurs[$i]->telephone1); ?></a>
-                              </p>
-                              <p>
-                                  <b>Téléphone 2 : </b>
-                                  <a href="tel:<?php echo e($utilisateurs[$i]->telephone2); ?>"><?php echo e($utilisateurs[$i]->telephone2); ?></a>
-                              </p>
-                              <p>
-                                  <b>Téléphone 3 : </b>
-                                  <a href="tel:<?php echo e($utilisateurs[$i]->telephone3); ?>"><?php echo e($utilisateurs[$i]->telephone3); ?></a>
-                              </p>
-                              <p>
-                                  <b>Adresse mail : </b>
-                                  <a href="mailto:<?php echo e($utilisateurs[$i]->email); ?>"><?php echo e($utilisateurs[$i]->email); ?></a>
-                              </p>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="submit" class="btn btn-inverse-danger btn-fw" data-bs-toggle="modal" data-bs-target="#modalValiderSuppression<?php echo e($utilisateurs[$i]->id); ?>" data-bs-dismiss="modal">Supprimer</button>
-                          <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modalModif<?php echo e($utilisateurs[$i]->id); ?>" data-bs-dismiss="modal">Modifier sa fonction</button>
-                          <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal" autofocus>Fermer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          <?php endfor; ?>
-          <?php for($i = 0; $i < count($utilisateurs); $i++): ?>
-            <div class="modal fade" id="modalModif<?php echo e($utilisateurs[$i]->id); ?>" style="border-radius: 10%">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Formulaire de modification de profil</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="">
-                              <p>
-                                  <image src="<?php echo e(asset('images/photo_de_profil/'.$utilisateurs[$i]->photo_de_profil)); ?>" alt="Photo_de_profil" style="height: 150px; width: 150px; float: right"/>
-                              </p>
-                              <p>
-                                  <b>Nom : </b>
-                                  <?php echo e($utilisateurs[$i]->nom); ?>
-
-                              </p>
-                              <p>
-                                  <b>Prénom(s) : </b>
-                                  <?php echo e($utilisateurs[$i]->prenom); ?>
-
-                              </p>
-                              <p>
-                                  <b>Fonction : </b>
-                                  <select class="input100" style="border-color: rgba(0, 0, 0, 0.178);" id="fonctionModif<?php echo e($utilisateurs[$i]->id); ?>">
-                                    <?php for($j = 0; $j < count($allFonctions); $j++): ?>
-                                      <?php if($fonctions[$i]->id ==  $allFonctions[$j]->id): ?>
-                                        <option value="<?php echo e($allFonctions[$j]->id); ?>" selected><?php echo e($allFonctions[$j]->nom); ?></option>
-                                      <?php else: ?>
-                                        <option value="<?php echo e($allFonctions[$j]->id); ?>"><?php echo e($allFonctions[$j]->nom); ?></option>
-                                      <?php endif; ?>
-                                    <?php endfor; ?>
-                                  </select>
-                              </p>
-                              <p>
-                                  <b>Région : </b>
-                                  <?php echo e($regions[$i]->nom); ?>
-
-                              </p>
-                              <p>
-                                  <b>District : </b>
-                                  <?php echo e($districts[$i]->nom); ?>
-
-                              </p>
-                              <p>
-                                  <b>Ministère : </b>
-                                  <?php echo e($utilisateurs[$i]->ministere); ?>
-
-                              </p>
-                              <p>
-                                  <b>Direction : </b>
-                                  <?php echo e($utilisateurs[$i]->direction); ?>
-
-                              </p>
-                              <p>
-                                  <b>Lieu de travail : </b>
-                                  <?php echo e($utilisateurs[$i]->lieu_de_travail); ?>
-
-                              </p>
-                              <p>
-                                  <b>Téléphone 1 : </b>
-                                  <a href="tel:<?php echo e($utilisateurs[$i]->telephone1); ?>"><?php echo e($utilisateurs[$i]->telephone1); ?></a>
-                              </p>
-                              <p>
-                                  <b>Téléphone 2 : </b>
-                                  <a href="tel:<?php echo e($utilisateurs[$i]->telephone2); ?>"><?php echo e($utilisateurs[$i]->telephone2); ?></a>
-                              </p>
-                              <p>
-                                  <b>Téléphone 3 : </b>
-                                  <a href="tel:<?php echo e($utilisateurs[$i]->telephone3); ?>"><?php echo e($utilisateurs[$i]->telephone3); ?></a>
-                              </p>
-                              <p>
-                                  <b>Adresse mail : </b>
-                                  <a href="mailto:<?php echo e($utilisateurs[$i]->email); ?>"><?php echo e($utilisateurs[$i]->email); ?></a>
-                              </p>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modalValiderMofification<?php echo e($utilisateurs[$i]->id); ?>" data-bs-dismiss="modal">Modifier</button>
-                            <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal" autofocus>Fermer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          <?php endfor; ?>
-          <?php for($i = 0; $i < count($utilisateurs); $i++): ?>
-            <div class="modal fade" id="modalValiderMofification<?php echo e($utilisateurs[$i]->id); ?>" style="border-radius: 10%">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title">Confirmation de modification de profil</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                      </div>
-                      <div class="modal-body">
-                        <h4>Voulez-vous vraiment modifier la fonction de l'utilisateur?</h4>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="submit" class="btn btn-inverse-warning btn-fw" onclick="modifierFonction(<?php echo e($utilisateurs[$i]->id); ?>)" data-bs-dismiss="modal">Oui</button>
-                        <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Non</button>
-                      </div>
-                    </div>
-                </div>
-            </div>
-          <?php endfor; ?>
-          <?php for($i = 0; $i < count($utilisateurs); $i++): ?>
-            <div class="modal fade" id="modalValiderSuppression<?php echo e($utilisateurs[$i]->id); ?>" style="border-radius: 10%">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title">Confirmation de suppression d'utilisateur</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                      </div>
-                      <div class="modal-body">
-                        <h6>Voulez-vous vraiment supprimer cet utilisateur?</h6>
-                        <h6>Veuillez écrire le motif ci-dessous:</h6>
-                        <p>
-                          <textarea class="form-control" rows="4" id="motifTextarea<?php echo e($utilisateurs[$i]->id); ?>"></textarea>
-                        </p>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="submit" class="btn btn-inverse-danger btn-fw" onclick="suppimerUtilisateur(<?php echo e($utilisateurs[$i]->id); ?>)" data-bs-dismiss="modal">Oui</button>
-                        <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Non</button>
-                      </div>
-                    </div>
-                </div>
-            </div>
-          <?php endfor; ?>
-          <?php for($i = 0; $i < count($utilisateurs); $i++): ?>
-            <form action="/administrateur/utilisateur/suppression" method="POST" id="formSuppression">
-              <?php echo csrf_field(); ?>
-              <input type="hidden" name="id_utilisateur" value="<?php echo e($utilisateurs[$i]->id); ?>">
-              <input type="hidden" name="motif" id="motifSuppression<?php echo e($utilisateurs[$i]->id); ?>">
-              <input type="submit" value="Supprimer" id="suppression<?php echo e($utilisateurs[$i]->id); ?>" style="display: none">
-            </form>
-          <?php endfor; ?>
-          <?php for($i = 0; $i < count($utilisateurs); $i++): ?>
-            <form action="/administrateur/utilisateur/modification-fonction" method="POST" id="formModification">
-              <?php echo csrf_field(); ?>
-              <input type="hidden" name="id_utilisateur" value="<?php echo e($utilisateurs[$i]->id); ?>">
-              <input type="hidden" name="id_fonction" id="nouveauFonction<?php echo e($utilisateurs[$i]->id); ?>">
-              <input type="submit" value="Modifier" id="modification<?php echo e($utilisateurs[$i]->id); ?>" style="display: none">
-            </form>
-          <?php endfor; ?>
-
-
-          <div class="modal fade" id="modalAjoutUtilisateur" style="border-radius: 10%">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Formulaire d'insertion d'utilisateur</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="/administrateur/inscription-utilisateur" method="POST" id="formAjout">
-                          <?php echo csrf_field(); ?>
-                          <div class="form-group row">
-                            <div class="col">
-                              <label>Nom</label>
-                              <div id="the-basics">
-                                <input class="typeahead" type="text" name="nom" placeholder="Votre nom" required>
-                              </div>
-                            </div>
-                            <div class="col">
-                              <label>Prénom(s)</label>
-                              <div id="bloodhound">
-                                <input class="typeahead" type="text" name="prenom" placeholder="Votre prénom" required>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <div class="col">
-                              <label>Fonction</label>
-                              <div id="the-basics">
-                                <select class="typeahead" name="id_fonction" required>
-                                  <option value="">Fonction</option>
-                                  <?php for($i = 0; $i < count($allFonctions); $i++): ?>
-                                      <option value="<?php echo e($allFonctions[$i]->id); ?>"><?php echo e($allFonctions[$i]->nom); ?></option>
-                                  <?php endfor; ?>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="col">
-                              <label>Région</label>
-                              <div id="bloodhound">
-                                <select class="typeahead" name="id_region" id="id_regionAjout" onchange="showDistricts()" required>
-                                  <option value="">Région</option>
-                                  <?php for($i = 0; $i < count($allRegions); $i++): ?>
-                                      <option value="<?php echo e($allRegions[$i]->id); ?>"><?php echo e($allRegions[$i]->nom); ?></option>
-                                  <?php endfor; ?>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <div class="col">
-                              <label>District</label>
-                              <div id="the-basics">
-                                <select class="typeahead" name="id_district" id="id_districtAjout" required>
-                                  <option value="">District</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="col">
-                              <label>Ministère</label>
-                              <div id="bloodhound">
-                                <select class="typeahead" name="ministere" required>
-                                  <option value="">Ministère</option>
-                                  <option value="Ministère de la santé publique">Ministère de la santé publique</option>
-                                  <option value="Ministère de la sécurité publique">Ministère de la sécurité publique</option>
-                                  <option value="Ministère de la Population, de la Protection Sociale et de la Promotion de la Femme">Ministère de la Population, de la Protection Sociale et de la Promotion de la Femme</option>
-                                  <option value="Ministère du Développement Numérique, Transformation Digitale, des Postes et des Télécommunications">Ministère du Développement Numérique, Transformation Digitale, des Postes et des Télécommunications</option>
-                                  <option value="Ministère des Mines et des Ressources Stratégiques">Ministère des Mines et des Ressources Stratégiques</option>
-                                  <option value="Ministère de la Justice">Ministère de la Justice</option>
-                                  <option value="Ministère de l'enseignement supérieur et de la recherche scientifique">Ministère de l'enseignement supérieur et de la recherche scientifique</option>
-                                  <option value="Ministère de l'Environnement et du Développement Durable">Ministère de l'Environnement et du Développement Durable</option>
-                                  <option value="Ministère de la Défense Nationale">Ministère de la Défense Nationale</option>
-                                  <option value="Ministère des Affaires Etrangères">Ministère des Affaires Etrangères</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <div class="col">
-                              <label>Direction</label>
-                              <div id="the-basics">
-                                <input class="typeahead" type="text" name="direction" placeholder="Direction" required>
-                              </div>
-                            </div>
-                            <div class="col">
-                              <label>Lieu de travail</label>
-                              <div id="bloodhound">
-                                <input class="typeahead" type="text" name="lieu_de_travail" placeholder="Lieu de travail" required>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <div class="col">
-                              <label>Téléphone 1</label>
-                              <div id="the-basics">
-                                <input class="typeahead" type="tel" name="telephone1" id="phone1" onchange="process1()" required>
-                              </div>
-                            </div>
-                            <div class="col">
-                              <label>Téléphone 2</label>
-                              <div id="bloodhound">
-                                <input class="typeahead" type="tel" name="telephone2" id="phone2" onchange="process2()" required>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <div class="col">
-                              <label>Téléphone 3</label>
-                              <div id="the-basics">
-                                <input class="typeahead" type="tel" name="telephone3" id="phone3" onchange="process3()" required>
-                              </div>
-                            </div>
-                            <div class="col">
-                              <label>Adresse mail</label>
-                              <div id="bloodhound">
-                                <input class="typeahead" type="email" name="email" placeholder="Adresse mail" required>
-                              </div>
-                            </div>
-                          </div>
-                          <input type="submit" value="Insérer" style="display: none" id="idFormAjout">
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="submit" class="btn btn-inverse-success btn-fw" data-bs-dismiss="modal" onclick="ajoutUtilisateur()">Ajouter</button>
-                      <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal" autofocus>Fermer</button>
-                    </div>
-                </div>
-            </div>
-          </div>
+          
 
 
 
@@ -495,15 +150,15 @@
   <script src="<?php echo e(asset('js/jquery-3.3.1.min.js')); ?>"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script>
-    $('#search').on('keyup', function() {
-      var value = $(this).val();
-      if (value!='') {
-        $('table tbody tr').hide();
-      } else {
-        $('table tbody tr').show();        
-      }
-      $('table tbody tr td:contains("'+value+'")').parent('tr').show();
-    });
+    // $('#search').on('keyup', function() {
+    //   var value = $(this).val();
+    //   if (value!='') {
+    //     $('table tbody tr').hide();
+    //   } else {
+    //     $('table tbody tr').show();        
+    //   }
+    //   $('table tbody tr td:contains("'+value+'")').parent('tr').show();
+    // });
     $('#searchButton').on('click', function() {
       var value = $('#search').val().replace(/^\s+|\s+$/gm,'');
       if (value!='') {
@@ -512,15 +167,44 @@
         $('table tbody tr').show();        
       }
       $('table tbody tr td:contains("'+value+'")').parent('tr').show();
+
+      var xhr = new XMLHttpRequest(); 
+      xhr.open('GET', 'http://localhost:8000/administrateur/utilisateursWS?fonction='+<?php echo json_encode($_GET['fonction']); ?>);
+      var utilisateurs = [];
+      xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4) {
+              const reponse = JSON.parse(xhr.responseText);
+              for (let i = 0; i < reponse.length; i++)  {
+                  utilisateurs.push(reponse[i]);
+              }
+              var utilisateursAff = [];
+              for (i = 0; i < utilisateurs.length; i++) {
+                const nom = utilisateurs[i].nom;
+                const prenom = utilisateurs[i].prenom;
+                if (nom.includes(value)) {
+                  utilisateursAff.push(utilisateurs[i]);
+                }
+                if (prenom.includes(value)) {
+                  utilisateursAff.push(utilisateurs[i]);
+                }
+              }
+              const allFonctions = <?php echo json_encode($allFonctions); ?>;
+              var element = "";
+              for (let i = 0; i < utilisateursAff.length; i++) {
+                element += '<tr>';
+                  element += `<td style="text-align: center"><image src="<?php echo e(asset('images/photo_de_profil/${utilisateursAff[i].photo_de_profil}')); ?>" alt="Photo_de_profil" style="height: 75px; width: 75px;"/></td>`;
+                  element += `<td>${utilisateursAff[i].nom}</td>`;
+                  element += `<td>${utilisateursAff[i].prenom}</td>`;
+                  element += `<td style="text-align: center">${allFonctions[i].nom}</td>`;
+                  element += `<td><button type="button" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modal${utilisateursAff[i].id}">Plus</button></td>`;
+                element += '</tr>';
+              }
+              document.getElementById('listeUtilisateurs').innerHTML = element;
+          }
+      };
+      xhr.send();
+
     });
-  </script>
-  <script>
-    function valider(id_demande) {
-      $('#valider-'+id_demande).click();
-    }
-    function refuser(id_demande) {
-      $('#refuser-'+id_demande).click();
-    }
 
     $(document).ready(function(){
       $("#formSuppression").submit(function(){
@@ -537,31 +221,12 @@
       });
     });
 
-    function changeFonctionAff() {
-      const id_fonction = document.getElementById('fonctionAff').value;
-      window.location.href = '?fonction='+id_fonction;
-    }
-
-    function suppimerUtilisateur(id_utilisateur) {
-      const motif = document.getElementById('motifTextarea'+id_utilisateur).value;
-      document.getElementById('motifSuppression'+id_utilisateur).value = motif;
-      $('#suppression'+id_utilisateur).click();
-    }
-    function modifierFonction(id_utilisateur) {
-      const fonction = document.getElementById('fonctionModif'+id_utilisateur).value;
-      document.getElementById('nouveauFonction'+id_utilisateur).value = fonction;
-      $('#modification'+id_utilisateur).click();
-    }
-  </script>
-
-
-	<script>
 		function getIp(callback) {
 			fetch('https://ipinfo.io/json?token=662221c0429e7f', { headers: { 'Accept': 'application/json' }})
 			.then((resp) => resp.json())
 			.catch(() => {
 				return {
-				country: 'us',
+				country: 'mg',
 				};
 			})
 			.then((resp) => callback(resp.country));
@@ -574,10 +239,6 @@
 			utilsScript:
 			"https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
 		});
-		function process1() {
-			const phoneNumber = phoneInput1.getNumber();
-			document.getElementById('phone1').value = phoneNumber;
-		}
 
 		const phoneInputField2 = document.querySelector("#phone2");
 		const phoneInput2 = window.intlTelInput(phoneInputField2, {
@@ -586,10 +247,6 @@
 			utilsScript:
 			"https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
 		});
-		function process2() {
-			const phoneNumber = phoneInput2.getNumber();
-			document.getElementById('phone2').value = phoneNumber;
-		}
 
 		const phoneInputField3 = document.querySelector("#phone3");
 		const phoneInput3 = window.intlTelInput(phoneInputField3, {
@@ -598,25 +255,17 @@
 			utilsScript:
 			"https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
 		});
-		function process3() {
-			const phoneNumber = phoneInput3.getNumber();
-			document.getElementById('phone3').value = phoneNumber;
-		}
 
     function showDistricts() {
-			const id_region = document.getElementById('id_regionAjout').value;
 			const districts = <?php echo json_encode($allDistricts); ?>;
 			var districts_aff = "<option value=''>District</option>";
 			for (let i = 0; i < districts.length; i++) {
-				if (districts[i]['id_region'] == id_region) {
+				if (districts[i]['id_region'] == document.getElementById('id_regionAjout').value) {
 					districts_aff += "<option value='"+districts[i]['id']+"'>"+districts[i]['nom']+"</option>";
 				}
 			}
 			document.getElementById('id_districtAjout').innerHTML = districts_aff;
 		}
-    function ajoutUtilisateur() {
-      $('#idFormAjout').click();
-    }
 	</script>
 </body>
 </html><?php /**PATH D:\stage\portail\resources\views/admin/liste_utilisateurs.blade.php ENDPATH**/ ?>

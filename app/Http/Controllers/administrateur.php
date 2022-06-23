@@ -114,4 +114,9 @@ class administrateur extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
+
+    public function utilisateursWS(Request $request) {
+        $utilisateurs = utilisateur::getAllWS($request->input('fonction'));
+        echo json_encode($utilisateurs);
+    }
 }

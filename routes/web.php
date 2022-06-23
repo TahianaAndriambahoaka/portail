@@ -34,3 +34,4 @@ Route::get('/administrateur/utilisateurs', [administrateur::class, 'liste_utilis
 Route::post('/administrateur/utilisateur/suppression', [administrateur::class, 'suppression_utilisateur'])->middleware('adminSession');
 Route::post('/administrateur/utilisateur/modification-fonction', [administrateur::class, 'modification_fonction_utilisateur'])->middleware('adminSession');
 Route::post('/administrateur/inscription-utilisateur', [administrateur::class, 'inscription'])->middleware('adminSession');
+Route::get('/administrateur/utilisateursWS', [administrateur::class, 'utilisateursWS'])->middleware('adminSession');
