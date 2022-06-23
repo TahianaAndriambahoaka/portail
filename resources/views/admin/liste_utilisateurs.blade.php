@@ -119,7 +119,7 @@
             </div>
             <div class="col-md-4"></div>
           </div>
-          @include('admin.modals')
+          @include('admin.modals_liste_utilisateurs')
         </div>
       </div>
     </div>
@@ -179,7 +179,7 @@
                   element += `<td>${utilisateursAff[i].nom}</td>`;
                   element += `<td>${utilisateursAff[i].prenom}</td>`;
                   element += `<td style="text-align: center">${allFonctions[i].nom}</td>`;
-                  element += `<td><button type="button" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modal${utilisateursAff[i].id}">Plus</button></td>`;
+                  // element += `<td><button type="button" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modal${utilisateursAff[i].id}">Plus</button></td>`;
                 element += '</tr>';
               }
               document.getElementById('listeUtilisateurs').innerHTML = element;

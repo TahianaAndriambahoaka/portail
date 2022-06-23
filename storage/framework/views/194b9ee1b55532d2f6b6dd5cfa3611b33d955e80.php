@@ -120,14 +120,7 @@
             </div>
             <div class="col-md-4"></div>
           </div>
-
-
-          <?php echo $__env->make('admin.modals', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-          
-
-
-
+          <?php echo $__env->make('admin.modals_liste_utilisateurs', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         </div>
       </div>
     </div>
@@ -150,15 +143,6 @@
   <script src="<?php echo e(asset('js/jquery-3.3.1.min.js')); ?>"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script>
-    // $('#search').on('keyup', function() {
-    //   var value = $(this).val();
-    //   if (value!='') {
-    //     $('table tbody tr').hide();
-    //   } else {
-    //     $('table tbody tr').show();        
-    //   }
-    //   $('table tbody tr td:contains("'+value+'")').parent('tr').show();
-    // });
     $('#searchButton').on('click', function() {
       var value = $('#search').val().replace(/^\s+|\s+$/gm,'');
       if (value!='') {
@@ -196,7 +180,7 @@
                   element += `<td>${utilisateursAff[i].nom}</td>`;
                   element += `<td>${utilisateursAff[i].prenom}</td>`;
                   element += `<td style="text-align: center">${allFonctions[i].nom}</td>`;
-                  element += `<td><button type="button" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modal${utilisateursAff[i].id}">Plus</button></td>`;
+                  // element += `<td><button type="button" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modal${utilisateursAff[i].id}">Plus</button></td>`;
                 element += '</tr>';
               }
               document.getElementById('listeUtilisateurs').innerHTML = element;
