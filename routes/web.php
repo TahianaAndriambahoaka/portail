@@ -38,5 +38,6 @@ Route::post('/administrateur/utilisateur/modification-fonction', [administrateur
 Route::post('/administrateur/inscription-utilisateur', [administrateur::class, 'inscription'])->middleware('adminSession');
 Route::get('/administrateur/utilisateursWS', [administrateur::class, 'utilisateursWS'])->middleware('adminSession');
 
-Route::get('/ATR/profil', [atr::class, 'profil'])->middleware('utilisateurSession');
 Route::get('/utilisateur/deconnexion', [utilisateur::class, 'deconnexion'])->middleware('utilisateurSession');
+Route::get('/ATR/profil', [atr::class, 'profil'])->middleware('utilisateurSession');
+Route::post('/ATR/profil/changer-mot-de-passe', [utilisateur::class, 'changer_mot_de_passe'])->middleware('utilisateurSession');

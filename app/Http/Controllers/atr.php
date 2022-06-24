@@ -11,6 +11,6 @@ use App\Models\utilisateur;
 class atr extends Controller
 {
     public function profil() {
-        return view('atr.profil', ['allRegions'=>region::getAll(), 'allDistricts'=>district::getAll(), 'allFonctions'=>fonction::getAll(), 'monProfil'=>utilisateur::getById(request()->session()->get('id_utilisateur'))[0]]);
+        return view('atr.profil', ['allRegions'=>region::getAll(), 'allDistricts'=>district::getAll(), 'monProfil'=>utilisateur::getById(request()->session()->get('id_utilisateur'))[0]]);
     }
 }

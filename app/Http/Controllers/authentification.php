@@ -26,8 +26,7 @@ class authentification extends Controller
                 return redirect('/administrateur/liste-demandes-inscription');
             } else {
                 $login = $auth[0];
-                Session::put('id_utilisateur', $login->id_utilisateur);
-                Session::put('id_login', $login->id);
+                Session::put('login', $login);
                 $id_fonction = $login->id_fonction;
                 $fonctions = fonction::getAll();
                 for ($i=0; $i < count($fonctions); $i++) { 

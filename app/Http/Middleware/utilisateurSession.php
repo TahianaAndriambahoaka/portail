@@ -16,7 +16,7 @@ class utilisateurSession
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->session()->exists('id_utilisateur') or !$request->session()->exists('id_login')) {
+        if (!$request->session()->exists('login')) {
             return redirect('/');
         }
         return $next($request);
