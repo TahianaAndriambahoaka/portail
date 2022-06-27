@@ -200,7 +200,7 @@
                 <h6>Voulez-vous vraiment supprimer cet utilisateur?</h6>
                 <h6>Veuillez écrire le motif ci-dessous:</h6>
                 <p>
-                    <textarea class="form-control" rows="4" id="motifTextarea{{$utilisateurs[$i]->id}}"></textarea>
+                    <textarea class="form-control" rows="4" id="motifTextarea{{$utilisateurs[$i]->id}}" required></textarea>
                 </p>
                 </div>
                 <div class="modal-footer">

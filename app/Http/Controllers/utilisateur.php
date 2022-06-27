@@ -6,6 +6,7 @@ use App\Models\login;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Mail;
+use Image;
 
 class utilisateur extends Controller
 {
@@ -30,10 +31,39 @@ class utilisateur extends Controller
                     $message->to($email, "")->subject("Changement de mot de passe sur le portail de l'UCP");
                     $message->from('tahiana.andriamb@gmail.com','Unité de Coordination des Projets (UCP)');
                 });
+                $login = login::getByIdUtilisateur($utilisateur->id)[0];
+                Session::forget('login');
+                Session::put('login', $login);
                 return back()->with('successMDP', "Changement de mot de passe effectué avec succès!");
             }
         } catch (\Throwable $th) {
             return back()->with('errorMDP', $th->getMessage());
+        }
+    }
+    public function changer_photo_de_profil(Request $request) {
+        if ($request->hasFile('profile_photo')) {
+            try {
+                $this->validate($request, [
+                    'profile_photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480',
+                ]);
+                $image = $request->file('profile_photo');
+                $photo_de_profil = $image->getClientOriginalName();
+                $photo_de_profil = md5($photo_de_profil.time());
+                $photo_de_profil = $photo_de_profil.'.'.$image->getClientOriginalExtension();
+                // $image->move(public_path().'/images/photo_de_profil/', $photo_de_profil);
+    
+                $destinationPath = public_path('images/photo_de_profil');
+                $img = Image::make($image->getRealPath());
+                $img->resize(150, 150, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($destinationPath.'/'.$photo_de_profil);
+                \App\Models\utilisateur::update_photo_de_profil(request()->session()->get('login'), $photo_de_profil);
+                return back()->with('successPDP', "Changement de photo de profil effectué avec succès!");
+            } catch (\Throwable $th) {
+                return back()->with('errorPDP', $th->getMessage());
+            }
+        } else {
+            return back();
         }
     }
 }

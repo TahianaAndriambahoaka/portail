@@ -106,4 +106,13 @@ class utilisateur extends Model
     public static function getById($id) {
         return DB::select(sprintf("SELECT * FROM utilisateur WHERE id = %d", $id));
     }
+    public static function update_photo_de_profil($login, $photo_de_profil) {
+        try {
+            $query = "UPDATE utilisateur SET photo_de_profil = '%s' WHERE id = %d";
+            $query = sprintf($query, $photo_de_profil, $login->id_utilisateur);
+            DB::update($query);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

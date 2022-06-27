@@ -40,17 +40,30 @@
                 <div class="card-body">
                   <div class="row">
                     <div style="margin-left:auto; margin-right:auto; text-align:center">
-                      <div id="profile-container">
-                        <image id="profileImage" src="{{asset('images/photo_de_profil/'.$monProfil->photo_de_profil)}}" style="width: 200px; border-radius: 50%;" />
-                      </div>
-                      <input id="imageUpload" type="file" name="profile_photo" placeholder="Photo" capture style="display: none;">
-                      <div class="mt-2" style="font-weight: bold">{{ $monProfil->prenom }}<br>{{ $monProfil->nom }}</div>
-                      <div class="mt-2" style="font-weight: lighter">ATR (Assistant Technique Régional)</div>
-                      <div class="mt-3"><button class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modalAncienMdp">Changer mon mot de passe</button></div>
+                      <form action="/ATR/profil/changer-photo-de-profil" method="POST" enctype="multipart/form-data" id="form_changer_photo_de_profil">
+                        @csrf
+                        <div id="profile-container">
+                          <image id="profileImage" src="{{asset('images/photo_de_profil/'.$monProfil->photo_de_profil)}}" style="width: 200px; border-radius: 50%;" />
+                        </div>
+                        <input id="imageUpload" type="file" name="profile_photo" placeholder="Photo" capture style="display: none;" onchange="document.getElementById('changer_photo_de_profil').removeAttribute('style')">
+                        <div class="mt-2" style="font-weight: bold">{{ $monProfil->prenom }}<br>{{ $monProfil->nom }}</div>
+                        <div class="mt-2" style="font-weight: lighter">ATR (Assistant Technique Régional)</div>
+                        <div class="mt-3" style="display: none" id="changer_photo_de_profil">
+                          <input type="submit" value="Changer la photo de profil" class="btn btn-inverse-warning btn-fw">
+                        </div>
+                      </form>
+                      <div class="mt-3"><button class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modalAncienMdp">Changer de mot de passe</button></div>
                       @if ($message = Session::get('successMDP'))
-                        <p class="text-center alert alert-success animate__animated animate__bounceInRight mt-5" style="margin-left: auto; margin-right: auto" onload="miseEnAttente()">{{$message}}</p>
+                        <p class="text-center alert alert-success animate__animated animate__bounceInRight mt-5" style="margin-left: auto; margin-right: auto">{{$message}}</p>
                       @endif
                       @if ($message = Session::get('errorMDP'))
+                        <br>
+                        <p class="text-center alert alert-danger animate__animated animate__bounceInRight mt-5" style="margin-left: auto; margin-right: auto">{{$message}}</p>
+                      @endif
+                      @if ($message = Session::get('successPDP'))
+                        <p class="text-center alert alert-success animate__animated animate__bounceInRight mt-5" style="margin-left: auto; margin-right: auto">{{$message}}</p>
+                      @endif
+                      @if ($message = Session::get('errorPDP'))
                         <br>
                         <p class="text-center alert alert-danger animate__animated animate__bounceInRight mt-5" style="margin-left: auto; margin-right: auto">{{$message}}</p>
                       @endif
@@ -78,31 +91,6 @@
                           <label>Prénom(s)</label>
                           <div id="bloodhound">
                             <input class="typeahead" type="text" name="prenom" value="{{ $monProfil->prenom }}" required>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="col">
-                          <label>Région</label>
-                          <div id="bloodhound">
-                            <select class="typeahead" name="id_region" id="id_regionAjout" onchange="showDistricts()" required>
-                              <option value="">Région</option>
-                              @for ($i = 0; $i < count($allRegions); $i++)
-                                @if ($monProfil->id_region == $allRegions[$i]->id)
-                                  <option value="{{ $allRegions[$i]->id }}" selected>{{ $allRegions[$i]->nom }}</option>
-                                @else
-                                  <option value="{{ $allRegions[$i]->id }}">{{ $allRegions[$i]->nom }}</option>
-                                @endif
-                              @endfor
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col">
-                          <label>District</label>
-                          <div id="the-basics">
-                            <select class="typeahead" name="id_district" id="id_districtAjout" required>
-                              <option value="">District</option>
-                            </select>
                           </div>
                         </div>
                       </div>
@@ -135,7 +123,7 @@
                           <label style="font-size: 0%">.</label>
                           <div id="bloodhound">
                             {{-- <input class="typeahead" type="email" name="email" value="{{ $monProfil->email }}" required> --}}
-                            <input class="btn btn-inverse-warning btn-fw" type="submit" value="Modifier" id="idFormAjout">
+                            <input class="btn btn-inverse-warning btn-fw" type="submit" value="Modifier le profil" id="idFormAjout">
                           </div>
                         </div>
                       </div>
@@ -234,13 +222,13 @@
   <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script>
-    // function miseEnAttente() {
-      console.log('redirection');
-      setTimeout(redirectionVersLogin, 5000);
+    // function delaiRedirection() {
+    //   console.log('redirection');
+    //   setTimeout(redirectionVersLogin, 5000);
     // }
-    function redirectionVersLogin() {
-      window.location.href = '/utilisateur/deconnexion';
-    }
+    // function redirectionVersLogin() {
+    //   window.location.href = '/utilisateur/deconnexion';
+    // }
     async function sha256(message) {
         // encode as UTF-8
         const msgBuffer = new TextEncoder().encode(message);                    
@@ -298,8 +286,23 @@
 			$("#imageUpload").click();
 		});
 
+    function fasterPreview( uploader ) {
+			if ( uploader.files && uploader.files[0] ){
+				$('#profileImage').attr('src', 
+					window.URL.createObjectURL(uploader.files[0]) );
+			}
+		}
+		
+		$("#imageUpload").change(function(){
+			fasterPreview( this );
+		});
+
     $(document).ready(function(){
       $("#formChangementMotDePasse").submit(function(){
+        $("#loader").removeClass("visible");
+        $("#container").addClass("opacity");
+      });
+      $("#form_changer_photo_de_profil").submit(function(){
         $("#loader").removeClass("visible");
         $("#container").addClass("opacity");
       });

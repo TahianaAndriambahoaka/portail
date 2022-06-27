@@ -41,3 +41,4 @@ Route::get('/administrateur/utilisateursWS', [administrateur::class, 'utilisateu
 Route::get('/utilisateur/deconnexion', [utilisateur::class, 'deconnexion'])->middleware('utilisateurSession');
 Route::get('/ATR/profil', [atr::class, 'profil'])->middleware('utilisateurSession');
 Route::post('/ATR/profil/changer-mot-de-passe', [utilisateur::class, 'changer_mot_de_passe'])->middleware('utilisateurSession');
+Route::post('/ATR/profil/changer-photo-de-profil', [utilisateur::class, 'changer_photo_de_profil'])->middleware('utilisateurSession');
