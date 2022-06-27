@@ -78,7 +78,7 @@ class administrateur extends Controller
             $id_utilisateur = $request->input('id_utilisateur');
             $id_fonction = $request->input('id_fonction');
             $login = login::getByIdUtilisateur($id_utilisateur)[0];
-            login::add($id_utilisateur, $login->login, $login->mot_de_passe, $id_fonction, date('Y-m-d'));
+            login::add_raison_modification_fonction($id_utilisateur, $login->login, $login->mot_de_passe, $id_fonction, date('Y-m-d'));
             utilisateur_supprime::add($login->id, 'Changement de fonction', date('Y-m-d'));
             return back()->with('success', "Fonction de l'utilisateur modifiée!");
         } catch (\Throwable $th) {

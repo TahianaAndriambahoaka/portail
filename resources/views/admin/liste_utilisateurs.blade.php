@@ -112,7 +112,8 @@
                       @endfor
                     </tbody>
                     </table>
-                    {!! $utilisateurs->withQueryString()->links('pagination::bootstrap-5') !!}
+                    <br>
+                    {!! $utilisateurs->withQueryString()->links('pagination::bootstrap-4') !!}
                   </div>
                 </div>
               </div>

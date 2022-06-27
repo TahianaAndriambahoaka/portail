@@ -112,7 +112,8 @@
                       <?php endfor; ?>
                     </tbody>
                     </table>
-                    <?php echo $utilisateurs->withQueryString()->links('pagination::bootstrap-5'); ?>
+                    <br>
+                    <?php echo $utilisateurs->withQueryString()->links('pagination::bootstrap-4'); ?>
 
                   </div>
                 </div>

@@ -39,6 +39,15 @@ class login extends Model
             throw $th;
         }
     }
+    public static function add_raison_modification_fonction($id_utilisateur, $login, $mot_de_passe, $id_fonction, $date_debut_de_carriere) {
+        try {
+            $query = "insert into login values (default, %d, '%s', '%s', %d, '%s')";
+            $query = sprintf($query, $id_utilisateur, $login, $mot_de_passe, $id_fonction, $date_debut_de_carriere);
+            DB::insert($query);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
     public static function getByIdUtilisateur($id_utilisateur) {
         return DB::select(sprintf("SELECT * FROM login WHERE id_utilisateur = %d AND id NOT IN (SELECT id_login FROM utilisateur_supprime)", $id_utilisateur));
     }
