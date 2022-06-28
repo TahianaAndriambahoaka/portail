@@ -34,9 +34,9 @@ class authentification extends Controller
                         if ($fonctions[$i]->nom == 'ATR') {
                             return redirect('/ATR/profil');
                         } elseif ($fonctions[$i]->nom == 'GCR') {
-                            return view('gcr.profil', ['allRegions'=>region::getAll(), 'allDistricts'=>district::getAll(), 'allFonctions'=>fonction::getAll()]);
+                            return redirect('/GCR/profil');
                         } elseif ($fonctions[$i]->nom == 'RLS') {
-                            return view('rls.profil', ['allRegions'=>region::getAll(), 'allDistricts'=>district::getAll(), 'allFonctions'=>fonction::getAll()]);
+                            return redirect('/RLS/profil');
                         } else {
                             return back()->with('error',"Une erreur s'est produite!");
                         }

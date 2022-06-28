@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\administrateur;
 use App\Http\Controllers\atr;
+use App\Http\Controllers\gcr;
+use App\Http\Controllers\rls;
 use App\Http\Controllers\authentification;
 use App\Http\Controllers\utilisateur;
 use Illuminate\Support\Facades\Route;
@@ -39,7 +41,18 @@ Route::post('/administrateur/inscription-utilisateur', [administrateur::class, '
 Route::get('/administrateur/utilisateursWS', [administrateur::class, 'utilisateursWS'])->middleware('adminSession');
 
 Route::get('/utilisateur/deconnexion', [utilisateur::class, 'deconnexion'])->middleware('utilisateurSession');
+
 Route::get('/ATR/profil', [atr::class, 'profil'])->middleware('utilisateurSession');
 Route::post('/ATR/profil/changer-mot-de-passe', [utilisateur::class, 'changer_mot_de_passe'])->middleware('utilisateurSession');
 Route::post('/ATR/profil/changer-photo-de-profil', [utilisateur::class, 'changer_photo_de_profil'])->middleware('utilisateurSession');
 Route::post('/ATR/modification-de-profil', [utilisateur::class, 'modification_de_profil'])->middleware('utilisateurSession');
+
+Route::get('/GCR/profil', [gcr::class, 'profil'])->middleware('utilisateurSession');
+Route::post('/GCR/profil/changer-mot-de-passe', [utilisateur::class, 'changer_mot_de_passe'])->middleware('utilisateurSession');
+Route::post('/GCR/profil/changer-photo-de-profil', [utilisateur::class, 'changer_photo_de_profil'])->middleware('utilisateurSession');
+Route::post('/GCR/modification-de-profil', [utilisateur::class, 'modification_de_profil'])->middleware('utilisateurSession');
+
+Route::get('/RLS/profil', [rls::class, 'profil'])->middleware('utilisateurSession');
+Route::post('/RLS/profil/changer-mot-de-passe', [utilisateur::class, 'changer_mot_de_passe'])->middleware('utilisateurSession');
+Route::post('/RLS/profil/changer-photo-de-profil', [utilisateur::class, 'changer_photo_de_profil'])->middleware('utilisateurSession');
+Route::post('/RLS/modification-de-profil', [utilisateur::class, 'modification_de_profil'])->middleware('utilisateurSession');
