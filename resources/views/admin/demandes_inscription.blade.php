@@ -59,7 +59,7 @@
                     </thead>
                     <tbody>
                       @for ($i = 0; $i < count($demandes_inscription); $i++)
-                        <tr class='clickable-row' data-href="/administrateur/liste-demandes-inscription-{{ $demandes_inscription[$i]->id }}">
+                        <tr class='clickable-row' data-href="<?php echo asset('/administrateur/liste-demandes-inscription-{{ $demandes_inscription[$i]->id }}') ?>">
                           <td style="text-align: center">
                             <image src="{{asset('images/photo_de_profil/'.$demandes_inscription[$i]->photo_de_profil)}}" alt="Photo_de_profil" style="height: 75px; width: 75px"/>
                           </td>
@@ -165,7 +165,7 @@
 
           @for ($i = 0; $i < count($demandes_inscription); $i++)
             <div style="display: none">
-              <form action="/administrateur/demande-inscription" method="post" id="form">
+              <form action="{{asset('/administrateur/demande-inscription')}}" method="post" id="form">
                 @csrf
                 <input type="hidden" name="id_demande_inscription" value="{{ $demandes_inscription[$i]->id }}">
                 <input type="submit" value="{{ $demandes_inscription[$i]->id }}" name="valider" id="valider-{{ $demandes_inscription[$i]->id }}">

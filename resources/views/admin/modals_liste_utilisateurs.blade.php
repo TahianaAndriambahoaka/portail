@@ -151,7 +151,7 @@
             </div>
         </div>
     </div>
-    <form action="/administrateur/utilisateur/modification-fonction" method="POST" id="formModification">
+    <form action="{{asset('/administrateur/utilisateur/modification-fonction')}}" method="POST" id="formModification">
         @csrf
         <input type="hidden" name="id_utilisateur" value="{{ $utilisateurs[$i]->id }}">
         <input type="hidden" name="id_fonction" id="nouveauFonction{{ $utilisateurs[$i]->id }}">
@@ -180,7 +180,7 @@
     {{-- fin modal Validation Modif --}}
     
     {{-- modal Suppression --}}
-    <form action="/administrateur/utilisateur/suppression" method="POST" id="formSuppression">
+    <form action="{{asset('/administrateur/utilisateur/suppression')}}" method="POST" id="formSuppression">
         @csrf
         <input type="hidden" name="id_utilisateur" value="{{ $utilisateurs[$i]->id }}">
         <input type="hidden" name="motif" id="motifSuppression{{ $utilisateurs[$i]->id }}">
@@ -222,7 +222,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form action="/administrateur/inscription-utilisateur" method="POST" id="formAjout">
+                <form action="{{asset('/administrateur/inscription-utilisateur')}}" method="POST" id="formAjout">
                   @csrf
                   <div class="form-group row">
                     <div class="col">

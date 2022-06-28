@@ -31,7 +31,7 @@
 					<img src="{{asset('login_inscription/images/ucp_logo.png')}}" alt="IMG">
 				</div>
 
-				<form class="login100-form validate-form" action="/login" method="POST">
+				<form class="login100-form validate-form" action="{{asset('/login')}}" method="POST">
 					@csrf
 					<span class="login100-form-title">
 						Veuillez vous connecter
@@ -72,14 +72,14 @@
 						<br>
 						<p class="text-center alert alert-danger animate__animated animate__bounceInRight" style="margin-left: auto; margin-right: auto">{{$message}}</p>
 						<div class="text-center">
-							<a class="txt2" href="/inscription">
+							<a class="txt2" href="{{asset('/inscription')}}">
 								Faire une demande d'inscription
 								<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
 							</a>
 						</div>
 					@else
 						<div class="text-center p-t-100">
-							<a class="txt2" href="/inscription">
+							<a class="txt2" href="{{asset('/inscription')}}">
 								Faire une demande d'inscription
 								<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
 							</a>

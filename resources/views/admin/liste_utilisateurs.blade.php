@@ -152,8 +152,9 @@
       }
       $('table tbody tr td:contains("'+value+'")').parent('tr').show();
 
-      var xhr = new XMLHttpRequest(); 
-      xhr.open('GET', 'http://localhost:8000/administrateur/utilisateursWS?fonction='+<?php echo json_encode($_GET['fonction']); ?>);
+      var xhr = new XMLHttpRequest();
+      const fonc = <?php echo json_encode($_GET['fonction']); ?>;
+      xhr.open('GET', `<?php echo asset('/administrateur/utilisateursWS?fonction=')?>${fonc}`);
       var utilisateurs = [];
       xhr.onreadystatechange = function() {
           if (xhr.readyState === 4) {

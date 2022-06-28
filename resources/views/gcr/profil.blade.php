@@ -40,7 +40,7 @@
                 <div class="card-body">
                   <div class="row">
                     <div style="margin-left:auto; margin-right:auto; text-align:center">
-                      <form action="/GCR/profil/changer-photo-de-profil" method="POST" enctype="multipart/form-data" id="form_changer_photo_de_profil">
+                      <form action="{{asset('/GCR/profil/changer-photo-de-profil')}}" method="POST" enctype="multipart/form-data" id="form_changer_photo_de_profil">
                         @csrf
                         <div id="profile-container">
                           <image id="profileImage" src="{{asset('images/photo_de_profil/'.$monProfil->photo_de_profil)}}" style="width: 200px; border-radius: 50%;" />
@@ -85,7 +85,7 @@
                         <br>
                         <p class="text-center alert alert-danger animate__animated animate__bounceInRight mt-5" style="margin-left: auto; margin-right: auto">{{$message}}</p>
                       @endif
-                    <form action="/GCR/modification-de-profil" method="POST" id="formChangementDeProfil" class="mt-4">
+                    <form action="{{asset('/GCR/modification-de-profil')}}" method="POST" id="formChangementDeProfil" class="mt-4">
                       @csrf
                       <div class="form-group row">
                         <div class="col">
@@ -226,7 +226,7 @@
   {{-- fin modals --}}
 
   {{-- changement de mot de passe --}}
-  <form action="/GCR/profil/changer-mot-de-passe" method="POST" id="formChangementMotDePasse">
+  <form action="{{asset('/GCR/profil/changer-mot-de-passe')}}" method="POST" id="formChangementMotDePasse">
     @csrf
     <input type="hidden" name="ancienMdp" id="ancienMdp">
     <input type="hidden" name="nouveauMdp1" id="nouveauMdp1">

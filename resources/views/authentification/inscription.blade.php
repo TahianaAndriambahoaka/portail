@@ -46,7 +46,7 @@
 	<div class="limiter" id="container">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form style="margin-left: auto; margin-right: auto;" action="inscription" method="POST" enctype="multipart/form-data" id="form">
+				<form style="margin-left: auto; margin-right: auto;" action="{{asset('/inscription')}}" method="POST" enctype="multipart/form-data" id="form">
 					@csrf
 					<span class="login100-form-title" style="margin-top: -15%;">
 						Formulaire de demande d'inscription
@@ -241,7 +241,7 @@
 					@endif
 
 					<div class="text-center p-t-70">
-						<a class="txt2" href="/">
+						<a class="txt2" href="{{asset('/')}}">
 							Se connecter
 							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
 						</a>
