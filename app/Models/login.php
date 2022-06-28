@@ -60,4 +60,13 @@ class login extends Model
             throw $th;
         }
     }
+    public static function changer_login($id, $login) {
+        try {
+            $query = "update login set login = '%s' where id = %d";
+            $query = sprintf($query, $login, $id);
+            DB::update($query);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

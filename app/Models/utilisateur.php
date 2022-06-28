@@ -115,4 +115,13 @@ class utilisateur extends Model
             throw $th;
         }
     }
+    public static function update_profil($login, $nom, $prenom, $telephone1, $telephone2, $telephone3, $email) {
+        try {
+            $query = "UPDATE utilisateur SET nom = '%s', prenom = '%s', telephone1 = '%s', telephone2 = '%s', telephone3 = '%s', email = '%s' WHERE id = %d";
+            $query = sprintf($query, $nom, $prenom, $telephone1, $telephone2, $telephone3, $email, $login->id_utilisateur);
+            DB::update($query);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

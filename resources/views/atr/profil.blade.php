@@ -78,7 +78,14 @@
                 <div class="card-body">
                   <div class="row" style="margin: 3%">
                     <h3>Modification de profil</h3>
-                    <form action="/administrateur/inscription-utilisateur" method="POST" id="formAjout" class="mt-4">
+                      @if ($message = Session::get('successProfil'))
+                        <p class="text-center alert alert-success animate__animated animate__bounceInRight mt-5" style="margin-left: auto; margin-right: auto">{{$message}}</p>
+                      @endif
+                      @if ($message = Session::get('errorProfil'))
+                        <br>
+                        <p class="text-center alert alert-danger animate__animated animate__bounceInRight mt-5" style="margin-left: auto; margin-right: auto">{{$message}}</p>
+                      @endif
+                    <form action="/ATR/modification-de-profil" method="POST" id="formChangementDeProfil" class="mt-4">
                       @csrf
                       <div class="form-group row">
                         <div class="col">
@@ -93,7 +100,7 @@
                             <input class="typeahead" type="text" name="prenom" value="{{ $monProfil->prenom }}" required>
                           </div>
                         </div>
-                      </div>
+                      </div><br>
                       <div class="form-group row">
                         <div class="col-md-2">
                           <label>Téléphone 1</label>
@@ -117,13 +124,14 @@
                           <label>Adresse mail</label>
                           <div id="bloodhound">
                             <input class="typeahead" type="email" name="email" value="{{ $monProfil->email }}" required>
+                            <input type="hidden" name="mot_de_passe" id="monMotDePasse">
                           </div>
                         </div>
                         <div class="col-md-2" style="text-align: right">
                           <label style="font-size: 0%">.</label>
                           <div id="bloodhound">
-                            {{-- <input class="typeahead" type="email" name="email" value="{{ $monProfil->email }}" required> --}}
-                            <input class="btn btn-inverse-warning btn-fw" type="submit" value="Modifier le profil" id="idFormAjout">
+                            <input class="btn btn-inverse-warning btn-fw" type="submit" value="Modifier le profil" id="bouttonConfirmationChangementDeProfil" style="display: none">
+                            <button type="button" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modalConfirmationChangementDeProfil">Modifier le profil</button>
                           </div>
                         </div>
                       </div>
@@ -139,6 +147,27 @@
   </div>
 
   {{-- modals --}}
+    <div class="modal fade" id="modalConfirmationChangementDeProfil" style="border-radius: 10%">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+              <h5 class="modal-title">Veuillez écrire votre mot de passe actuel</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+              <h6>Veuillez écrire votre mot de passe actuel ci-dessous:</h6>
+              <p>
+                <input class="typeahead" type="password" name="mot_de_passeConfirmationChangementDeProfil" id="mot_de_passeConfirmationChangementDeProfil">
+              </p>
+              <div id="errorConfirmationChangementDeProfil"></div>
+              </div>
+              <div class="modal-footer">
+              <button type="submit" class="btn btn-inverse-success btn-fw" onclick="confirmationChangementDeProfil()" id="validerConfirmationChangementDeProfil">Valider</button>
+              <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Annuler</button>
+              </div>
+          </div>
+      </div>
+    </div>
     <div class="modal fade" id="modalAncienMdp" style="border-radius: 10%">
       <div class="modal-dialog">
           <div class="modal-content">
@@ -260,6 +289,22 @@
         }
       );
     }
+    function confirmationChangementDeProfil() {
+      const mdp = document.getElementById('mot_de_passeConfirmationChangementDeProfil').value;
+      const monMdp = <?php echo json_encode(request()->session()->get('login')->mot_de_passe) ?>;
+      sha256(mdp).then(res => {
+          if (res == monMdp) {
+            document.getElementById('validerConfirmationChangementDeProfil').setAttribute('data-bs-dismiss', 'modal');
+            document.getElementById('validerConfirmationChangementDeProfil').removeAttribute('onclick');
+            document.getElementById('monMotDePasse').setAttribute('value', mdp);
+            $('#validerConfirmationChangementDeProfil').click();
+            $('#bouttonConfirmationChangementDeProfil').click();
+          } else {
+            document.getElementById('errorConfirmationChangementDeProfil').innerHTML = `<br><p class="text-center alert alert-danger animate__animated animate__bounceInRight" style="margin-left: auto; margin-right: auto">Mot de passe incorrect!</p>`;
+          }
+        }
+      );
+    }
 
     function nouveau_mot_de_passe() {
       const ancien_mdp = document.getElementById('ancien_mot_de_passe').value;
@@ -306,6 +351,10 @@
         $("#loader").removeClass("visible");
         $("#container").addClass("opacity");
       });
+      $("#formChangementDeProfil").submit(function(){
+        $("#loader").removeClass("visible");
+        $("#container").addClass("opacity");
+      });
     });
 
 		function getIp(callback) {
@@ -342,30 +391,6 @@
 			utilsScript:
 			"https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
 		});
-
-    function showDistricts() {
-			const districts = <?php echo json_encode($allDistricts); ?>;
-			var districts_aff = "<option value=''>District</option>";
-			for (let i = 0; i < districts.length; i++) {
-				if (districts[i]['id_region'] == document.getElementById('id_regionAjout').value) {
-					districts_aff += "<option value='"+districts[i]['id']+"'>"+districts[i]['nom']+"</option>";
-				}
-			}
-			document.getElementById('id_districtAjout').innerHTML = districts_aff;
-		}
-
-    const districts = <?php echo json_encode($allDistricts); ?>;
-    var districts_aff = "<option value=''>District</option>";
-    for (let i = 0; i < districts.length; i++) {
-      if (districts[i]['id_region'] == document.getElementById('id_regionAjout').value) {
-        if (districts[i]['id'] == <?php echo json_encode($monProfil->id_district); ?>) {
-          districts_aff += "<option value='"+districts[i]['id']+"' selected>"+districts[i]['nom']+"</option>";
-        } else {
-          districts_aff += "<option value='"+districts[i]['id']+"'>"+districts[i]['nom']+"</option>";
-        }
-      }
-    }
-    document.getElementById('id_districtAjout').innerHTML = districts_aff;
 	</script>
 </body>
 </html>

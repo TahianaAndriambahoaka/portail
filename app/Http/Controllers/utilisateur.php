@@ -66,4 +66,32 @@ class utilisateur extends Controller
             return back();
         }
     }
+    public function modification_de_profil(Request $request) {
+        try {
+            $mot_de_passe = $request->input('mot_de_passe');
+            $nom = $request->input('nom');
+            $prenom = $request->input('prenom');
+            $telephone1 = $request->input('telephone1');
+            $telephone2 = $request->input('telephone2');
+            $telephone3 = $request->input('telephone3');
+            $email = $request->input('email');
+            $login = request()->session()->get('login');
+            \App\Models\utilisateur::update_profil($login, $nom, $prenom, $telephone1, $telephone2, $telephone3, $email);
+            if ($email != $login->login) {
+                login::changer_login($login->id, $email);
+                $l = login::getByIdUtilisateur($login->id_utilisateur)[0];
+                $utilisateur = \App\Models\utilisateur::getById($l->id_utilisateur)[0];
+                Session::forget('login');
+                Session::put('login', $l);
+                $data = array('name'=>$utilisateur->nom.' '.$utilisateur->prenom, 'mdp'=>$mot_de_passe, 'login'=>$l->login);
+                Mail::send('mail_changer_login', $data, function($message) use($email) {
+                    $message->to($email, "")->subject("Changement de mail et de login sur le portail de l'UCP");
+                    $message->from('tahiana.andriamb@gmail.com','Unité de Coordination des Projets (UCP)');
+                });
+            }
+            return back()->with('successProfil', "Modification de profil effectuée avec succès!");
+        } catch (\Throwable $th) {
+            return back()->with('errorProfil', $th->getMessage());
+        }
+    }
 }
