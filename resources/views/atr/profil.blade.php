@@ -231,7 +231,7 @@
     <input type="hidden" name="ancienMdp" id="ancienMdp">
     <input type="hidden" name="nouveauMdp1" id="nouveauMdp1">
     <input type="hidden" name="nouveauMdp2" id="nouveauMdp2">
-    <input type="submit" value="valider" id="validerChangementMDP">
+    <input type="submit" value="valider" id="validerChangementMDP" style="display: none">
   </form>
   {{-- fin changement de mot de passe --}}
 
