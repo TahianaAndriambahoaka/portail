@@ -1,6 +1,11 @@
-drop database stage;
-create database stage;
-use stage
+drop database portail;
+create database portail;
+use portail
+
+CREATE TABLE ministere (
+  id int PRIMARY KEY AUTO_INCREMENT,
+  nom varchar(255)
+);
 
 CREATE TABLE `fonction` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -54,12 +59,12 @@ CREATE TABLE `demande_inscription` (
   `telephone3` varchar(20),
   `id_district` int,
   `id_region` int,
-  `ministere` varchar(30),
+  `ministere` varchar(255),
   `direction` varchar(50),
   `lieu_de_travail` varchar(50),
   `photo_de_profil` varchar(255),
   `id_fonction` int,
-  `date` datetime
+  `date` date
 );
 
 CREATE TABLE `login` (
@@ -68,14 +73,16 @@ CREATE TABLE `login` (
   `login` varchar(50),
   `mot_de_passe` text,
   `id_fonction` int,
-  `date_debut_de_carriere` date
+  `date_debut_de_carriere` date,
+  `id_admin` int REFERENCES admin(id)
 );
 
 CREATE TABLE `utilisateur_supprime` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `id_login` int,
   `motif` text,
-  `date` date
+  `date` date,
+  `id_admin` int REFERENCES admin(id)
 );
 
 CREATE TABLE `rapport_mensuel` (
@@ -222,6 +229,18 @@ ALTER TABLE `sujet` ADD FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateur` 
 ALTER TABLE `commentaire` ADD FOREIGN KEY (`id_sujet`) REFERENCES `sujet` (`id`);
 
 ALTER TABLE `commentaire` ADD FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateur` (`id`);
+
+INSERT INTO ministere VALUES
+(default, 'Ministère de la santé publique'),
+(default, 'Ministère de la sécurité publique'),
+(default, 'Ministère de la Population, de la Protection Sociale et de la Promotion de la Femme'),
+(default, 'Ministère du Développement Numérique, Transformation Digitale, des Postes et des Télécommunications'),
+(default, 'Ministère des Mines et des Ressources Stratégiques'),
+(default, 'Ministère de la Justice'),
+(default, 'Ministère de l\'enseignement supérieur et de la recherche scientifique'),
+(default, 'Ministère de l\'Environnement et du Développement Durable'),
+(default, 'Ministère de la Défense Nationale'),
+(default, 'Ministère des Affaires Etrangères');
 
 INSERT INTO fonction VALUES
 (default, 'GCR'),

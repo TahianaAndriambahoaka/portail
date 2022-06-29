@@ -147,16 +147,9 @@
 					<div class="wrap-input100 validate-input" data-validate = "Password is required">
 						<select class="input100" style="border: none;" name="ministere" required>
 							<option value="">Ministère</option>
-							<option value="Ministère de la santé publique">Ministère de la santé publique</option>
-							<option value="Ministère de la sécurité publique">Ministère de la sécurité publique</option>
-							<option value="Ministère de la Population, de la Protection Sociale et de la Promotion de la Femme">Ministère de la Population, de la Protection Sociale et de la Promotion de la Femme</option>
-							<option value="Ministère du Développement Numérique, Transformation Digitale, des Postes et des Télécommunications">Ministère du Développement Numérique, Transformation Digitale, des Postes et des Télécommunications</option>
-							<option value="Ministère des Mines et des Ressources Stratégiques">Ministère des Mines et des Ressources Stratégiques</option>
-							<option value="Ministère de la Justice">Ministère de la Justice</option>
-							<option value="Ministère de l'enseignement supérieur et de la recherche scientifique">Ministère de l'enseignement supérieur et de la recherche scientifique</option>
-							<option value="Ministère de l'Environnement et du Développement Durable">Ministère de l'Environnement et du Développement Durable</option>
-							<option value="Ministère de la Défense Nationale">Ministère de la Défense Nationale</option>
-							<option value="Ministère des Affaires Etrangères">Ministère des Affaires Etrangères</option>
+							@for ($i = 0; $i < count($ministere); $i++)
+								<option value="{{ $ministere[$i]->nom }}">{{ $ministere[$i]->nom }}</option>
+							@endfor
 						</select>
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">

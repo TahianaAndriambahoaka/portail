@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Image;
 use App\Models\login;
+use App\Models\ministere;
 
 class authentification extends Controller
 {
@@ -52,7 +53,7 @@ class authentification extends Controller
     public function affichage_inscription() {
 
         try {
-            return view('authentification.inscription', ['region'=>region::getAll(), 'district'=>district::getAll(), 'fonction'=>fonction::getAll()]);
+            return view('authentification.inscription', ['region'=>region::getAll(), 'district'=>district::getAll(), 'fonction'=>fonction::getAll(), 'ministere'=>ministere::getAll()]);
         } catch (\Throwable $th) {
             echo $th;
         }

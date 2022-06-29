@@ -30,19 +30,19 @@ class login extends Model
             }
         }
     }
-    public static function add($id_utilisateur, $login, $mot_de_passe, $id_fonction, $date_debut_de_carriere) {
+    public static function add($id_utilisateur, $login, $mot_de_passe, $id_fonction, $date_debut_de_carriere, $id_admin) {
         try {
-            $query = "insert into login values (default, %d, '%s', sha2('%s', 256), %d, '%s')";
-            $query = sprintf($query, $id_utilisateur, $login, $mot_de_passe, $id_fonction, $date_debut_de_carriere);
+            $query = "insert into login values (default, %d, '%s', sha2('%s', 256), %d, '%s', %d)";
+            $query = sprintf($query, $id_utilisateur, $login, $mot_de_passe, $id_fonction, $date_debut_de_carriere, $id_admin);
             DB::insert($query);
         } catch (\Throwable $th) {
             throw $th;
         }
     }
-    public static function add_raison_modification_fonction($id_utilisateur, $login, $mot_de_passe, $id_fonction, $date_debut_de_carriere) {
+    public static function add_raison_modification_fonction($id_utilisateur, $login, $mot_de_passe, $id_fonction, $date_debut_de_carriere, $id_admin) {
         try {
-            $query = "insert into login values (default, %d, '%s', '%s', %d, '%s')";
-            $query = sprintf($query, $id_utilisateur, $login, $mot_de_passe, $id_fonction, $date_debut_de_carriere);
+            $query = "insert into login values (default, %d, '%s', '%s', %d, '%s', %d)";
+            $query = sprintf($query, $id_utilisateur, $login, $mot_de_passe, $id_fonction, $date_debut_de_carriere, $id_admin);
             DB::insert($query);
         } catch (\Throwable $th) {
             throw $th;

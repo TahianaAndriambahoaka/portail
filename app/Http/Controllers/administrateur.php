@@ -10,6 +10,7 @@ use App\Models\region;
 use App\Models\utilisateur;
 use Illuminate\Support\Facades\Session;
 use App\Models\login;
+use App\Models\ministere;
 use App\Models\utilisateur_supprime;
 use Illuminate\Support\Str;
 use Mail;
@@ -60,14 +61,14 @@ class administrateur extends Controller
             $regions[] = region::getById($utilisateurs[$i]->id_region)[0];
             $districts[] = district::getById($utilisateurs[$i]->id_district)[0];
         }
-        return view('admin.liste_utilisateurs', ['utilisateurs'=>$utilisateurs, 'fonctions'=>$fonctions, "regions" => $regions, "districts" => $districts, 'allFonctions'=>fonction::getAll(), 'allRegions'=>region::getAll(), 'allDistricts'=>district::getAll()]);
+        return view('admin.liste_utilisateurs', ['utilisateurs'=>$utilisateurs, 'fonctions'=>$fonctions, "regions" => $regions, "districts" => $districts, 'allFonctions'=>fonction::getAll(), 'allRegions'=>region::getAll(), 'allDistricts'=>district::getAll(), 'allMinisteres'=>ministere::getAll()]);
     }
     public function suppression_utilisateur(Request $request) {
         try {
             $id_utilisateur = $request->input('id_utilisateur');
             $motif = $request->input('motif');
             $id_login = login::getByIdUtilisateur($id_utilisateur)[0]->id;
-            utilisateur_supprime::add($id_login, $motif, date('Y-m-d'));
+            utilisateur_supprime::add($id_login, $motif, date('Y-m-d'), request()->session()->get('administrateur')->id);
             return back()->with('success', "Utilisateur supprimé!");
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
@@ -78,8 +79,8 @@ class administrateur extends Controller
             $id_utilisateur = $request->input('id_utilisateur');
             $id_fonction = $request->input('id_fonction');
             $login = login::getByIdUtilisateur($id_utilisateur)[0];
-            login::add_raison_modification_fonction($id_utilisateur, $login->login, $login->mot_de_passe, $id_fonction, date('Y-m-d'));
-            utilisateur_supprime::add($login->id, 'Changement de fonction', date('Y-m-d'));
+            login::add_raison_modification_fonction($id_utilisateur, $login->login, $login->mot_de_passe, $id_fonction, date('Y-m-d'), request()->session()->get('administrateur')->id);
+            utilisateur_supprime::add($login->id, 'Changement de fonction', date('Y-m-d'), request()->session()->get('administrateur')->id);
             return back()->with('success', "Fonction de l'utilisateur modifiée!");
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
@@ -103,7 +104,7 @@ class administrateur extends Controller
             utilisateur::add($nom, $prenom, $email, $telephone1, $telephone2, $telephone3, $id_district, $id_region, $ministere, $direction, $lieu_de_travail, $photo_de_profil, request()->session()->get('administrateur')->id, date('y-m-d'));
             $utilisateur = utilisateur::getLast()[0];
             $mdp = Str::random(10);
-            login::add($utilisateur->id, $email, $mdp, $id_fonction, date('y-m-d'));
+            login::add($utilisateur->id, $email, $mdp, $id_fonction, date('y-m-d'), request()->session()->get('administrateur')->id);
             $data = array('name'=>$nom.' '.$prenom, 'mdp'=>$mdp, 'fonction'=>fonction::getById($id_fonction)[0]->nom, 'login'=>$email);
             Mail::send('mail_inscription', $data, function($message) use($email) {
                 $message->to($email, "")->subject("Inscription sur le portail de l'UCP");
