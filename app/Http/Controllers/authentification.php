@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Image;
 use App\Models\login;
 use App\Models\ministere;
+use App\Models\mot_de_passe_oublie;
 
 class authentification extends Controller
 {
@@ -95,5 +96,16 @@ class authentification extends Controller
             return back()->with('error', $th->getMessage());
         }
         // return view('authentification.inscription', ['region'=>region::getAll(), 'district'=>district::getAll(), 'fonction'=>fonction::getAll()]);
+    }
+    public function oublie_de_mot_de_passe(request $request) {
+        try {
+            $nom = $request->input('nom');
+            $prenom = $request->input('prenom');
+            $email = $request->input('email');
+            mot_de_passe_oublie::add($nom, $prenom, $email, date('y-m-d'));
+            return back()->with('success',"Votre demande de réinitialisation de mot de passe a été envoyée chez l'administration.");
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 }

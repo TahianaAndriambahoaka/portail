@@ -182,6 +182,14 @@ CREATE TABLE `commentaire` (
   `date` datetime
 );
 
+CREATE TABLE mot_de_passe_oublie (
+  id int PRIMARY KEY AUTO_INCREMENT,
+  nom varchar(20),
+  prenom varchar(50),
+  email varchar(50),
+  date date
+);
+
 ALTER TABLE `district` ADD FOREIGN KEY (`id_region`) REFERENCES `region` (`id`);
 
 ALTER TABLE `utilisateur` ADD FOREIGN KEY (`id_admin`) REFERENCES `admin` (`id`);

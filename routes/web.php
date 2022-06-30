@@ -26,6 +26,10 @@ Route::get('/login', function () {
     return view('authentification.login');
 });
 Route::post('/login', [authentification::class, 'login']);
+Route::get('/oublie-de-mot-de-passe', function () {
+    return view('authentification.oublie_de_mot_de_passe');
+});
+Route::post('/oublie-de-mot-de-passe', [authentification::class, 'oublie_de_mot_de_passe']);
 
 Route::get('/inscription', [authentification::class, 'affichage_inscription']);
 Route::post('/inscription', [authentification::class, 'inscription']);

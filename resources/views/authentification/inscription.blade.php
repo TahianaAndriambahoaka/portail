@@ -235,8 +235,8 @@
 
 					<div class="text-center p-t-70">
 						<a class="txt2" href="{{asset('/')}}">
+							<i class="fa fa-long-arrow-left m-l-5" aria-hidden="true"></i>
 							Se connecter
-							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
 						</a>
 					</div>
 				</form>

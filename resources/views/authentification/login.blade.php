@@ -60,11 +60,8 @@
 					</div>
 
 					<div class="text-center p-t-12">
-						<span class="txt1">
-							J'ai oublié mon
-						</span>
-						<a class="txt2" href="#">
-							mot de passe
+						<a class="txt1" href="{{asset('/oublie-de-mot-de-passe')}}">
+							J'ai oublié mon mot de passe
 						</a>
 					</div>
 					
