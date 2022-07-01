@@ -52,7 +52,7 @@
 						</span>
 	
 						<div class="wrap-input100 validate-input" data-validate = "Entrer une adrese mail valide!">
-							<input class="input100" type="text" name="nom" placeholder="Votre nom" required>
+							<input class="input100" type="text" name="nom" placeholder="Votre nom" value="{{ null !== Session::get('nom') ? Session::get('nom') : '' }}" required>
 							<span class="focus-input100"></span>
 							<span class="symbol-input100">
 								<img style="margin-left: -0.7%; width: 1.2em;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAACkklEQVRoge3ZTagNcRjH8Y97vd3jkli4kiJSpLtRys7CRkmxQbGUHSshNpSVbOywFqVYuWwohLxEEYq8hVKEhXdxLaaTuac598ycZ5yxON96Nmfmef6/35mZ//+Z/9ClS5cqqGEdjuIG3uI7NlQpqgj92IcPGM6Ih+itTF1OBvFYtoF0vMR5bEVfJUpHYRDvtTbRGPcwuwK9mdTwSHET9biDcR1XncFu7Zuox5aOq26gF6/FjVzvtPBGloibqMdAREhPJBmLg/lpFkaSo0YmBvPTzIokR418COan+RVJjhp5E8xP867EWoUZj4/iD/pvTIsIiV6RHzgTrAGnJZ1BZUzGE/Erch8TOqx9BKsyRLUbSyNCorfW12B+mtCsFaUfn8WvxlflrkltsVPcyP6Oq27CXu2b2FGB3qas0L6ReRXobcpYvFLcxLUqxLZiu+JG1leitAXjcVt+ExcxphKlORiU30iobW8kuiA28qnAud/LHLhsI1MLnFsrc+CyjRTplxaVPHZp1PBc/mfkgf9wp7HOFGzDU80NfMRhycTwXzBOsrt+FcexLHWsF2twwV8Dl7DRyOZwpmSD7xiW/3vJI5mOXbJX8pvYZPSXpB6sxCn8bMi/J9l1nPSPtIM5OIIvWt//bySNZHpmqmGPfM/RexwQ3LRrpA8H8S2HgMbYnKqzuY38T5LvLeHX4AW424aAetxK1boVqHMTc9s1MYAXgcGHJZ8b6uT5CDRaPMOMoiZ6JLNRZOBhHErVPFRCvcKN5toSBh2WzE51VpZUc3URIydLGPCLkSt3n3wzXqs4UcRIkVajWQxl1B0qoe6zLMHNmsYy5u+zGb+dK6HuzCInXxb/5+Zn1J1fQt0rRYx06dIl4Q+nymZmfnVoiQAAAABJRU5ErkJggg=="/>
@@ -60,7 +60,7 @@
 						</div>
 	
 						<div class="wrap-input100 validate-input" data-validate = "Mot de passe requis!">
-							<input class="input100" type="text" name="prenom" placeholder="Votre prénom" required>
+							<input class="input100" type="text" name="prenom" placeholder="Votre prénom" value="{{ null !== Session::get('prenom') ? Session::get('prenom') : '' }}" required>
 							<span class="focus-input100"></span>
 							<span class="symbol-input100">
 								<img style="margin-left: -0.7%; width: 1.2em;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAACkklEQVRoge3ZTagNcRjH8Y97vd3jkli4kiJSpLtRys7CRkmxQbGUHSshNpSVbOywFqVYuWwohLxEEYq8hVKEhXdxLaaTuac598ycZ5yxON96Nmfmef6/35mZ//+Z/9ClS5cqqGEdjuIG3uI7NlQpqgj92IcPGM6Ih+itTF1OBvFYtoF0vMR5bEVfJUpHYRDvtTbRGPcwuwK9mdTwSHET9biDcR1XncFu7Zuox5aOq26gF6/FjVzvtPBGloibqMdAREhPJBmLg/lpFkaSo0YmBvPTzIokR418COan+RVJjhp5E8xP867EWoUZj4/iD/pvTIsIiV6RHzgTrAGnJZ1BZUzGE/Erch8TOqx9BKsyRLUbSyNCorfW12B+mtCsFaUfn8WvxlflrkltsVPcyP6Oq27CXu2b2FGB3qas0L6ReRXobcpYvFLcxLUqxLZiu+JG1leitAXjcVt+ExcxphKlORiU30iobW8kuiA28qnAud/LHLhsI1MLnFsrc+CyjRTplxaVPHZp1PBc/mfkgf9wp7HOFGzDU80NfMRhycTwXzBOsrt+FcexLHWsF2twwV8Dl7DRyOZwpmSD7xiW/3vJI5mOXbJX8pvYZPSXpB6sxCn8bMi/J9l1nPSPtIM5OIIvWt//bySNZHpmqmGPfM/RexwQ3LRrpA8H8S2HgMbYnKqzuY38T5LvLeHX4AW424aAetxK1boVqHMTc9s1MYAXgcGHJZ8b6uT5CDRaPMOMoiZ6JLNRZOBhHErVPFRCvcKN5toSBh2WzE51VpZUc3URIydLGPCLkSt3n3wzXqs4UcRIkVajWQxl1B0qoe6zLMHNmsYy5u+zGb+dK6HuzCInXxb/5+Zn1J1fQt0rRYx06dIl4Q+nymZmfnVoiQAAAABJRU5ErkJggg=="/>
@@ -68,7 +68,7 @@
 						</div>
 
 						<div class="wrap-input100 validate-input" data-validate = "Entrer une adrese mail valide!">
-							<input class="input100" type="email" name="email" placeholder="Votre adresse mail" required>
+							<input class="input100" type="email" name="email" placeholder="Votre adresse mail" value="{{ null !== Session::get('email') ? Session::get('email') : '' }}" required>
 							<span class="focus-input100"></span>
 							<span class="symbol-input100">
 								<i class="fa fa-envelope" aria-hidden="true"></i>

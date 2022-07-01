@@ -43,6 +43,7 @@ Route::post('/administrateur/utilisateur/suppression', [administrateur::class, '
 Route::post('/administrateur/utilisateur/modification-fonction', [administrateur::class, 'modification_fonction_utilisateur'])->middleware('adminSession');
 Route::post('/administrateur/inscription-utilisateur', [administrateur::class, 'inscription'])->middleware('adminSession');
 Route::get('/administrateur/utilisateursWS', [administrateur::class, 'utilisateursWS'])->middleware('adminSession');
+Route::get('/administrateur/mot_de_passe_oublie', [administrateur::class, 'mot_de_passe_oublie'])->middleware('adminSession');
 
 Route::get('/utilisateur/deconnexion', [utilisateur::class, 'deconnexion'])->middleware('utilisateurSession');
 

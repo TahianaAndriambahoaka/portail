@@ -15,9 +15,26 @@ use App\Models\utilisateur_supprime;
 use Illuminate\Support\Str;
 use Mail;
 use Illuminate\Support\Facades\DB;
+use App\Models\mot_de_passe_oublie;
 
 class administrateur extends Controller
 {
+    public function mot_de_passe_oublie() {
+        $mot_de_passe_oublie = mot_de_passe_oublie::getAll(5);
+        $utilisateurs = [];
+        $fonctions = [];
+        $regions = [];
+        $districts = [];
+        for ($i=0; $i < count($mot_de_passe_oublie); $i++) {
+            $utilisateur = utilisateur::getByNomPrenomEmail($mot_de_passe_oublie[$i]->nom, $mot_de_passe_oublie[$i]->prenom, $mot_de_passe_oublie[$i]->email)[0];
+            $utilisateurs[] = $utilisateur;
+            $login = login::getByIdUtilisateur($utilisateur->id)[0];
+            $fonctions[] = fonction::getById($login->id_fonction)[0];
+            $regions[] = region::getById($utilisateur->id_region)[0];
+            $districts[] = district::getById($utilisateur->id_district)[0];
+        }
+        return view('admin.mot_de_passe_oublie', ['mot_de_passe_oublie'=>$mot_de_passe_oublie, 'utilisateurs'=>$utilisateurs, 'fonctions'=>$fonctions, "regions" => $regions, "districts" => $districts, 'allFonctions'=>fonction::getAll(), 'allRegions'=>region::getAll(), 'allDistricts'=>district::getAll(), 'allMinisteres'=>ministere::getAll()]);
+    }
     public function demandes_inscription() {
         $demandes_inscription = demande_inscription::getAll(5);
         $fonctions = [];

@@ -99,13 +99,23 @@ class authentification extends Controller
     }
     public function oublie_de_mot_de_passe(request $request) {
         try {
-            $nom = $request->input('nom');
-            $prenom = $request->input('prenom');
-            $email = $request->input('email');
-            mot_de_passe_oublie::add($nom, $prenom, $email, date('y-m-d'));
-            return back()->with('success',"Votre demande de réinitialisation de mot de passe a été envoyée chez l'administration.");
+            $nom = trim($request->input('nom'));
+            $prenom = trim($request->input('prenom'));
+            $email = trim($request->input('email'));
+            if (count(utilisateur::getByNomPrenomEmail($nom, $prenom, $email))>0) {
+                mot_de_passe_oublie::add($nom, $prenom, $email, date('y-m-d'));
+                return back()->with('success',"Votre demande de réinitialisation de mot de passe a été envoyée chez l'administration.");
+            } else {
+                return back()->with('error',"Les informations que vous avez saisi ne correspondent à aucun utilisateur!")
+                ->with('nom',$nom)
+                ->with('prenom',$prenom)
+                ->with('email',$email);
+            }
         } catch (\Throwable $th) {
-            return back()->with('error', $th->getMessage());
+            return back()->with('error', $th->getMessage())
+            ->with('nom',$nom)
+            ->with('prenom',$prenom)
+            ->with('email',$email);
         }
     }
 }
