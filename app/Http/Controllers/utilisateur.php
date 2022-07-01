@@ -10,6 +10,9 @@ use Image;
 
 class utilisateur extends Controller
 {
+    public function plateforme_de_discussion() {
+        return view('atr.plateforme_de_discussion');
+    }
     public function deconnexion() {
         Session::forget('login');
         return view('authentification.login');

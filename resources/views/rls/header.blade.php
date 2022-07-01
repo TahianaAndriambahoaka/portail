@@ -1,7 +1,7 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
       {{-- <p style="font-weight: bold; font-size: large">Bienvenu!</p> --}}
-      <p class="navbar-brand brand-logo">Profil ATR</p>
+      <p class="navbar-brand brand-logo">Profil RLS</p>
       <a class="navbar-brand brand-logo-mini"><img src="{{asset('images/ucp_logo.png')}}" alt="IMG"></a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
