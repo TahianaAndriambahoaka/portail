@@ -44,6 +44,8 @@ Route::post('/administrateur/utilisateur/modification-fonction', [administrateur
 Route::post('/administrateur/inscription-utilisateur', [administrateur::class, 'inscription'])->middleware('adminSession');
 Route::get('/administrateur/utilisateursWS', [administrateur::class, 'utilisateursWS'])->middleware('adminSession');
 Route::get('/administrateur/mot_de_passe_oublie', [administrateur::class, 'mot_de_passe_oublie'])->middleware('adminSession');
+Route::post('/administrateur/mot_de_passe_oublie/reinitialisation', [administrateur::class, 'mot_de_passe_oublie_reinitialisation'])->middleware('adminSession');
+Route::post('/administrateur/mot_de_passe_oublie/refus', [administrateur::class, 'mot_de_passe_oublie_refus'])->middleware('adminSession');
 
 Route::get('/utilisateur/deconnexion', [utilisateur::class, 'deconnexion'])->middleware('utilisateurSession');
 

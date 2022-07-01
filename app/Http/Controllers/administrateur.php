@@ -125,7 +125,7 @@ class administrateur extends Controller
             $data = array('name'=>$nom.' '.$prenom, 'mdp'=>$mdp, 'fonction'=>fonction::getById($id_fonction)[0]->nom, 'login'=>$email);
             Mail::send('mail_inscription', $data, function($message) use($email) {
                 $message->to($email, "")->subject("Inscription sur le portail de l'UCP");
-                $message->from('tahiana.andriamb@gmail.com','Unité de Coordination des Projets (UCP)');
+                $message->from('no-reply.ucp@hotmail.com','Unité de Coordination des Projets (UCP)');
             });
             return back()->with('success',"Inscription effectuée avec succès!");
         } catch (\Throwable $th) {
@@ -136,5 +136,36 @@ class administrateur extends Controller
     public function utilisateursWS(Request $request) {
         $utilisateurs = utilisateur::getAllWS($request->input('fonction'));
         echo json_encode($utilisateurs);
+    }
+    public function mot_de_passe_oublie_reinitialisation(Request $request) {
+        try {
+            $id = $request->input('id');
+            $id_utilisateur = $request->input('id_utilisateur');
+            $nouveau_mdp = Str::random(10);
+
+            $utilisateur = utilisateur::getById($id_utilisateur)[0];
+            $email = $utilisateur->email;
+            $login = login::getByIdUtilisateur($utilisateur->id)[0];
+            login::changer_mot_de_passe($login->id, $nouveau_mdp);
+            $data = array('name'=>$utilisateur->nom.' '.$utilisateur->prenom, 'mdp'=>$nouveau_mdp, 'login'=>$email);
+            Mail::send('reinitialisation_mdp', $data, function($message) use($email) {
+                $message->to($email, "")->subject("Réinitialisation de mot de passe sur le portail de l'UCP");
+                $message->from('no-reply.ucp@hotmail.com','Unité de Coordination des Projets (UCP)');
+            });
+
+            mot_de_passe_oublie::deleteById($id);
+            return back()->with('success',"Réinitialisation de mot de passe effectuée avec succès!");
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+    public function mot_de_passe_oublie_refus(Request $request) {
+        try {
+            $id = $request->input('id');
+            mot_de_passe_oublie::deleteById($id);
+            return back()->with('success',"Demande rejetée!");
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
     }
 }

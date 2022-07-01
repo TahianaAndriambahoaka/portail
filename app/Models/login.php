@@ -51,10 +51,10 @@ class login extends Model
     public static function getByIdUtilisateur($id_utilisateur) {
         return DB::select(sprintf("SELECT * FROM login WHERE id_utilisateur = %d AND id NOT IN (SELECT id_login FROM utilisateur_supprime)", $id_utilisateur));
     }
-    public static function changer_mot_de_passe($id, $ancienMDP, $nouveauMDP) {
+    public static function changer_mot_de_passe($id, $nouveauMDP) {
         try {
-            $query = "update login set mot_de_passe = sha2('%s', 256) where id = %d and mot_de_passe = sha2('%s', 256)";
-            $query = sprintf($query, $nouveauMDP, $id, $ancienMDP);
+            $query = "update login set mot_de_passe = sha2('%s', 256) where id = %d";
+            $query = sprintf($query, $nouveauMDP, $id);
             DB::update($query);
         } catch (\Throwable $th) {
             throw $th;

@@ -64,8 +64,8 @@
                           <td>{{ $mot_de_passe_oublie[$i]->email }}</td>
                           <td>{{ utf8_encode(strftime("%A %d %B %G", strtotime($mot_de_passe_oublie[$i]->date))) }}</td>
                           <td style="text-align: center">
-                            <button class="btn btn-inverse-info btn-fw" onclick="valider({{ $mot_de_passe_oublie[$i]->id }})">Réinitialiser le mot de passe</button>
-                            <button class="btn btn-inverse-danger btn-fw" onclick="refuser({{ $mot_de_passe_oublie[$i]->id }})">Refuser</button>
+                            <button class="btn btn-inverse-info btn-fw" data-bs-toggle="modal" data-bs-target="#modalValiderReinitialisation{{ $mot_de_passe_oublie[$i]->id }}">Réinitialiser le mot de passe</button>
+                            <button class="btn btn-inverse-danger btn-fw" data-bs-toggle="modal" data-bs-target="#modalValiderRefus{{ $mot_de_passe_oublie[$i]->id }}">Refuser</button>
                             <button data-bs-toggle="modal" data-bs-target="#modal{{ $mot_de_passe_oublie[$i]->id }}" class="btn btn-inverse-warning btn-fw">Détails</button>
                           </td>
                         </tr>
@@ -149,25 +149,74 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-inverse-info btn-fw" onclick="valider({{ $mot_de_passe_oublie[$i]->id }})">Valider</button>
-                            <button type="submit" class="btn btn-inverse-danger btn-fw" onclick="refuser({{ $mot_de_passe_oublie[$i]->id }})">Refuser</button>
+                            <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-toggle="modal" data-bs-target="#modalValiderReinitialisation{{ $mot_de_passe_oublie[$i]->id }}" data-bs-dismiss="modal">Réinitialiser le mot de passe</button>
+                            <button type="submit" class="btn btn-inverse-danger btn-fw" data-bs-toggle="modal" data-bs-target="#modalValiderRefus{{ $mot_de_passe_oublie[$i]->id }}" data-bs-dismiss="modal">Refuser</button>
                         </div>
                     </div>
                 </div>
             </div>
-          @endfor
 
-
-          {{-- @for ($i = 0; $i < count($demandes_inscription); $i++)
+            {{-- modal Validation de réinitialisation --}}
+              <div class="modal fade" id="modalValiderReinitialisation{{ $mot_de_passe_oublie[$i]->id }}" style="border-radius: 10%">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title">Confirmation de réinitialisation de mot de passe</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                        <h6>Voulez-vous vraiment réinitialiser le mot de passe de cet utilisateur?</h6>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="submit" class="btn btn-inverse-warning btn-fw" onclick="reinitialisation_de_mot_de_passe({{ $mot_de_passe_oublie[$i]->id }})" data-bs-dismiss="modal">Oui</button>
+                        <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Non</button>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            {{-- fin modal Validation de réinitialisation --}}
+            
+            {{-- modal Validation Refus --}}
+              <div class="modal fade" id="modalValiderRefus{{ $mot_de_passe_oublie[$i]->id }}" style="border-radius: 10%">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title">Confirmation de refus de la demande</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                        <h6>Voulez-vous vraiment refuser cette demande de réinitialisation de mot de passe?</h6>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="submit" class="btn btn-inverse-danger btn-fw" onclick="refus({{ $mot_de_passe_oublie[$i]->id }})" data-bs-dismiss="modal">Oui</button>
+                        <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Non</button>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            {{-- fin modal Validation Refus --}}
+            
+            {{-- formulaire de réinitialisation de mot de passe --}}
             <div style="display: none">
-              <form action="{{asset('/administrateur/demande-inscription')}}" method="post" id="form">
+              <form action="{{asset('/administrateur/mot_de_passe_oublie/reinitialisation')}}" method="post" id="form_reinitialisation">
                 @csrf
-                <input type="hidden" name="id_demande_inscription" value="{{ $demandes_inscription[$i]->id }}">
-                <input type="submit" value="{{ $demandes_inscription[$i]->id }}" name="valider" id="valider-{{ $demandes_inscription[$i]->id }}">
-                <input type="submit" value="{{ $demandes_inscription[$i]->id }}" name="refuser" id="refuser-{{ $demandes_inscription[$i]->id }}">
+                <input type="hidden" name="id" value="{{ $mot_de_passe_oublie[$i]->id }}">
+                <input type="hidden" name="id_utilisateur" value="{{ $utilisateurs[$i]->id }}">
+                <input type="submit" value="{{ $mot_de_passe_oublie[$i]->id }}" id="reinitialisation_de_mot_de_passe{{ $mot_de_passe_oublie[$i]->id }}">
               </form>
             </div>
-          @endfor --}}
+            {{-- fin du formulaire de réinitialisation de mot de passe --}}
+
+            {{-- formulaire de refus --}}
+            <div style="display: none">
+              <form action="{{asset('/administrateur/mot_de_passe_oublie/refus')}}" method="post" id="form_refus">
+                @csrf
+                <input type="hidden" name="id" value="{{ $mot_de_passe_oublie[$i]->id }}">
+                <input type="submit" value="{{ $mot_de_passe_oublie[$i]->id }}" id="refus{{ $mot_de_passe_oublie[$i]->id }}">
+              </form>
+            </div>
+            {{-- fin du formulaire de refus --}}
+          @endfor
 
 
 
@@ -199,8 +248,19 @@
       $('#refuser-'+id_demande).click();
     }
 
+    function reinitialisation_de_mot_de_passe(id) {
+      $(`#reinitialisation_de_mot_de_passe${id}`).click();
+    }
+    function refus(id) {
+      $(`#refus${id}`).click();
+    }
+
     $(document).ready(function(){
-      $("#form").submit(function(){
+      $("#form_reinitialisation").submit(function() {
+        $("#loader").removeClass("visible");
+        $("#container").addClass("opacity");
+      });
+      $("#form_refus").submit(function() {
         $("#loader").removeClass("visible");
         $("#container").addClass("opacity");
       });
