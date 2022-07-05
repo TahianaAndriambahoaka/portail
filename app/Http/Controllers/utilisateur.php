@@ -27,13 +27,13 @@ class utilisateur extends Controller
             } else {
                 $login = request()->session()->get('login');
                 $utilisateur = \App\Models\utilisateur::getById($login->id_utilisateur)[0];
-                // $email = $login->login;
+                $email = $login->login;
                 login::changer_mot_de_passe($login->id, $nouveauMdp1);
-                // $data = array('name'=>$utilisateur->nom.' '.$utilisateur->prenom, 'mdp'=>$nouveauMdp1, 'login'=>$email);
-                // Mail::send('mail_changer_mdp', $data, function($message) use($email) {
-                //     $message->to($email, "")->subject("Changement de mot de passe sur le portail de l'UCP");
-                //     $message->from('no-reply.ucp@hotmail.com','Unité de Coordination des Projets (UCP)');
-                // });
+                $data = array('name'=>$utilisateur->nom.' '.$utilisateur->prenom);
+                Mail::send('mail_changer_mdp', $data, function($message) use($email) {
+                    $message->to($email, "")->subject("Changement de mot de passe sur le portail de l'UCP");
+                    $message->from('no-reply.ucp@hotmail.com','Unité de Coordination des Projets (UCP)');
+                });
                 $login = login::getByIdUtilisateur($utilisateur->id)[0];
                 Session::forget('login');
                 Session::put('login', $login);

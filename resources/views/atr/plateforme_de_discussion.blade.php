@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>UCP : Unité Coordination Projets</title>
   <link rel="icon" type="image/png" href="{{asset('images/ucp_logo.ico')}}"/>
+  <link rel="stylesheet" href="{{asset('admin/vendors/select2/select2.min.css')}}">
+  <link rel="stylesheet" href="{{asset('admin/vendors/select2-bootstrap-theme/select2-bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{asset('css/animate.min.css')}}">
   <link rel="stylesheet" href="{{asset('admin/vendors/feather/feather.css')}}">
@@ -12,7 +14,6 @@
   <link rel="stylesheet" href="{{asset('admin/vendors/css/vendor.bundle.base.css')}}">
   <link rel="stylesheet" href="{{asset('admin/css/vertical-layout-light/style.css')}}">
   <link rel="stylesheet" href="{{asset('admin/vendors/mdi/css/materialdesignicons.min.css')}}">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
   <style>
     .visible {
       /* visibility: visible !important; */
@@ -24,6 +25,91 @@
     #profile-container:hover {
       opacity: 0.5;
     }
+
+
+
+    .bubbleWrapper {
+      padding: 10px 10px;
+      display: flex;
+      justify-content: flex-end;
+      flex-direction: column;
+      align-self: flex-end;
+      color: #fff;
+    }
+    .inlineContainer {
+      display: inline-flex;
+    }
+    .inlineContainer.own {
+      flex-direction: row-reverse;
+    }
+    .inlineIcon {
+      width:20px;
+      object-fit: contain;
+    }
+    .ownBubble {
+      min-width: 60px;
+      max-width: 700px;
+      padding: 14px 18px;
+      margin: 6px 8px;
+      /* background-color: #5b5377; */
+      background-color: #797196;
+      border-radius: 16px 16px 0 16px;
+      /* border: 1px solid #443f56; */
+    
+    }
+    .otherBubble {
+      min-width: 60px;
+      max-width: 700px;
+      padding: 14px 18px;
+      margin: 6px 8px;
+      /* background-color: #6C8EA4; */
+      background-color: #4b49ac;
+      border-radius: 16px 16px 16px 0;
+      /* border: 1px solid #54788e; */
+      
+    }
+    .own {
+      align-self: flex-end;
+    }
+    .other {
+      align-self: flex-start;
+    }
+    span.own,
+    span.other{
+      font-size: 14px;
+      color: grey;
+    }
+
+
+    .hovertext {
+      position: relative;
+    }
+
+    .hovertext:before {
+      content: attr(data-hover);
+      visibility: hidden;
+      opacity: 0;
+      width: 140px;
+      background-color: black;
+      color: #fff;
+      text-align: center;
+      border-radius: 5px;
+      padding: 5px 0;
+      transition: opacity 1s ease-in-out;
+
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      top: 110%;
+    }
+
+    .hovertext:hover:before {
+      opacity: 1;
+      visibility: visible;
+    }
+
+
+
   </style>
 </head>
 <body>
@@ -43,7 +129,7 @@
                       <p class="fs-30 mb-2">Rechercher un sujet sur le thème évènements</p><br>
                       <div class="form-group">
                         <div class="input-group">
-                          <input type="text" class="form-control" placeholder="Rechercher les utilisateurs avec tous les profils" id="search">
+                          <input type="text" class="form-control" placeholder="Rechercher un sujet sur le thème évènements ..." id="search">
                           <div class="input-group-append">
                             <button class="btn btn-sm btn-primary" type="button" id="searchButton">Rechercher</button>
                           </div>
@@ -56,55 +142,135 @@
               <div class="row">
                 <div class="col-md-12 mb-4 stretch-card">
                   <div class="card">
-                    <div class="card-body">
-                      <p class="mb-4">Today’s Bookings</p>
-                      <p class="fs-30 mb-2">4006</p>
-                      <p>10.00% (30 days)</p>
+                    <div class="card-body" style="margin: 1%">
+                      <p class="fs-30 mb-2">Les sujets de discussion</p><br>
+                      <div class="table-responsive">
+                        <table class="table table-hover">
+                          <tbody>
+                            <tr>
+                              <td style="width: 10%; text-align: center">
+                                <div class="hovertext" data-hover="Hello, this is the tooltip">
+                                  <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" style="height: 50px; width: 50px"><br><br>
+                                </div>
+                                <p class="text-secondary">05/07/2022 à 10:59</p>
+                              </td>
+                              <td>
+                                <p style="width: 90%; font-weight: bold; font-size: larger">Titre ...</p>
+                                <a href="" data-toggle="collapse" data-target="#demo1" class="text-secondary">À propos...</a><br><br>
+                                <p id="demo1" class="collapse">Commentaire ...<br>......<br>.....<br>......<br>.....<br>......<br>.....</p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="width: 10%; text-align: center">
+                                <div class="hovertext" data-hover="Hello, this is the tooltip">
+                                  <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" style="height: 50px; width: 50px"><br><br>
+                                </div>
+                                <p class="text-secondary">05/07/2022 à 10:59</p>
+                              </td>
+                              <td>
+                                <p style="width: 90%; font-weight: bold; font-size: larger">Titre ...</p>
+                                <a href="" data-toggle="collapse" data-target="#demo2" class="text-secondary">À propos...</a><br><br>
+                                <p id="demo2" class="collapse">Commentaire ...<br>......<br>.....<br>......<br>.....<br>......<br>.....</p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            
-            {{-- <div class="col-lg-4 grid-margin stretch-card">
-              <div class="row" style="width: 100%">
-                <div class="card">
-                  <div class="card-body">
-                    un
-                  </div>
-                </div>
-              </div>
-              <div class="row" style="width: 100%">
-                <div class="card">
-                  <div class="card-body">
-                    deux
-                  </div>
-                </div>
-              </div>
-            </div> --}}
-
-
-
 
             <div class="col-md-4 grid-margin">
               <div class="row">
                 <div class="col-md-12 mb-4 stretch-card">
                   <div class="card">
-                    <div class="card-body">
-                      <p class="mb-4">Today’s Bookings</p>
-                      <p class="fs-30 mb-2">4006</p>
-                      <p>10.00% (30 days)</p>
+                    <div class="card-body" style="margin: 1%">
+                      <p class="fs-30 mb-2">Les thèmes de discussion</p><br>
+                      <div class="form-group">
+                        <select style="height: 10px" class="js-example-basic-single w-100">
+                          <option value="AL">Alabama</option>
+                          <option value="WY">Wyoming</option>
+                          <option value="AM">America</option>
+                          <option value="CA">Canada</option>
+                          <option value="RU">Russia</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row" style="min-height: 700px">
+              <div class="row" style="min-height: 800px">
                 <div class="col-md-12 mb-4 mb-lg-0 stretch-card">
                   <div class="card">
                     <div class="card-body">
-                      <p class="mb-4">Number of Meetings</p>
-                      <p class="fs-30 mb-2">34040</p>
-                      <p>2.00% (30 days)</p>
+                      <p class="fs-30 mb-2">Commentaires</p>
+                      <hr style="color: lightgray; width: 109%; margin-left: -4.5%;">
+                      <div style="min-height: 60%">
+                        
+                        
+
+
+                        <div class="bubbleWrapper">
+                          <div class="inlineContainer hovertext" data-hover="Hello, this is the tooltip">
+                            <img class="inlineIcon" src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png">
+                            <div class="otherBubble other">
+                              Commentaire 1 ...
+                            </div>
+                          </div><span class="other">08:41</span>
+                        </div>
+                        <div class="bubbleWrapper">
+                          <div class="inlineContainer own hovertext" data-hover="Hello, this is the tooltip">
+                            <img class="inlineIcon" src="https://www.pinclipart.com/picdir/middle/205-2059398_blinkk-en-mac-app-store-ninja-icon-transparent.png">
+                            <div class="ownBubble own">
+                             Commentaire 2 ...
+                            </div>
+                          </div><span class="own">08:55</span>
+                        </div>
+                        <div class="bubbleWrapper">
+                          <div class="inlineContainer hovertext" data-hover="Hello, this is the tooltip">
+                            <img class="inlineIcon" src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png">
+                            <div class="otherBubble other">
+                              Commentaire 3 ...
+                            </div>
+                          </div><span class="other">08:41</span>
+                        </div>
+                        <div class="bubbleWrapper">
+                          <div class="inlineContainer hovertext" data-hover="Hello, this is the tooltip">
+                            <img class="inlineIcon" src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png">
+                            <div class="otherBubble other">
+                              Commentaire 4 ...
+                            </div>
+                          </div><span class="other">08:41</span>
+                        </div>
+                        <div class="bubbleWrapper">
+                          <div class="inlineContainer hovertext" data-hover="Hello, this is the tooltip">
+                            <img class="inlineIcon" src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png">
+                            <div class="otherBubble other">
+                              Commentaire 5 ...
+                            </div>
+                          </div><span class="other">08:41</span>
+                        </div>
+                        <div class="bubbleWrapper">
+                          <div class="inlineContainer own hovertext" data-hover="Hello, this is the tooltip">
+                            <img class="inlineIcon" src="https://www.pinclipart.com/picdir/middle/205-2059398_blinkk-en-mac-app-store-ninja-icon-transparent.png">
+                            <div class="ownBubble own">
+                             Commentaire 6 ...
+                            </div>
+                          </div><span class="own">08:55</span>
+                        </div>
+
+
+
+
+
+
+
+                      </div>
+                      <hr style="color: lightgray; width: 109%; margin-left: -4.5%;">
+                      <textarea class="form-control" name="" id="" style="width: 100%" rows="10" placeholder="Votre commentaire ..."></textarea>
+                      <button class="btn btn-primary btn-sm" style="border-radius: 0%;">Commenter</button>
                     </div>
                   </div>
                 </div>
@@ -119,94 +285,6 @@
     </div>
   </div>
 
-  {{-- modals --}}
-    <div class="modal fade" id="modalConfirmationChangementDeProfil" style="border-radius: 10%">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-              <h5 class="modal-title">Veuillez écrire votre mot de passe actuel</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <div class="modal-body">
-              <h6>Veuillez écrire votre mot de passe actuel ci-dessous:</h6>
-              <p>
-                <input class="typeahead" type="password" name="mot_de_passeConfirmationChangementDeProfil" id="mot_de_passeConfirmationChangementDeProfil">
-              </p>
-              <div id="errorConfirmationChangementDeProfil"></div>
-              </div>
-              <div class="modal-footer">
-              <button type="submit" class="btn btn-inverse-success btn-fw" onclick="confirmationChangementDeProfil()" id="validerConfirmationChangementDeProfil">Valider</button>
-              <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Annuler</button>
-              </div>
-          </div>
-      </div>
-    </div>
-    <div class="modal fade" id="modalAncienMdp" style="border-radius: 10%">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-              <h5 class="modal-title">Veuillez écrire votre mot de passe actuel</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <div class="modal-body">
-              <h6>Veuillez écrire votre mot de passe actuel ci-dessous:</h6>
-              <p>
-                <input class="typeahead" type="password" name="ancien_mot_de_passe" id="ancien_mot_de_passe">
-              </p>
-              <div id="errorAncienMotDePasse"></div>
-              </div>
-              <div class="modal-footer">
-              <button type="submit" class="btn btn-inverse-success btn-fw" onclick="ancienMot_de_passe()" id="validerModalAncienMdp">Valider</button>
-              <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Annuler</button>
-              </div>
-          </div>
-      </div>
-    </div>
-    <div class="modal fade" id="modalNouveauMdp" style="border-radius: 10%">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-              <h5 class="modal-title">Veuillez écrire votre nouveau mot de passe</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-              <div class="modal-body">
-              <h6>Veuillez écrire votre nouveau mot de passe ci-dessous:</h6>
-              <div class="form-group row">
-                <div class="col">
-                  <label>Nouveau mot de passe</label>
-                  <div id="the-basics">
-                    <input class="typeahead" type="password" name="nouveau_mot_de_passe1" id="nouveau_mot_de_passe1" onkeyup="nouveau_mot_de_passe()" required>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group row">
-                <div class="col">
-                  <label>Confirmer votre nouveau mot de passe</label>
-                  <div id="the-basics">
-                    <input class="typeahead" type="password" name="nouveau_mot_de_passe2" id="nouveau_mot_de_passe2" onkeyup="nouveau_mot_de_passe()" required>
-                  </div>
-                </div>
-              </div>
-              <div id="errorNouveauMotDePasse"></div>
-              </div>
-              <div class="modal-footer">
-              <button type="submit" class="btn btn-inverse-success btn-fw" data-bs-dismiss="modal" onclick="$('#validerChangementMDP').click()" id="validerModalNouveauMdp" style="display: none">Valider</button>
-              <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Annuler</button>
-              </div>
-          </div>
-      </div>
-    </div>
-  {{-- fin modals --}}
-
-  {{-- changement de mot de passe --}}
-  <form action="{{asset('/ATR/profil/changer-mot-de-passe')}}" method="POST" id="formChangementMotDePasse">
-    @csrf
-    <input type="hidden" name="ancienMdp" id="ancienMdp">
-    <input type="hidden" name="nouveauMdp1" id="nouveauMdp1">
-    <input type="hidden" name="nouveauMdp2" id="nouveauMdp2">
-    <input type="submit" value="valider" id="validerChangementMDP" style="display: none">
-  </form>
-  {{-- fin changement de mot de passe --}}
 
   <div id="loader" class="visible" style="position: fixed; top:40%; left:45%;">
     <img src = "{{asset('images/loader.svg')}}" alt="Chargement..."/>
@@ -214,6 +292,10 @@
 
 
   <script src="{{asset('admin/vendors/js/vendor.bundle.base.js')}}"></script>
+  <script src="{{asset('admin/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
+  <script src="{{asset('admin/vendors/select2/select2.min.js')}}"></script>
+  <script src="{{asset('admin/js/typeahead.js')}}"></script>
+  <script src="{{asset('admin/js/select2.js')}}"></script>
   <script src="{{asset('admin/js/off-canvas.js')}}"></script>
   <script src="{{asset('admin/js/hoverable-collapse.js')}}"></script>
   <script src="{{asset('admin/js/template.js')}}"></script>
@@ -224,96 +306,6 @@
   <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script>
-    // function delaiRedirection() {
-    //   console.log('redirection');
-    //   setTimeout(redirectionVersLogin, 5000);
-    // }
-    // function redirectionVersLogin() {
-    //   window.location.href = '/utilisateur/deconnexion';
-    // }
-    async function sha256(message) {
-        // encode as UTF-8
-        const msgBuffer = new TextEncoder().encode(message);                    
-
-        // hash the message
-        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-
-        // convert ArrayBuffer to Array
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-
-        // convert bytes to hex string                  
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        return hashHex;
-    }
-    
-    function ancienMot_de_passe() {
-      const mdp = document.getElementById('ancien_mot_de_passe').value;
-      const monMdp = <?php echo json_encode(request()->session()->get('login')->mot_de_passe) ?>;
-      sha256(mdp).then(res => {
-          if (res == monMdp) {
-            document.getElementById('validerModalAncienMdp').setAttribute('data-bs-dismiss', 'modal');
-            document.getElementById('validerModalAncienMdp').setAttribute('data-bs-target', '#modalNouveauMdp');
-            document.getElementById('validerModalAncienMdp').setAttribute('data-bs-toggle', 'modal');
-            document.getElementById('validerModalAncienMdp').removeAttribute('onclick');
-            $('#validerModalAncienMdp').click();
-          } else {
-            document.getElementById('errorAncienMotDePasse').innerHTML = `<br><p class="text-center alert alert-danger animate__animated animate__bounceInRight" style="margin-left: auto; margin-right: auto">Mot de passe incorrect!</p>`;
-          }
-        }
-      );
-    }
-    function confirmationChangementDeProfil() {
-      const mdp = document.getElementById('mot_de_passeConfirmationChangementDeProfil').value;
-      const monMdp = <?php echo json_encode(request()->session()->get('login')->mot_de_passe) ?>;
-      sha256(mdp).then(res => {
-          if (res == monMdp) {
-            document.getElementById('validerConfirmationChangementDeProfil').setAttribute('data-bs-dismiss', 'modal');
-            document.getElementById('validerConfirmationChangementDeProfil').removeAttribute('onclick');
-            document.getElementById('monMotDePasse').setAttribute('value', mdp);
-            $('#validerConfirmationChangementDeProfil').click();
-            $('#bouttonConfirmationChangementDeProfil').click();
-          } else {
-            document.getElementById('errorConfirmationChangementDeProfil').innerHTML = `<br><p class="text-center alert alert-danger animate__animated animate__bounceInRight" style="margin-left: auto; margin-right: auto">Mot de passe incorrect!</p>`;
-          }
-        }
-      );
-    }
-
-    function nouveau_mot_de_passe() {
-      const ancien_mdp = document.getElementById('ancien_mot_de_passe').value;
-      const nouveau_mdp1 = document.getElementById('nouveau_mot_de_passe1').value;
-      const nouveau_mdp2 = document.getElementById('nouveau_mot_de_passe2').value;
-      if (ancien_mdp == nouveau_mdp1) {
-        document.getElementById('errorNouveauMotDePasse').innerHTML = `<p style="color: red">Votre nouveau mot de passe ne peut pas être votre ancien mot de passe!</p>`;
-        document.getElementById('validerModalNouveauMdp').setAttribute('style', 'display:none');
-      } else {
-        if (nouveau_mdp1 != nouveau_mdp2) {
-          document.getElementById('errorNouveauMotDePasse').innerHTML = `<p style="color: red">Les 2 mots de passe ne sont pas identiques!</p>`;
-          document.getElementById('validerModalNouveauMdp').setAttribute('style', 'display:none');
-        } else {
-          document.getElementById('errorNouveauMotDePasse').innerHTML = ``;
-          document.getElementById('validerModalNouveauMdp').removeAttribute('style');
-          document.getElementById('ancienMdp').value = ancien_mdp;
-          document.getElementById('nouveauMdp1').value = nouveau_mdp1;
-          document.getElementById('nouveauMdp2').value = nouveau_mdp2;
-        }
-      }
-    }
-
-    $("#profile-container").click(function(e) {
-			$("#imageUpload").click();
-		});
-
-    function fasterPreview( uploader ) {
-			if ( uploader.files && uploader.files[0] ){
-				$('#profileImage').attr('src', 
-					window.URL.createObjectURL(uploader.files[0]) );
-			}
-		}
-		
-		$("#imageUpload").change(function(){
-			fasterPreview( this );
-		});
 
     $(document).ready(function(){
       $("#formChangementMotDePasse").submit(function(){
@@ -329,41 +321,6 @@
         $("#container").addClass("opacity");
       });
     });
-
-		function getIp(callback) {
-			fetch('https://ipinfo.io/json?token=662221c0429e7f', { headers: { 'Accept': 'application/json' }})
-			.then((resp) => resp.json())
-			.catch(() => {
-				return {
-				country: 'mg',
-				};
-			})
-			.then((resp) => callback(resp.country));
-		}		
-
-		const phoneInputField1 = document.querySelector("#phone1");
-		const phoneInput1 = window.intlTelInput(phoneInputField1, {
-			initialCountry: "auto",
-			geoIpLookup: getIp,
-			utilsScript:
-			"https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-		});
-
-		const phoneInputField2 = document.querySelector("#phone2");
-		const phoneInput2 = window.intlTelInput(phoneInputField2, {
-			initialCountry: "auto",
-			geoIpLookup: getIp,
-			utilsScript:
-			"https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-		});
-
-		const phoneInputField3 = document.querySelector("#phone3");
-		const phoneInput3 = window.intlTelInput(phoneInputField3, {
-			initialCountry: "auto",
-			geoIpLookup: getIp,
-			utilsScript:
-			"https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-		});
 	</script>
 </body>
 </html>
