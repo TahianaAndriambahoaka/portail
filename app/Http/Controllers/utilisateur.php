@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\commentaire;
 use App\Models\login;
+use App\Models\sujet;
+use App\Models\theme;
+use App\Models\utilisateur as ModelsUtilisateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Mail;
@@ -10,8 +14,32 @@ use Image;
 
 class utilisateur extends Controller
 {
-    public function plateforme_de_discussion() {
-        return view('atr.plateforme_de_discussion');
+    public function plateforme_de_discussion(Request $request) {
+        $theme = theme::getAll();
+        $sujet = sujet::getByIdTheme(1, 4);
+        if ($request->input('id_theme') != null) {
+            $sujet = sujet::getByIdTheme($request->input('id_theme'), 4);
+        }
+        if ($request->input('sujet') != null) {
+            $sujet = sujet::getByIdThemeSujet(1, $request->input('sujet'), 4);
+            if ($request->input('id_theme') != null) {
+                $sujet = sujet::getByIdThemeSujet($request->input('id_theme'), $request->input('sujet'), 4);
+            }
+        }
+        $commentaire = [];
+        $utilisateur_commentaire = [];
+        if ($request->input('id_sujet') != null) {
+            $com = commentaire::getByIdSujet($request->input('id_sujet'));
+            $commentaire = $com;
+            for ($j=0; $j < count($com); $j++) { 
+                $utilisateur_commentaire[] = ModelsUtilisateur::getById($com[$j]->id_utilisateur)[0];
+            }
+        }
+        $utilisateur_sujet = [];
+        for ($i=0; $i < count($sujet); $i++) { 
+            $utilisateur_sujet[] = ModelsUtilisateur::getById($sujet[$i]->id_utilisateur)[0];
+        }
+        return view('atr.plateforme_de_discussion', ['theme'=>$theme, 'sujet'=>$sujet, 'utilisateur_sujet'=>$utilisateur_sujet, 'commentaire'=>$commentaire, 'utilisateur_commentaire'=>$utilisateur_commentaire]);
     }
     public function deconnexion() {
         Session::forget('login');

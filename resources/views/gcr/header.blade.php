@@ -11,7 +11,7 @@
       <ul class="navbar-nav navbar-nav-right">
         <li class="nav-item dropdown">
           <a class="nav-link" href="{{asset('/utilisateur/deconnexion')}}">
-            <button type="button" class="btn btn-inverse-primary btn-fw"><i class="mdi mdi-logout" style="font-weight: bold; font-size: large"></i>Se déconnecter</button>
+            <button type="button" class="btn btn-inverse-primary btn-sm"><i class="mdi mdi-logout" style="font-weight: bold; font-size: large"></i>Se déconnecter</button>
             {{-- <span class="count"></span> --}}
           </a>
         </li>

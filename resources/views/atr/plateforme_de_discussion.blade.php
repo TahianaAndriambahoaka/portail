@@ -89,7 +89,8 @@
       content: attr(data-hover);
       visibility: hidden;
       opacity: 0;
-      width: 140px;
+      /* width: 140px; */
+      width: auto;
       background-color: black;
       color: #fff;
       text-align: center;
@@ -100,7 +101,8 @@
       position: absolute;
       z-index: 1;
       left: 0;
-      top: 110%;
+      /* top: 110%; */
+      top: -20%;
     }
 
     .hovertext:hover:before {
@@ -126,12 +128,29 @@
                 <div class="col-md-12 mb-4 stretch-card">
                   <div class="card">
                     <div class="card-body" style="margin: 1%">
-                      <p class="fs-30 mb-2">Rechercher un sujet sur le thème évènements</p><br>
+                      <p class="fs-30 mb-2">
+                        Rechercher un sujet sur le thème <b>
+                        @for ($i = 0; $i < count($theme); $i++)
+                          @if (isset($_GET['id_theme']))
+                            @if ($theme[$i]->id == $_GET['id_theme'])
+                              {{ $theme[$i]->theme }}
+                            @endif
+                          @else
+                            {{ $theme[0]->theme }}
+                            @break
+                          @endif
+                        @endfor</b>
+                      </p><br>
+                      {{-- <a href="javascript:location.search+='&priceMin=300';">add priceMin=300</a> --}}
                       <div class="form-group">
                         <div class="input-group">
-                          <input type="text" class="form-control" placeholder="Rechercher un sujet sur le thème évènements ..." id="search">
+                          @if (isset($_GET['sujet']))
+                            <input type="text" class="form-control" name="recherche_sujet" id="recherche_sujet" placeholder="Rechercher un sujet sur sur le thème sélectionné ..." value="{{ $_GET['sujet'] }}">
+                          @else
+                            <input type="text" class="form-control" name="recherche_sujet" id="recherche_sujet" placeholder="Rechercher un sujet sur sur le thème sélectionné ...">
+                          @endif
                           <div class="input-group-append">
-                            <button class="btn btn-sm btn-primary" type="button" id="searchButton">Rechercher</button>
+                            <button class="btn btn-sm btn-primary" onclick="let queryParams = new URLSearchParams(window.location.search), recherche_sujet=document.getElementById('recherche_sujet').value;queryParams.set('sujet', recherche_sujet);history.replaceState(null, null, '?' + queryParams.toString());window.location.reload();">Rechercher</button>
                           </div>
                         </div>
                       </div>
@@ -147,35 +166,24 @@
                       <div class="table-responsive">
                         <table class="table table-hover">
                           <tbody>
-                            <tr>
-                              <td style="width: 10%; text-align: center">
-                                <div class="hovertext" data-hover="Hello, this is the tooltip">
-                                  <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" style="height: 50px; width: 50px"><br><br>
-                                </div>
-                                <p class="text-secondary">05/07/2022 à 10:59</p>
-                              </td>
-                              <td>
-                                <p style="width: 90%; font-weight: bold; font-size: larger">Titre ...</p>
-                                <a href="" data-toggle="collapse" data-target="#demo1" class="text-secondary">À propos...</a><br><br>
-                                <p id="demo1" class="collapse">Commentaire ...<br>......<br>.....<br>......<br>.....<br>......<br>.....</p>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td style="width: 10%; text-align: center">
-                                <div class="hovertext" data-hover="Hello, this is the tooltip">
-                                  <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" style="height: 50px; width: 50px"><br><br>
-                                </div>
-                                <p class="text-secondary">05/07/2022 à 10:59</p>
-                              </td>
-                              <td>
-                                <p style="width: 90%; font-weight: bold; font-size: larger">Titre ...</p>
-                                <a href="" data-toggle="collapse" data-target="#demo2" class="text-secondary">À propos...</a><br><br>
-                                <p id="demo2" class="collapse">Commentaire ...<br>......<br>.....<br>......<br>.....<br>......<br>.....</p>
-                              </td>
-                            </tr>
+                            @for ($i = 0; $i < count($sujet); $i++)
+                              <tr onclick="let queryParams = new URLSearchParams(window.location.search), id_sujet={{ $sujet[$i]->id }};queryParams.set('id_sujet', id_sujet);history.replaceState(null, null, '?' + queryParams.toString());window.location.reload();">
+                                <td style="width: 10%; text-align: center">
+                                  <div class="hovertext" data-hover="{{ $utilisateur_sujet[$i]->prenom }} {{ $utilisateur_sujet[$i]->nom }}">
+                                    <img src="{{asset('images/photo_de_profil/'.$utilisateur_sujet[$i]->photo_de_profil)}}" style="height: 50px; width: 50px"><br><br>
+                                  </div>
+                                  <p class="text-secondary">{{ $sujet[$i]->date }}</p>
+                                </td>
+                                <td>
+                                  <p style="width: 90%; font-size: larger">{{ $sujet[$i]->sujet }}</p>
+                                </td>
+                              </tr>
+                            @endfor
                           </tbody>
                         </table>
                       </div>
+                      <br>
+                      {!! $sujet->withQueryString()->links('pagination::bootstrap-4') !!}
                     </div>
                   </div>
                 </div>
@@ -189,77 +197,55 @@
                     <div class="card-body" style="margin: 1%">
                       <p class="fs-30 mb-2">Les thèmes de discussion</p><br>
                       <div class="form-group">
-                        <select style="height: 10px" class="js-example-basic-single w-100">
-                          <option value="AL">Alabama</option>
-                          <option value="WY">Wyoming</option>
-                          <option value="AM">America</option>
-                          <option value="CA">Canada</option>
-                          <option value="RU">Russia</option>
+                        <select style="height: 10px; width: 100%" class="js-example-basic-single" id="id_themes_discussion" onchange="change_id_themes_discussion()">
+                          @for ($i = 0; $i < count($theme); $i++)
+                            @if (isset($_GET['id_theme']))
+                              @if ($theme[$i]->id == $_GET['id_theme'])
+                                <option value="{{ $theme[$i]->id }}" selected>{{ $theme[$i]->theme }}</option>
+                              @else
+                                <option value="{{ $theme[$i]->id }}">{{ $theme[$i]->theme }}</option>
+                              @endif
+                            @else
+                              <option value="{{ $theme[$i]->id }}">{{ $theme[$i]->theme }}</option>
+                            @endif
+                          @endfor
                         </select>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row" style="min-height: 800px">
+              <div class="row" style="height: 850px">
                 <div class="col-md-12 mb-4 mb-lg-0 stretch-card">
                   <div class="card">
                     <div class="card-body">
                       <p class="fs-30 mb-2">Commentaires</p>
                       <hr style="color: lightgray; width: 109%; margin-left: -4.5%;">
-                      <div style="min-height: 60%">
+                      <div style="height: 65%; overflow-y: scroll" id="commentaire">
                         
                         
 
-
-                        <div class="bubbleWrapper">
-                          <div class="inlineContainer hovertext" data-hover="Hello, this is the tooltip">
-                            <img class="inlineIcon" src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png">
-                            <div class="otherBubble other">
-                              Commentaire 1 ...
+                        @for ($i = 0; $i < count($commentaire); $i++)
+                          @if ($commentaire[$i]->id_utilisateur == request()->session()->get('login')->id_utilisateur)
+                            <div class="bubbleWrapper">
+                              <div class="inlineContainer own hovertext" data-hover="{{ $utilisateur_commentaire[$i]->prenom }} {{ $utilisateur_commentaire[$i]->nom }}">
+                                <img class="inlineIcon" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}">
+                                <div class="ownBubble own">
+                                  {{ $commentaire[$i]->commentaire }}
+                                </div>
+                              </div><span class="own">{{ $commentaire[$i]->date }}</span>
                             </div>
-                          </div><span class="other">08:41</span>
-                        </div>
-                        <div class="bubbleWrapper">
-                          <div class="inlineContainer own hovertext" data-hover="Hello, this is the tooltip">
-                            <img class="inlineIcon" src="https://www.pinclipart.com/picdir/middle/205-2059398_blinkk-en-mac-app-store-ninja-icon-transparent.png">
-                            <div class="ownBubble own">
-                             Commentaire 2 ...
+                          @else
+                            <div class="bubbleWrapper">
+                              <div class="inlineContainer hovertext" data-hover="{{ $utilisateur_commentaire[$i]->prenom }} {{ $utilisateur_commentaire[$i]->nom }}">
+                                <img class="inlineIcon" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}">
+                                <div class="otherBubble other">
+                                  {{ $commentaire[$i]->commentaire }}
+                                </div>
+                              </div><span class="other">{{ $commentaire[$i]->date }}</span>
                             </div>
-                          </div><span class="own">08:55</span>
-                        </div>
-                        <div class="bubbleWrapper">
-                          <div class="inlineContainer hovertext" data-hover="Hello, this is the tooltip">
-                            <img class="inlineIcon" src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png">
-                            <div class="otherBubble other">
-                              Commentaire 3 ...
-                            </div>
-                          </div><span class="other">08:41</span>
-                        </div>
-                        <div class="bubbleWrapper">
-                          <div class="inlineContainer hovertext" data-hover="Hello, this is the tooltip">
-                            <img class="inlineIcon" src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png">
-                            <div class="otherBubble other">
-                              Commentaire 4 ...
-                            </div>
-                          </div><span class="other">08:41</span>
-                        </div>
-                        <div class="bubbleWrapper">
-                          <div class="inlineContainer hovertext" data-hover="Hello, this is the tooltip">
-                            <img class="inlineIcon" src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png">
-                            <div class="otherBubble other">
-                              Commentaire 5 ...
-                            </div>
-                          </div><span class="other">08:41</span>
-                        </div>
-                        <div class="bubbleWrapper">
-                          <div class="inlineContainer own hovertext" data-hover="Hello, this is the tooltip">
-                            <img class="inlineIcon" src="https://www.pinclipart.com/picdir/middle/205-2059398_blinkk-en-mac-app-store-ninja-icon-transparent.png">
-                            <div class="ownBubble own">
-                             Commentaire 6 ...
-                            </div>
-                          </div><span class="own">08:55</span>
-                        </div>
+                          @endif
+                        @endfor
 
 
 
@@ -306,20 +292,26 @@
   <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script>
+    function change_id_themes_discussion() {
+      window.location.href = "?id_theme="+document.getElementById('id_themes_discussion').value;
+    }
+
+    let scroll_commentaire = document.getElementById('commentaire');
+		scroll_commentaire.scrollTop = scroll_commentaire.scrollHeight;
 
     $(document).ready(function(){
-      $("#formChangementMotDePasse").submit(function(){
-        $("#loader").removeClass("visible");
-        $("#container").addClass("opacity");
-      });
-      $("#form_changer_photo_de_profil").submit(function(){
-        $("#loader").removeClass("visible");
-        $("#container").addClass("opacity");
-      });
-      $("#formChangementDeProfil").submit(function(){
-        $("#loader").removeClass("visible");
-        $("#container").addClass("opacity");
-      });
+      // $("#formChangementMotDePasse").submit(function(){
+      //   $("#loader").removeClass("visible");
+      //   $("#container").addClass("opacity");
+      // });
+      // $("#form_changer_photo_de_profil").submit(function(){
+      //   $("#loader").removeClass("visible");
+      //   $("#container").addClass("opacity");
+      // });
+      // $("#formChangementDeProfil").submit(function(){
+      //   $("#loader").removeClass("visible");
+      //   $("#container").addClass("opacity");
+      // });
     });
 	</script>
 </body>

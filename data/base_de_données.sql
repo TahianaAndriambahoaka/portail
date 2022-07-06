@@ -299,3 +299,27 @@ IGNORE 1 ROWS
 
 INSERT INTO admin VALUES
 (default, 'nom_administrateur', 'prénom_administrateur', 'administrateur@admin.mg', sha2('administrateur', 256));
+
+INSERT INTO theme VALUES
+(default, 'Évènements'),
+(default, 'Coordination'),
+(default, 'Finance'),
+(default, 'Opérations & techniques'),
+(default, 'Passation des marchés'),
+(default, 'Logistique & intrants');
+
+INSERT INTO sujet VALUES
+(default, 1, 'Sujet 1 à propos du thème Évènements, ceci est juste un Lorem impsum ...', 1, NOW()),
+(default, 1, 'Sujet 2 à propos du thème Évènements, ceci est juste un Lorem impsum ...', 1, NOW()),
+(default, 1, 'Sujet 3 à propos du thème Évènements, ceci est juste un Lorem impsum ...', 1, NOW()),
+(default, 2, 'Sujet 1 à propos du thème Coordination, ceci est juste un Lorem impsum ...', 1, NOW()),
+(default, 2, 'Sujet 2 à propos du thème Coordination, ceci est juste un Lorem impsum ...', 1, NOW()),
+(default, 2, 'Sujet 3 à propos du thème Coordination, ceci est juste un Lorem impsum ...', 1, NOW()),
+(default, 1, 'Sujet 4 à propos du thème Évènements, ceci est juste un Lorem impsum ...', 1, NOW()),
+(default, 1, 'Sujet 5 à propos du thème Évènements, ceci est juste un Lorem impsum ...', 1, NOW()),
+(default, 1, 'Sujet 6 à propos du thème Évènements, ceci est juste un Lorem impsum ...', 1, NOW());
+
+INSERT INTO commentaire VALUES
+(default, 1, 1, 'Bonjour, voici un commentaire que je vais noter n°1', NOW()),
+(default, 1, 1, 'Bonjour, voici un commentaire que je vais noter n°2', NOW()),
+(default, 1, 2, 'Bonjour, voici un commentaire que je vais noter n°1', NOW());
