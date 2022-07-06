@@ -219,48 +219,40 @@
                 <div class="col-md-12 mb-4 mb-lg-0 stretch-card">
                   <div class="card">
                     <div class="card-body">
-                      <p class="fs-30 mb-2">Commentaires</p>
-                      <hr style="color: lightgray; width: 109%; margin-left: -4.5%;">
-                      <div style="height: 65%; overflow-y: scroll" id="commentaire">
-                        
-                        
-
-                        @for ($i = 0; $i < count($commentaire); $i++)
-                          @if ($commentaire[$i]->id_utilisateur == request()->session()->get('login')->id_utilisateur)
-                            <div class="bubbleWrapper">
-                              <div class="inlineContainer own hovertext" data-hover="{{ $utilisateur_commentaire[$i]->prenom }} {{ $utilisateur_commentaire[$i]->nom }}">
-                                <img class="inlineIcon" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}">
-                                <div class="ownBubble own">
-                                  {{ $commentaire[$i]->commentaire }}
-                                </div>
-                              </div><span class="own">{{ $commentaire[$i]->date }}</span>
-                            </div>
-                          @else
-                            <div class="bubbleWrapper">
-                              <div class="inlineContainer hovertext" data-hover="{{ $utilisateur_commentaire[$i]->prenom }} {{ $utilisateur_commentaire[$i]->nom }}">
-                                <img class="inlineIcon" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}">
-                                <div class="otherBubble other">
-                                  {{ $commentaire[$i]->commentaire }}
-                                </div>
-                              </div><span class="other">{{ $commentaire[$i]->date }}</span>
-                            </div>
-                          @endif
-                        @endfor
-
-
-
-
-
-
-
-                      </div>
-                      <hr style="color: lightgray; width: 109%; margin-left: -4.5%;">
-                      <form action="{{ asset('/ATR/plateforme-de-discussion/commenter') }}" method="post">
-                        @csrf
-                        <input type="hidden" name="id_sujet" value="<?php if(isset($_GET['id_sujet'])) { echo $_GET['id_sujet']; } else { echo 1; } ?>">
-                        <textarea class="form-control" name="commentaire" id="" style="width: 100%" rows="10" placeholder="Votre commentaire ..."></textarea>
-                        <button type="submit" class="btn btn-primary btn-sm" style="border-radius: 0%;">Commenter</button>
-                      </form>
+                        <p class="fs-30 mb-2">Commentaires</p>
+                        <hr style="color: lightgray; width: 109%; margin-left: -4.5%;">
+                      @if (count($commentaire) > 0)
+                        <div style="height: 550px; overflow-y: scroll; background-color: rgb(237, 237, 237); width: 108.4%; margin-left: -4.25%; margin-top: -16px" id="commentaire">
+                          @for ($i = 0; $i < count($commentaire); $i++)
+                            @if ($commentaire[$i]->id_utilisateur == request()->session()->get('login')->id_utilisateur)
+                              <div class="bubbleWrapper">
+                                <div class="inlineContainer own hovertext" data-hover="{{ $utilisateur_commentaire[$i]->prenom }} {{ $utilisateur_commentaire[$i]->nom }}">
+                                  <img class="inlineIcon" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}">
+                                  <div class="ownBubble own">
+                                    {{ $commentaire[$i]->commentaire }}
+                                  </div>
+                                </div><span class="own">{{ $commentaire[$i]->date }}</span>
+                              </div>
+                            @else
+                              <div class="bubbleWrapper">
+                                <div class="inlineContainer hovertext" data-hover="{{ $utilisateur_commentaire[$i]->prenom }} {{ $utilisateur_commentaire[$i]->nom }}">
+                                  <img class="inlineIcon" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}">
+                                  <div class="otherBubble other">
+                                    {{ $commentaire[$i]->commentaire }}
+                                  </div>
+                                </div><span class="other">{{ $commentaire[$i]->date }}</span>
+                              </div>
+                            @endif
+                          @endfor
+                        </div>
+                        <hr style="color: lightgray; width: 109%; margin-left: -4.5%; margin-top: 0">
+                        <form action="{{ asset('/ATR/plateforme-de-discussion/commenter') }}" method="post">
+                          @csrf
+                          <input type="hidden" name="id_sujet" value="<?php if(isset($_GET['id_sujet'])) { echo $_GET['id_sujet']; } else { echo 1; } ?>">
+                          <textarea class="form-control" name="commentaire" id="" style="width: 100%" rows="10" placeholder="Votre commentaire ..."></textarea>
+                          <button type="submit" class="btn btn-primary btn-sm" style="border-radius: 0%;">Commenter</button>
+                        </form>
+                      @endif
                     </div>
                   </div>
                 </div>
