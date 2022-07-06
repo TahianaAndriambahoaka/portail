@@ -125,4 +125,14 @@ class utilisateur extends Controller
             return back()->with('errorProfil', $th->getMessage());
         }
     }
+    public function plateforme_de_discussion_commenter(Request $request) {
+        try {
+            $commentaire = $request->input('commentaire');
+            $id_sujet = $request->input('id_sujet');
+            commentaire::insert($id_sujet, Session::get('login')->id_utilisateur, $commentaire);
+            return back();
+        } catch (\Throwable $th) {
+            return back()->with('errorCommentaire', $th->getMessage());
+        }
+    }
 }

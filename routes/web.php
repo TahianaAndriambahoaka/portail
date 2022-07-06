@@ -54,6 +54,7 @@ Route::post('/ATR/profil/changer-mot-de-passe', [utilisateur::class, 'changer_mo
 Route::post('/ATR/profil/changer-photo-de-profil', [utilisateur::class, 'changer_photo_de_profil'])->middleware('utilisateurSession');
 Route::post('/ATR/modification-de-profil', [utilisateur::class, 'modification_de_profil'])->middleware('utilisateurSession');
 Route::get('/ATR/plateforme-de-discussion', [utilisateur::class, 'plateforme_de_discussion'])->middleware('utilisateurSession');
+Route::post('/ATR/plateforme-de-discussion/commenter', [utilisateur::class, 'plateforme_de_discussion_commenter'])->middleware('utilisateurSession');
 
 Route::get('/GCR/profil', [gcr::class, 'profil'])->middleware('utilisateurSession');
 Route::post('/GCR/profil/changer-mot-de-passe', [utilisateur::class, 'changer_mot_de_passe'])->middleware('utilisateurSession');

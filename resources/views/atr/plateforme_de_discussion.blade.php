@@ -255,8 +255,12 @@
 
                       </div>
                       <hr style="color: lightgray; width: 109%; margin-left: -4.5%;">
-                      <textarea class="form-control" name="" id="" style="width: 100%" rows="10" placeholder="Votre commentaire ..."></textarea>
-                      <button class="btn btn-primary btn-sm" style="border-radius: 0%;">Commenter</button>
+                      <form action="{{ asset('/ATR/plateforme-de-discussion/commenter') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="id_sujet" value="<?php if(isset($_GET['id_sujet'])) { echo $_GET['id_sujet']; } else { echo 1; } ?>">
+                        <textarea class="form-control" name="commentaire" id="" style="width: 100%" rows="10" placeholder="Votre commentaire ..."></textarea>
+                        <button type="submit" class="btn btn-primary btn-sm" style="border-radius: 0%;">Commenter</button>
+                      </form>
                     </div>
                   </div>
                 </div>

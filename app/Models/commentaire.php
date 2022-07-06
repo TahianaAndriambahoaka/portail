@@ -14,4 +14,12 @@ class commentaire extends Model
         ->where('id_sujet', '=', $idSujet)
         ->get();
     }
+    public static function insert($id_sujet, $id_utilisateur, $commentaire) {
+        try {
+            $query = sprintf("INSERT INTO commentaire VALUES (default, %d, %d, '%s', NOW())", $id_sujet, $id_utilisateur, $commentaire);
+            DB::insert($query);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }
