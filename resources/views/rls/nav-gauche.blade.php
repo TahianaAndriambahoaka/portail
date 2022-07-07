@@ -7,9 +7,9 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{{asset('/administrateur/utilisateurs?fonction=tous')}}">
+      <a class="nav-link" href="{{asset('/RLS/plateforme-de-discussion')}}">
         <i class="icon-grid menu-icon"></i>
-        <span class="menu-title"></span>
+        <span class="menu-title">Forum de discussion</span>
       </a>
     </li>
   </ul>

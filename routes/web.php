@@ -55,13 +55,20 @@ Route::post('/ATR/profil/changer-photo-de-profil', [utilisateur::class, 'changer
 Route::post('/ATR/modification-de-profil', [utilisateur::class, 'modification_de_profil'])->middleware('utilisateurSession');
 Route::get('/ATR/plateforme-de-discussion', [utilisateur::class, 'plateforme_de_discussion'])->middleware('utilisateurSession');
 Route::post('/ATR/plateforme-de-discussion/commenter', [utilisateur::class, 'plateforme_de_discussion_commenter'])->middleware('utilisateurSession');
+Route::post('/ATR/plateforme-de-discussion/publier-sujet', [utilisateur::class, 'publier_sujet'])->middleware('utilisateurSession');
 
 Route::get('/GCR/profil', [gcr::class, 'profil'])->middleware('utilisateurSession');
 Route::post('/GCR/profil/changer-mot-de-passe', [utilisateur::class, 'changer_mot_de_passe'])->middleware('utilisateurSession');
 Route::post('/GCR/profil/changer-photo-de-profil', [utilisateur::class, 'changer_photo_de_profil'])->middleware('utilisateurSession');
 Route::post('/GCR/modification-de-profil', [utilisateur::class, 'modification_de_profil'])->middleware('utilisateurSession');
+Route::get('/GCR/plateforme-de-discussion', [utilisateur::class, 'plateforme_de_discussion'])->middleware('utilisateurSession');
+Route::post('/GCR/plateforme-de-discussion/commenter', [utilisateur::class, 'plateforme_de_discussion_commenter'])->middleware('utilisateurSession');
+Route::post('/GCR/plateforme-de-discussion/publier-sujet', [utilisateur::class, 'publier_sujet'])->middleware('utilisateurSession');
 
 Route::get('/RLS/profil', [rls::class, 'profil'])->middleware('utilisateurSession');
 Route::post('/RLS/profil/changer-mot-de-passe', [utilisateur::class, 'changer_mot_de_passe'])->middleware('utilisateurSession');
 Route::post('/RLS/profil/changer-photo-de-profil', [utilisateur::class, 'changer_photo_de_profil'])->middleware('utilisateurSession');
 Route::post('/RLS/modification-de-profil', [utilisateur::class, 'modification_de_profil'])->middleware('utilisateurSession');
+Route::get('/RLS/plateforme-de-discussion', [utilisateur::class, 'plateforme_de_discussion'])->middleware('utilisateurSession');
+Route::post('/RLS/plateforme-de-discussion/commenter', [utilisateur::class, 'plateforme_de_discussion_commenter'])->middleware('utilisateurSession');
+Route::post('/RLS/plateforme-de-discussion/publier-sujet', [utilisateur::class, 'publier_sujet'])->middleware('utilisateurSession');

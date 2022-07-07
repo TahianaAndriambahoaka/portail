@@ -16,12 +16,12 @@ class utilisateur extends Controller
 {
     public function plateforme_de_discussion(Request $request) {
         $theme = theme::getAll();
-        $sujet = sujet::getByIdTheme(1, 4);
+        $sujet = sujet::getByIdTheme($theme[0]->id, 4);
         if ($request->input('id_theme') != null) {
             $sujet = sujet::getByIdTheme($request->input('id_theme'), 4);
         }
         if ($request->input('sujet') != null) {
-            $sujet = sujet::getByIdThemeSujet(1, $request->input('sujet'), 4);
+            $sujet = sujet::getByIdThemeSujet($theme[0]->id, $request->input('sujet'), 4);
             if ($request->input('id_theme') != null) {
                 $sujet = sujet::getByIdThemeSujet($request->input('id_theme'), $request->input('sujet'), 4);
             }
@@ -133,6 +133,18 @@ class utilisateur extends Controller
             return back();
         } catch (\Throwable $th) {
             return back()->with('errorCommentaire', $th->getMessage());
+        }
+    }
+    public function publier_sujet(Request $request) {
+        try {
+            $id_theme = $request->input('id_theme');
+            $id_utilisateur = Session::get('login')->id_utilisateur;
+            $sujet = $request->input('sujet');
+            sujet::add($id_theme, $sujet, $id_utilisateur);
+            return back();
+        } catch (\Throwable $th) {
+            
+            return back()->with('errorPublicationSujet', $th->getMessage());
         }
     }
 }

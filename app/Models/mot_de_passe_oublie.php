@@ -19,7 +19,9 @@ class mot_de_passe_oublie extends Model
         }
     }
     public static function getAll($parPage) {
-        return DB::table('mot_de_passe_oublie')->paginate($parPage);
+        return DB::table('mot_de_passe_oublie')
+        ->orderBy('date', 'desc')
+        ->paginate($parPage);
     }
     public static function deleteById($id) {
         try {

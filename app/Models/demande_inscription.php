@@ -22,7 +22,9 @@ class demande_inscription extends Model
         }
     }
     public static function getAll($parPage) {
-        return  DB::table('demande_inscription')->paginate($parPage);
+        return  DB::table('demande_inscription')
+        ->orderBy('date', 'desc')
+        ->paginate($parPage);
         // return DB::select("SELECT * FROM demande_inscription");
     }
     public static function getById($id) {
