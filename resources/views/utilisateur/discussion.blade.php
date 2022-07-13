@@ -72,7 +72,7 @@
       /* min-width: 60px;
       max-width: 700px; */
       min-width: 5%;
-      max-width: 70%;
+      max-width: 200px;
       padding: 14px 18px;
       margin: 6px 8px;
       /* background-color: #5b5377; */
@@ -85,7 +85,7 @@
       /* min-width: 60px;
       max-width: 700px; */
       min-width: 5%;
-      max-width: 70%;
+      max-width: 200px;
       padding: 14px 18px;
       margin: 6px 8px;
       /* background-color: #6C8EA4; */
@@ -149,7 +149,7 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-md-7 grid-margin">
+            <div class="col-md-8 grid-margin">
               <div class="row">
                 <div class="col-md-12 mb-4 stretch-card">
                   <div class="card">
@@ -275,7 +275,7 @@
               </div>
             </div>
 
-            <div class="col-md-5 grid-margin">
+            <div class="col-md-4 grid-margin">
               <div class="row">
                 <div class="col-md-12 mb-4 stretch-card">
                   <div class="card">
