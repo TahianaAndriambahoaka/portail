@@ -69,8 +69,10 @@
       object-fit: contain;
     }
     .ownBubble {
-      min-width: 60px;
-      max-width: 700px;
+      /* min-width: 60px;
+      max-width: 700px; */
+      min-width: 5%;
+      max-width: 70%;
       padding: 14px 18px;
       margin: 6px 8px;
       /* background-color: #5b5377; */
@@ -80,8 +82,10 @@
     
     }
     .otherBubble {
-      min-width: 60px;
-      max-width: 700px;
+      /* min-width: 60px;
+      max-width: 700px; */
+      min-width: 5%;
+      max-width: 70%;
       padding: 14px 18px;
       margin: 6px 8px;
       /* background-color: #6C8EA4; */
@@ -145,12 +149,12 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-md-8 grid-margin">
+            <div class="col-md-7 grid-margin">
               <div class="row">
                 <div class="col-md-12 mb-4 stretch-card">
                   <div class="card">
                     <div class="card-body" style="margin: 1%">
-                      <p class="fs-30 mb-2">
+                      <h3>
                         Rechercher un sujet sur le thème <b>
                         @for ($i = 0; $i < count($theme); $i++)
                           @if (isset($_GET['id_theme']))
@@ -162,7 +166,7 @@
                             @break
                           @endif
                         @endfor</b>
-                      </p><br>
+                        </h3><br>
                       <div class="form-group">
                         <div class="input-group">
                           @if (isset($_GET['sujet']))
@@ -183,7 +187,7 @@
                 <div class="col-md-12 mb-4 stretch-card">
                   <div class="card">
                     <div class="card-body" style="margin: 1%">
-                      <p class="fs-30 mb-2" style="float: left">Les sujets de discussion</p>
+                      <h3 style="float: left">Les sujets de discussion</h3>
                       <br>
                       <div class="table-responsive">
                         <table class="table table-hover">
@@ -254,7 +258,7 @@
                 <div class="col-md-12 mb-4 stretch-card">
                   <div class="card">
                     <div class="card-body" style="margin: 1%">
-                      <p class="fs-30 mb-2">Ajout d'un nouveau sujet</p>
+                      <h3>Ajout d'un nouveau sujet</h3>
                       <form action="{{ $publier_sujet }}" method="post">
                         @csrf
                         @if (isset($_GET['id_theme']))
@@ -271,12 +275,12 @@
               </div>
             </div>
 
-            <div class="col-md-4 grid-margin">
+            <div class="col-md-5 grid-margin">
               <div class="row">
                 <div class="col-md-12 mb-4 stretch-card">
                   <div class="card">
                     <div class="card-body" style="margin: 1%">
-                      <p class="fs-30 mb-2">Les thèmes de discussion</p><br>
+                      <h3>Les thèmes de discussion</h3><br>
                       <div class="form-group">
                         <select style="height: 10px; width: 100%" class="js-example-basic-single" id="id_themes_discussion" onchange="change_id_themes_discussion()">
                           @for ($i = 0; $i < count($theme); $i++)
@@ -300,10 +304,11 @@
                 <div class="col-md-12 mb-4 mb-lg-0 stretch-card">
                   <div class="card">
                     <div class="card-body">
-                        <p class="fs-30 mb-2">Commentaires</p>
+                        <h3>Commentaires</h3>
                         <hr style="color: lightgray; width: 109%; margin-left: -4.5%;">
                       @if (isset($_GET['id_sujet']))
-                        <div style="height: 550px; overflow-y: scroll; background-color: rgb(237, 237, 237); width: 108.4%; margin-left: -4.25%; margin-top: -16px" id="commentaire">
+                        {{-- <div style="height: 550px; overflow-y: scroll; background-color: rgb(237, 237, 237); width: 108.4%; margin-left: -4.25%; margin-top: -16px" id="commentaire"> --}}
+                        <div style="height: 550px; overflow: scroll; background-color: rgb(237, 237, 237)" id="commentaire">
                           @for ($i = 0; $i < count($commentaire); $i++)
                             @if ($commentaire[$i]->id_utilisateur == request()->session()->get('login')->id_utilisateur)
                               <div class="bubbleWrapper">
