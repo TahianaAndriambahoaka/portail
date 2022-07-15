@@ -18,5 +18,11 @@
         <span class="menu-title">Mots de passe oubliés</span>
       </a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{asset('/administrateur/plateforme-de-discussion')}}">
+        <i class="icon-grid menu-icon"></i>
+        <span class="menu-title">Forum de discussion</span>
+      </a>
+    </li>
   </ul>
 </nav>
