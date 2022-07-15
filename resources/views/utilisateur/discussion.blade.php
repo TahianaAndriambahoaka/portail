@@ -77,7 +77,8 @@
       margin: 6px 8px;
       /* background-color: #5b5377; */
       background-color: #797196;
-      border-radius: 16px 16px 0 16px;
+      /* border-radius: 16px 16px 0 16px; */
+      border-radius: 16px 0 16px 16px;
       /* border: 1px solid #443f56; */
     
     }
@@ -90,7 +91,8 @@
       margin: 6px 8px;
       /* background-color: #6C8EA4; */
       background-color: #4b49ac;
-      border-radius: 16px 16px 16px 0;
+      /* border-radius: 16px 16px 16px 0; */
+      border-radius: 0 16px 16px 16px;
       /* border: 1px solid #54788e; */
       
     }
@@ -117,7 +119,7 @@
       opacity: 0;
       /* width: 140px; */
       width: auto;
-      background-color: black;
+      background-color: rgba(0, 0, 0, 0.57);
       color: #fff;
       text-align: center;
       border-radius: 5px;
@@ -128,7 +130,7 @@
       z-index: 1;
       left: 0;
       /* top: 110%; */
-      top: -20%;
+      /* top: -20%; */
     }
 
     .hovertext:hover:before {
@@ -311,10 +313,10 @@
                         <div style="height: 550px; overflow: scroll; background-color: rgb(237, 237, 237)" id="commentaire">
                           @for ($i = 0; $i < count($commentaire); $i++)
                             @if ($commentaire[$i]->id_utilisateur == request()->session()->get('login')->id_utilisateur)
-                              <div class="bubbleWrapper">
-                                <div class="inlineContainer own hovertext" data-hover="{{ $utilisateur_commentaire[$i]->prenom }} {{ $utilisateur_commentaire[$i]->nom }}">
-                                  <img class="inlineIcon" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}">
-                                  <div class="ownBubble own">
+                            <div class="bubbleWrapper">
+                              <div class="inlineContainer own">
+                                <img style="border-radius: 50%; height: 25px; width: 25px" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}"/>
+                                <div class="ownBubble own">
                                     <?php
                                       $varTexteArea= str_replace('<br />', '<br/>', nl2br($commentaire[$i]->commentaire));
                                       echo $varTexteArea;
@@ -325,7 +327,8 @@
                             @else
                               <div class="bubbleWrapper">
                                 <div class="inlineContainer hovertext" data-hover="{{ $utilisateur_commentaire[$i]->prenom }} {{ $utilisateur_commentaire[$i]->nom }}">
-                                  <img class="inlineIcon" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}">
+                                  {{-- <img class="inlineIcon" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}"> --}}
+                                  <img style="border-radius: 50%; height: 25px; width: 25px" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}"/>
                                   <div class="otherBubble other">
                                     <?php
                                       $varTexteArea= str_replace('<br />', '<br/>', nl2br($commentaire[$i]->commentaire));
