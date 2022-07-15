@@ -132,10 +132,19 @@ class administrateur extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
-
-    public function utilisateursWS(Request $request) {
-        $utilisateurs = utilisateur::getAllWS($request->input('fonction'));
-        echo json_encode($utilisateurs);
+    public function recherche_utilisateurs(Request $request) {
+        $fonction = $request->input('fonction');
+        $utilisateurs = utilisateur::getAllRecherche($request->input('fonction'), $request->input('recherche'), 5);
+        $fonctions = [];
+        $regions = [];
+        $districts = [];
+        for ($i=0; $i < count($utilisateurs); $i++) {
+            $login = login::getByIdUtilisateur($utilisateurs[$i]->id)[0];
+            $fonctions[] = fonction::getById($login->id_fonction)[0];
+            $regions[] = region::getById($utilisateurs[$i]->id_region)[0];
+            $districts[] = district::getById($utilisateurs[$i]->id_district)[0];
+        }
+        return view('admin.liste_utilisateurs', ['utilisateurs'=>$utilisateurs, 'fonctions'=>$fonctions, "regions" => $regions, "districts" => $districts, 'allFonctions'=>fonction::getAll(), 'allRegions'=>region::getAll(), 'allDistricts'=>district::getAll(), 'allMinisteres'=>ministere::getAll()]);
     }
     public function mot_de_passe_oublie_reinitialisation(Request $request) {
         try {

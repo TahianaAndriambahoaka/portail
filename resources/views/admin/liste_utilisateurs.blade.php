@@ -43,7 +43,7 @@
                           <div class="input-group-prepend">
                             <button class="btn btn-sm btn-primary" type="button">Fonction</button>
                           </div>
-                          <select class="form-control" id="fonctionAff" onchange="window.location.href = '?fonction='+document.getElementById('fonctionAff').value">
+                          <select class="form-control" id="fonctionAff" onchange="window.location.href = '{{ asset('/administrateur/utilisateurs') }}?fonction='+document.getElementById('fonctionAff').value">
                             <option value="tous" selected>Tous</option>
                             @for ($i = 0; $i < count($allFonctions); $i++)
                               @if ($allFonctions[$i]->id == $_GET['fonction'])
@@ -60,22 +60,25 @@
                       <button type="button" class="btn btn-inverse-success btn-fw" data-bs-toggle="modal" data-bs-target="#modalAjoutUtilisateur">Ajouter un nouvel utilisateur</button>
                     </div>
                     <div class="col-md-6">
-                      <div class="form-group">
-                        <div class="input-group">
-                          @if ($_GET['fonction'] == 'tous')
-                            <input type="text" class="form-control" placeholder="Rechercher les utilisateurs avec tous les profils" id="search">
-                          @else
-                            @for ($i = 0; $i < count($allFonctions); $i++)
-                                @if ($allFonctions[$i]->id == $_GET['fonction'])
-                                  <input type="text" class="form-control" placeholder="Rechercher les utilisateurs avec le profil {{ $allFonctions[$i]->nom }}" id="search">
-                                @endif
-                            @endfor
-                          @endif
-                          <div class="input-group-append">
-                            <button class="btn btn-sm btn-primary" type="button" id="searchButton">Rechercher</button>
+                      <form action="{{ asset('/administrateur/recherche-utilisateurs') }}" method="get">
+                        <input type="hidden" name="fonction" value="{{ $_GET['fonction'] }}">
+                        <div class="form-group">
+                          <div class="input-group">
+                            @if ($_GET['fonction'] == 'tous')
+                              <input type="text" class="form-control" name="recherche" placeholder="Rechercher les utilisateurs avec tous les profils" id="search">
+                            @else
+                              @for ($i = 0; $i < count($allFonctions); $i++)
+                                  @if ($allFonctions[$i]->id == $_GET['fonction'])
+                                    <input type="text" class="form-control" name="recherche" placeholder="Rechercher les utilisateurs avec le profil {{ $allFonctions[$i]->nom }}" id="search">
+                                  @endif
+                              @endfor
+                            @endif
+                            <div class="input-group-append">
+                              <button class="btn btn-sm btn-primary" type="submit" id="searchButton">Rechercher</button>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </form>
                     </div>
                   </div>
                   <br>
@@ -143,54 +146,6 @@
   <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script>
-    $('#searchButton').on('click', function() {
-      var value = $('#search').val().replace(/^\s+|\s+$/gm,'');
-      if (value!='') {
-        $('table tbody tr').hide();
-      } else {
-        $('table tbody tr').show();        
-      }
-      $('table tbody tr td:contains("'+value+'")').parent('tr').show();
-
-      var xhr = new XMLHttpRequest();
-      const fonc = <?php echo json_encode($_GET['fonction']); ?>;
-      xhr.open('GET', `<?php echo asset('/administrateur/utilisateursWS?fonction=')?>${fonc}`);
-      var utilisateurs = [];
-      xhr.onreadystatechange = function() {
-          if (xhr.readyState === 4) {
-              const reponse = JSON.parse(xhr.responseText);
-              for (let i = 0; i < reponse.length; i++)  {
-                  utilisateurs.push(reponse[i]);
-              }
-              var utilisateursAff = [];
-              for (i = 0; i < utilisateurs.length; i++) {
-                const nom = utilisateurs[i].nom;
-                const prenom = utilisateurs[i].prenom;
-                if (nom.includes(value)) {
-                  utilisateursAff.push(utilisateurs[i]);
-                }
-                if (prenom.includes(value)) {
-                  utilisateursAff.push(utilisateurs[i]);
-                }
-              }
-              const allFonctions = <?php echo json_encode($allFonctions); ?>;
-              var element = "";
-              for (let i = 0; i < utilisateursAff.length; i++) {
-                element += '<tr>';
-                  element += `<td style="text-align: center"><image src="{{asset('images/photo_de_profil/${utilisateursAff[i].photo_de_profil}')}}" alt="Photo_de_profil" style="height: 75px; width: 75px;"/></td>`;
-                  element += `<td>${utilisateursAff[i].nom}</td>`;
-                  element += `<td>${utilisateursAff[i].prenom}</td>`;
-                  element += `<td style="text-align: center">${allFonctions[i].nom}</td>`;
-                  // element += `<td><button type="button" class="btn btn-inverse-warning btn-fw" data-bs-toggle="modal" data-bs-target="#modal${utilisateursAff[i].id}">Plus</button></td>`;
-                element += '</tr>';
-              }
-              document.getElementById('listeUtilisateurs').innerHTML = element;
-          }
-      };
-      xhr.send();
-
-    });
-
     $(document).ready(function(){
       $("#formSuppression").submit(function(){
         $("#loader").removeClass("visible");
