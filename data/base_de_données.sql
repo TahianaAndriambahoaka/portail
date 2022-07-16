@@ -323,3 +323,8 @@ INSERT INTO commentaire VALUES
 (default, 1, 1, 'Bonjour, voici un commentaire que je vais noter n°1', NOW()),
 (default, 1, 1, 'Bonjour, voici un commentaire que je vais noter n°2', NOW()),
 (default, 1, 2, 'Bonjour, voici un commentaire que je vais noter n°1', NOW());
+
+-- SELECT TABLE_SCHEMA AS `portail`,
+--   ROUND(SUM(DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024, 2) AS `Size in MB`
+--   FROM information_schema.TABLES
+--   WHERE TABLE_SCHEMA="portail";
