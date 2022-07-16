@@ -371,6 +371,42 @@
   <script src="{{asset('js/jquery-3.3.1.min.js')}}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script src="{{asset('js/vanillaEmojiPicker.js')}}"></script>
+  <script src="https://js.pusher.com/7.1/pusher.min.js"></script>
+  <script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = false;
+
+    var pusher = new Pusher('9bf2d9ab257d9048b8bd', {
+      cluster: 'eu'
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+      const id_utilisateur = data.id_utilisateur;
+      const id_sujet = data.id_sujet;
+      const photo = data.photo;
+      const nom_prenom = data.nom_prenom;
+      const coms = data.commentaire;
+      const date_heure = data.date_heure;
+      <?php if (isset($_GET['id_sujet'])) { ?>
+        if (id_utilisateur != <?php echo json_encode(request()->session()->get('login')->id_utilisateur); ?> && id_sujet == <?php echo $_GET['id_sujet']  ?>) {
+          var com = "";
+          com += `<div class="bubbleWrapper">`;
+                    com += `<div class="inlineContainer hovertext" data-hover="${nom_prenom}">`;
+                      com += `<img style="border-radius: 50%; height: 25px; width: 25px" src="{{ asset('images/photo_de_profil/${photo}') }}"/>`;
+                      com += `<div class="otherBubble other">`;
+                        com += `<?php $varTexteArea= str_replace("<br />", "<br/>", nl2br('${coms}')); echo $varTexteArea; ?>`;
+                      com += `</div>`;
+                    com += `</div><span class="other">${date_heure}</span>`;
+                  com += `</div>`;
+          document.getElementById("commentaire").innerHTML += com;
+          let scroll_commentaire = document.getElementById('commentaire');
+          scroll_commentaire.scrollTop = scroll_commentaire.scrollHeight;
+        }
+      <?php } ?>
+    });
+  </script>
   <script>
     function change_id_themes_discussion() {
       window.location.href = "?id_theme="+document.getElementById('id_themes_discussion').value;

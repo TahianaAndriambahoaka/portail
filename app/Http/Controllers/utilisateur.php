@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Mail;
 use Image;
+use Pusher;
 
 class utilisateur extends Controller
 {
@@ -129,7 +130,28 @@ class utilisateur extends Controller
         try {
             $commentaire = $request->input('commentaire');
             $id_sujet = $request->input('id_sujet');
-            commentaire::insert($id_sujet, Session::get('login')->id_utilisateur, $commentaire);
+            $id_utilisateur = Session::get('login')->id_utilisateur;
+            $utilisateur = ModelsUtilisateur::getById($id_utilisateur)[0];
+            commentaire::insert($id_sujet, $id_utilisateur, $commentaire);
+
+            $options = array(
+                'cluster' => 'eu',
+                'useTLS' => true
+            );
+            $pusher = new Pusher\Pusher(
+                '9bf2d9ab257d9048b8bd',
+                'ccee9964d838d31e2d9a',
+                '1438300',
+                $options
+            );
+            $data['commentaire'] = $commentaire;
+            $data['id_sujet'] = $id_sujet;
+            $data['id_utilisateur'] = $id_utilisateur;
+            $data['nom_prenom'] = $utilisateur->prenom.' '.$utilisateur->nom;
+            $data['photo'] = $utilisateur->photo_de_profil;
+            $data['date_heure'] = date("Y-m-d H:i:s");
+            $pusher->trigger('my-channel', 'my-event', $data);
+
             return back();
         } catch (\Throwable $th) {
             return back()->with('errorCommentaire', $th->getMessage());
