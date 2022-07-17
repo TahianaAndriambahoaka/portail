@@ -12,6 +12,7 @@ class commentaire extends Model
     public static function getByIdSujet($idSujet) {
         return DB::table('commentaire')
         ->where('id_sujet', '=', $idSujet)
+        ->orderBy('date', 'asc')
         ->get();
     }
     public static function insert($id_sujet, $id_utilisateur, $commentaire) {
