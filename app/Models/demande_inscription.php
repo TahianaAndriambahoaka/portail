@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Mail;
+use Illuminate\Support\Facades\Session;
 
 class demande_inscription extends Model
 {
@@ -40,16 +41,17 @@ class demande_inscription extends Model
     public static function valider($id) {
         try {
             $demande = demande_inscription::getById($id)[0];
-            utilisateur::add($demande->nom, $demande->prenom, $demande->email, $demande->telephone1, $demande->telephone2, $demande->telephone3, $demande->id_district, $demande->id_region, $demande->ministere, $demande->direction, $demande->lieu_de_travail, $demande->photo_de_profil, request()->session()->get('administrateur')->id, $demande->date);
+            personne::add($demande->nom, $demande->prenom, false);
+            utilisateur::add(personne::getLast()[0]->id, $demande->email, $demande->telephone1, $demande->telephone2, $demande->telephone3, $demande->id_district, $demande->id_region, $demande->ministere, $demande->direction, $demande->lieu_de_travail, $demande->photo_de_profil, request()->session()->get('administrateur')->id, $demande->date);
             $utilisateur = utilisateur::getLast()[0];
             $mdp = Str::random(10);
-            login::add($utilisateur->id, $demande->email, $mdp, $demande->id_fonction, date('y-m-d'));
+            login::add($utilisateur->id, $demande->email, $mdp, $demande->id_fonction, date('y-m-d'), Session::get('administrateur')->id);
             demande_inscription::deleteById($id);
             $email = $demande->email;
             $data = array('name'=>$demande->nom.' '.$demande->prenom, 'mdp'=>$mdp, 'fonction'=>fonction::getById($demande->id_fonction)[0]->nom, 'login'=>$email);
             Mail::send('mail', $data, function($message) use($email) {
                 $message->to($email, "")->subject("Validation de demande d'inscription");
-                $message->from('tahiana.andriamb@gmail.com','Unité de Coordination des Projets (UCP)');
+                $message->from('no-reply.ucp@hotmail.com','Unité de Coordination des Projets (UCP)');
             });
         } catch (\Throwable $th) {
             throw $th;

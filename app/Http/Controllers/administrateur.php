@@ -19,6 +19,7 @@ use App\Models\mot_de_passe_oublie;
 use App\Models\theme;
 use App\Models\sujet;
 use App\Models\commentaire;
+use App\Models\personne;
 
 class administrateur extends Controller
 {
@@ -121,7 +122,8 @@ class administrateur extends Controller
         $photo_de_profil = 'default_profile_picture.jpg';
         $id_fonction = $_POST['id_fonction'];
         try {
-            utilisateur::add($nom, $prenom, $email, $telephone1, $telephone2, $telephone3, $id_district, $id_region, $ministere, $direction, $lieu_de_travail, $photo_de_profil, request()->session()->get('administrateur')->id, date('y-m-d'));
+            personne::add($nom, $prenom, false);
+            utilisateur::add(personne::getLast()[0]->id, $email, $telephone1, $telephone2, $telephone3, $id_district, $id_region, $ministere, $direction, $lieu_de_travail, $photo_de_profil, request()->session()->get('administrateur')->id, date('y-m-d'));
             $utilisateur = utilisateur::getLast()[0];
             $mdp = Str::random(10);
             login::add($utilisateur->id, $email, $mdp, $id_fonction, date('y-m-d'), request()->session()->get('administrateur')->id);

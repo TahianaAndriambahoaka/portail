@@ -22,9 +22,9 @@ class sujet extends Model
         ->orderBy('date', 'desc')
         ->paginate($nb);
     }
-    public static function add($id_theme, $sujet, $id_utilisateur) {
+    public static function add($id_theme, $sujet, $id_personne) {
         try {
-            DB::insert(sprintf("INSERT INTO sujet VALUES (default, %d, '%s', %d, NOW())", $id_theme, $sujet, $id_utilisateur));
+            DB::insert(sprintf("INSERT INTO sujet VALUES (default, %d, '%s', %d, NOW())", $id_theme, $sujet, $id_personne));
         } catch (\Throwable $th) {
             throw $th;
         }

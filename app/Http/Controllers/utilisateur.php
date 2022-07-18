@@ -33,12 +33,12 @@ class utilisateur extends Controller
             $com = commentaire::getByIdSujet($request->input('id_sujet'));
             $commentaire = $com;
             for ($j=0; $j < count($com); $j++) { 
-                $utilisateur_commentaire[] = ModelsUtilisateur::getById($com[$j]->id_utilisateur)[0];
+                $utilisateur_commentaire[] = ModelsUtilisateur::getByIdPersonne($com[$j]->id_personne)[0];
             }
         }
         $utilisateur_sujet = [];
         for ($i=0; $i < count($sujet); $i++) { 
-            $utilisateur_sujet[] = ModelsUtilisateur::getById($sujet[$i]->id_utilisateur)[0];
+            $utilisateur_sujet[] = ModelsUtilisateur::getByIdPersonne($sujet[$i]->id_personne)[0];
         }
         return view('atr.plateforme_de_discussion', ['theme'=>$theme, 'sujet'=>$sujet, 'utilisateur_sujet'=>$utilisateur_sujet, 'commentaire'=>$commentaire, 'utilisateur_commentaire'=>$utilisateur_commentaire]);
     }
@@ -108,11 +108,11 @@ class utilisateur extends Controller
             $telephone3 = $request->input('telephone3');
             $email = $request->input('email');
             $login = request()->session()->get('login');
-            \App\Models\utilisateur::update_profil($login, $nom, $prenom, $telephone1, $telephone2, $telephone3, $email);
+            ModelsUtilisateur::update_profil(ModelsUtilisateur::getPersonne($login->id_utilisateur)[0]->id, $login, $nom, $prenom, $telephone1, $telephone2, $telephone3, $email);
             if ($email != $login->login) {
                 login::changer_login($login->id, $email);
                 $l = login::getByIdUtilisateur($login->id_utilisateur)[0];
-                $utilisateur = \App\Models\utilisateur::getById($l->id_utilisateur)[0];
+                $utilisateur = ModelsUtilisateur::getById($l->id_utilisateur)[0];
                 Session::forget('login');
                 Session::put('login', $l);
                 $data = array('name'=>$utilisateur->nom.' '.$utilisateur->prenom, 'mdp'=>$mot_de_passe, 'login'=>$l->login);
@@ -131,8 +131,9 @@ class utilisateur extends Controller
             $commentaire = $request->input('commentaire');
             $id_sujet = $request->input('id_sujet');
             $id_utilisateur = Session::get('login')->id_utilisateur;
+            $personne = ModelsUtilisateur::getPersonne($id_utilisateur)[0];
             $utilisateur = ModelsUtilisateur::getById($id_utilisateur)[0];
-            commentaire::insert($id_sujet, $id_utilisateur, $commentaire);
+            commentaire::insert($id_sujet, $personne->id, $commentaire);
 
             $options = array(
                 'cluster' => 'eu',
@@ -146,8 +147,8 @@ class utilisateur extends Controller
             );
             $data['commentaire'] = $commentaire;
             $data['id_sujet'] = $id_sujet;
-            $data['id_utilisateur'] = $id_utilisateur;
-            $data['nom_prenom'] = $utilisateur->prenom.' '.$utilisateur->nom;
+            $data['est_admin'] = $personne->est_admin;
+            $data['nom_prenom'] = $personne->prenom.' '.$personne->nom;
             $data['photo'] = $utilisateur->photo_de_profil;
             $data['date_heure'] = date("Y-m-d H:i:s");
             $pusher->trigger('my-channel', 'my-event', $data);
@@ -160,9 +161,9 @@ class utilisateur extends Controller
     public function publier_sujet(Request $request) {
         try {
             $id_theme = $request->input('id_theme');
-            $id_utilisateur = Session::get('login')->id_utilisateur;
+            $id_personne = ModelsUtilisateur::getPersonne(Session::get('login')->id_utilisateur)[0]->id;
             $sujet = $request->input('sujet');
-            sujet::add($id_theme, $sujet, $id_utilisateur);
+            sujet::add($id_theme, $sujet, $id_personne);
             return back();
         } catch (\Throwable $th) {
             

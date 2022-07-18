@@ -312,7 +312,7 @@
                         {{-- <div style="height: 550px; overflow-y: scroll; background-color: rgb(237, 237, 237); width: 108.4%; margin-left: -4.25%; margin-top: -16px" id="commentaire"> --}}
                         <div style="height: 550px; overflow: scroll; background-color: rgb(237, 237, 237)" id="commentaire">
                           @for ($i = 0; $i < count($commentaire); $i++)
-                            @if ($commentaire[$i]->id_utilisateur == request()->session()->get('login')->id_utilisateur)
+                            @if ($utilisateur_commentaire[$i]->id == request()->session()->get('login')->id_utilisateur)
                             <div class="bubbleWrapper">
                               <div class="inlineContainer own">
                                 <img style="border-radius: 50%; height: 25px; width: 25px" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}"/>

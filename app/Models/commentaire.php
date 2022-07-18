@@ -15,9 +15,9 @@ class commentaire extends Model
         ->orderBy('date', 'asc')
         ->get();
     }
-    public static function insert($id_sujet, $id_utilisateur, $commentaire) {
+    public static function insert($id_sujet, $id_personne, $commentaire) {
         try {
-            $query = sprintf("INSERT INTO commentaire VALUES (default, %d, %d, '%s', NOW())", $id_sujet, $id_utilisateur, $commentaire);
+            $query = sprintf("INSERT INTO commentaire VALUES (default, %d, %d, '%s', NOW())", $id_sujet, $id_personne, $commentaire);
             DB::insert($query);
         } catch (\Throwable $th) {
             throw $th;
