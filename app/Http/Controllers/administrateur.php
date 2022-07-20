@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\admin;
 use App\Models\demande_inscription;
 use App\Models\district;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ use App\Models\theme;
 use App\Models\sujet;
 use App\Models\commentaire;
 use App\Models\personne;
+use Pusher;
 
 class administrateur extends Controller
 {
@@ -200,13 +202,69 @@ class administrateur extends Controller
             $com = commentaire::getByIdSujet($request->input('id_sujet'));
             $commentaire = $com;
             for ($j=0; $j < count($com); $j++) { 
-                $utilisateur_commentaire[] = utilisateur::getById($com[$j]->id_utilisateur)[0];
+                $personne = personne::getById($com[$j]->id_personne)[0];
+                $personne->photo_de_profil = 'default_profile_picture.jpg';
+                if ($personne->est_admin) {
+                    $personne->id_admin = admin::getByIdPersonne($personne->id)[0]->id;
+                    $utilisateur_commentaire[] = $personne;
+                } else {
+                    $utilisateur_commentaire[] = utilisateur::getByIdPersonne($com[$j]->id_personne)[0];
+                }
             }
         }
         $utilisateur_sujet = [];
         for ($i=0; $i < count($sujet); $i++) { 
-            $utilisateur_sujet[] = utilisateur::getById($sujet[$i]->id_utilisateur)[0];
+            $personne = personne::getById($sujet[$i]->id_personne)[0];
+            $personne->photo_de_profil = 'default_profile_picture.jpg';
+            if ($personne->est_admin) {
+                $personne->id_admin = admin::getByIdPersonne($personne->id)[0]->id;
+                $utilisateur_sujet[] = $personne;
+            } else {
+                $utilisateur_sujet[] = utilisateur::getByIdPersonne($sujet[$i]->id_personne)[0];
+            }
         }
         return view('admin.plateforme_de_discussion', ['theme'=>$theme, 'sujet'=>$sujet, 'utilisateur_sujet'=>$utilisateur_sujet, 'commentaire'=>$commentaire, 'utilisateur_commentaire'=>$utilisateur_commentaire]);
+    }
+    public function publier_sujet(Request $request) {
+        try {
+            $id_theme = $request->input('id_theme');
+            $sujet = $request->input('sujet');
+            sujet::add($id_theme, $sujet, Session::get('administrateur')->id_personne);
+            return back();
+        } catch (\Throwable $th) {
+            
+            return back()->with('errorPublicationSujet', $th->getMessage());
+        }
+    }
+    public function plateforme_de_discussion_commenter(Request $request) {
+        try {
+            $commentaire = $request->input('commentaire');
+            $id_sujet = $request->input('id_sujet');
+            $admin = Session::get('administrateur');
+            $personne = personne::getById($admin->id_personne)[0];
+            commentaire::insert($id_sujet, $personne->id, $commentaire);
+
+            $options = array(
+                'cluster' => 'eu',
+                'useTLS' => true
+            );
+            $pusher = new Pusher\Pusher(
+                '9bf2d9ab257d9048b8bd',
+                'ccee9964d838d31e2d9a',
+                '1438300',
+                $options
+            );
+            $data['commentaire'] = $commentaire;
+            $data['id_sujet'] = $id_sujet;
+            $data['est_admin'] = $personne->est_admin;
+            $data['nom_prenom'] = $personne->prenom.' '.$personne->nom;
+            $data['photo'] = 'default_profile_picture.jpg';
+            $data['date_heure'] = date("Y-m-d H:i:s");
+            $pusher->trigger('my-channel', 'my-event', $data);
+
+            return back();
+        } catch (\Throwable $th) {
+            return back()->with('errorCommentaire', $th->getMessage());
+        }
     }
 }

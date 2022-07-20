@@ -296,23 +296,49 @@
                         {{-- <div style="height: 550px; overflow-y: scroll; background-color: rgb(237, 237, 237); width: 108.4%; margin-left: -4.25%; margin-top: -16px" id="commentaire"> --}}
                         <div style="height: 550px; overflow: scroll; background-color: rgb(237, 237, 237)" id="commentaire">
                           @for ($i = 0; $i < count($commentaire); $i++)
-                            {{-- @if ($commentaire[$i]->id_utilisateur == request()->session()->get('administrateur')->id) --}}
-                            @if (0 == request()->session()->get('administrateur')->id)
-                              <div class="bubbleWrapper">
-                                <div class="inlineContainer own">
-                                  <img style="border-radius: 50%; height: 25px; width: 25px" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}"/>
-                                  <div class="ownBubble own">
+                            @if (isset($utilisateur_commentaire[$i]->est_admin))
+                              @if ($utilisateur_commentaire[$i]->est_admin)
+                                @if ($utilisateur_commentaire[$i]->id_admin == request()->session()->get('administrateur')->id)
+                                  <div class="bubbleWrapper">
+                                    <div class="inlineContainer own">
+                                      <img style="border-radius: 50%; height: 25px; width: 25px" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}"/>
+                                      <div class="ownBubble own">
+                                          <?php
+                                            $varTexteArea= str_replace('<br />', '<br/>', nl2br($commentaire[$i]->commentaire));
+                                            echo $varTexteArea;
+                                          ?>
+                                        </div>
+                                      </div><span class="own">{{ $commentaire[$i]->date }}</span>
+                                  </div>
+                                @else
+                                  <div class="bubbleWrapper">
+                                    <div class="inlineContainer hovertext" data-hover="{{ $utilisateur_commentaire[$i]->prenom }} {{ $utilisateur_commentaire[$i]->nom }}">
+                                      <img style="border-radius: 50%; height: 25px; width: 25px" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}"/>
+                                      <div class="ownBubble other">
+                                          <?php
+                                            $varTexteArea= str_replace('<br />', '<br/>', nl2br($commentaire[$i]->commentaire));
+                                            echo $varTexteArea;
+                                          ?>
+                                        </div>
+                                      </div><span class="own">{{ $commentaire[$i]->date }}</span>
+                                  </div>
+                                @endif
+                              @else
+                                <div class="bubbleWrapper">
+                                  <div class="inlineContainer hovertext" data-hover="{{ $utilisateur_commentaire[$i]->prenom }} {{ $utilisateur_commentaire[$i]->nom }}">
+                                    <img style="border-radius: 50%; height: 25px; width: 25px" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}"/>
+                                    <div class="otherBubble other">
                                       <?php
                                         $varTexteArea= str_replace('<br />', '<br/>', nl2br($commentaire[$i]->commentaire));
                                         echo $varTexteArea;
                                       ?>
                                     </div>
-                                  </div><span class="own">{{ $commentaire[$i]->date }}</span>
-                              </div>
+                                  </div><span class="other">{{ $commentaire[$i]->date }}</span>
+                                </div>
+                              @endif
                             @else
                               <div class="bubbleWrapper">
                                 <div class="inlineContainer hovertext" data-hover="{{ $utilisateur_commentaire[$i]->prenom }} {{ $utilisateur_commentaire[$i]->nom }}">
-                                  {{-- <img class="inlineIcon" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}"> --}}
                                   <img style="border-radius: 50%; height: 25px; width: 25px" src="{{asset('images/photo_de_profil/'.$utilisateur_commentaire[$i]->photo_de_profil)}}"/>
                                   <div class="otherBubble other">
                                     <?php
@@ -383,14 +409,13 @@
 
     var channel = pusher.subscribe('my-channel');
     channel.bind('my-event', function(data) {
-      const id_utilisateur = data.id_utilisateur;
       const id_sujet = data.id_sujet;
       const photo = data.photo;
       const nom_prenom = data.nom_prenom;
       const coms = data.commentaire;
       const date_heure = data.date_heure;
       <?php if (isset($_GET['id_sujet'])) { ?>
-        if (id_utilisateur != <?php echo json_encode(request()->session()->get('login')->id_utilisateur); ?> && id_sujet == <?php echo $_GET['id_sujet']  ?>) {
+        if (id_sujet == <?php echo $_GET['id_sujet']  ?>) {
           var com = "";
           com += `<div class="bubbleWrapper">`;
                     com += `<div class="inlineContainer hovertext" data-hover="${nom_prenom}">`;

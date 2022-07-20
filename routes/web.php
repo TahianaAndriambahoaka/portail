@@ -47,6 +47,8 @@ Route::get('/administrateur/mot_de_passe_oublie', [administrateur::class, 'mot_d
 Route::post('/administrateur/mot_de_passe_oublie/reinitialisation', [administrateur::class, 'mot_de_passe_oublie_reinitialisation'])->middleware('adminSession');
 Route::post('/administrateur/mot_de_passe_oublie/refus', [administrateur::class, 'mot_de_passe_oublie_refus'])->middleware('adminSession');
 Route::get('/administrateur/plateforme-de-discussion', [administrateur::class, 'plateforme_de_discussion'])->middleware('adminSession');
+Route::post('/administrateur/plateforme-de-discussion/publier-sujet', [administrateur::class, 'publier_sujet'])->middleware('utilisateurSession');
+Route::post('/administrateur/plateforme-de-discussion/commenter', [administrateur::class, 'plateforme_de_discussion_commenter'])->middleware('utilisateurSession');
 
 Route::get('/utilisateur/deconnexion', [utilisateur::class, 'deconnexion'])->middleware('utilisateurSession');
 

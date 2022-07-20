@@ -28,4 +28,7 @@ class personne extends Model
             throw $th;
         }
     }
+    public static function getById($id) {
+        return DB::select(sprintf("SELECT * FROM personne WHERE id = %d", $id));
+    }
 }

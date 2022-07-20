@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Session;
 use Mail;
 use Image;
 use Pusher;
+use App\Models\personne;
+use App\Models\admin;
 
 class utilisateur extends Controller
 {
@@ -33,12 +35,26 @@ class utilisateur extends Controller
             $com = commentaire::getByIdSujet($request->input('id_sujet'));
             $commentaire = $com;
             for ($j=0; $j < count($com); $j++) { 
-                $utilisateur_commentaire[] = ModelsUtilisateur::getByIdPersonne($com[$j]->id_personne)[0];
+                $personne = personne::getById($com[$j]->id_personne)[0];
+                $personne->photo_de_profil = 'default_profile_picture.jpg';
+                if ($personne->est_admin) {
+                    $personne->id_admin = admin::getByIdPersonne($personne->id)[0]->id;
+                    $utilisateur_commentaire[] = $personne;
+                } else {
+                    $utilisateur_commentaire[] = ModelsUtilisateur::getByIdPersonne($com[$j]->id_personne)[0];
+                }
             }
         }
         $utilisateur_sujet = [];
         for ($i=0; $i < count($sujet); $i++) { 
-            $utilisateur_sujet[] = ModelsUtilisateur::getByIdPersonne($sujet[$i]->id_personne)[0];
+            $personne = personne::getById($sujet[$i]->id_personne)[0];
+            $personne->photo_de_profil = 'default_profile_picture.jpg';
+            if ($personne->est_admin) {
+                $personne->id_admin = admin::getByIdPersonne($personne->id)[0]->id;
+                $utilisateur_sujet[] = $personne;
+            } else {
+                $utilisateur_sujet[] = ModelsUtilisateur::getByIdPersonne($sujet[$i]->id_personne)[0];
+            }
         }
         return view('atr.plateforme_de_discussion', ['theme'=>$theme, 'sujet'=>$sujet, 'utilisateur_sujet'=>$utilisateur_sujet, 'commentaire'=>$commentaire, 'utilisateur_commentaire'=>$utilisateur_commentaire]);
     }
@@ -55,7 +71,7 @@ class utilisateur extends Controller
                 return back()->with('errorMDP', "Une erreur s'est produite");
             } else {
                 $login = request()->session()->get('login');
-                $utilisateur = \App\Models\utilisateur::getById($login->id_utilisateur)[0];
+                $utilisateur = ModelsUtilisateur::getById($login->id_utilisateur)[0];
                 $email = $login->login;
                 login::changer_mot_de_passe($login->id, $nouveauMdp1);
                 $data = array('name'=>$utilisateur->nom.' '.$utilisateur->prenom);
@@ -89,7 +105,7 @@ class utilisateur extends Controller
                 $img->resize(150, 150, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save($destinationPath.'/'.$photo_de_profil);
-                \App\Models\utilisateur::update_photo_de_profil(request()->session()->get('login'), $photo_de_profil);
+                ModelsUtilisateur::update_photo_de_profil(request()->session()->get('login'), $photo_de_profil);
                 return back()->with('successPDP', "Changement de photo de profil effectué avec succès!");
             } catch (\Throwable $th) {
                 return back()->with('errorPDP', $th->getMessage());
