@@ -34,44 +34,59 @@ Route::post('/oublie-de-mot-de-passe', [authentification::class, 'oublie_de_mot_
 Route::get('/inscription', [authentification::class, 'affichage_inscription']);
 Route::post('/inscription', [authentification::class, 'inscription']);
 
-Route::get('/administrateur/liste-demandes-inscription', [administrateur::class, 'demandes_inscription'])->middleware('adminSession');
-Route::get('/administrateur/liste-demandes-inscription-{id}', [administrateur::class, 'demandes_inscription_detail'])->where('id', '(.*)')->middleware('adminSession');
-Route::get('/administrateur/deconnexion', [administrateur::class, 'deconnexion'])->middleware('adminSession');
-Route::post('/administrateur/demande-inscription', [administrateur::class, 'validation_refus_demande_inscription'])->middleware('adminSession');
-Route::get('/administrateur/utilisateurs', [administrateur::class, 'liste_utilisateurs'])->middleware('adminSession');
-Route::post('/administrateur/utilisateur/suppression', [administrateur::class, 'suppression_utilisateur'])->middleware('adminSession');
-Route::post('/administrateur/utilisateur/modification-fonction', [administrateur::class, 'modification_fonction_utilisateur'])->middleware('adminSession');
-Route::post('/administrateur/inscription-utilisateur', [administrateur::class, 'inscription'])->middleware('adminSession');
-Route::get('/administrateur/recherche-utilisateurs', [administrateur::class, 'recherche_utilisateurs'])->middleware('adminSession');
-Route::get('/administrateur/mot_de_passe_oublie', [administrateur::class, 'mot_de_passe_oublie'])->middleware('adminSession');
-Route::post('/administrateur/mot_de_passe_oublie/reinitialisation', [administrateur::class, 'mot_de_passe_oublie_reinitialisation'])->middleware('adminSession');
-Route::post('/administrateur/mot_de_passe_oublie/refus', [administrateur::class, 'mot_de_passe_oublie_refus'])->middleware('adminSession');
-Route::get('/administrateur/plateforme-de-discussion', [administrateur::class, 'plateforme_de_discussion'])->middleware('adminSession');
-Route::post('/administrateur/plateforme-de-discussion/publier-sujet', [administrateur::class, 'publier_sujet'])->middleware('utilisateurSession');
-Route::post('/administrateur/plateforme-de-discussion/commenter', [administrateur::class, 'plateforme_de_discussion_commenter'])->middleware('utilisateurSession');
+Route::controller(administrateur::class)->group(function() {
+    Route::get('/administrateur/liste-demandes-inscription', 'demandes_inscription')->middleware('adminSession');
+    Route::get('/administrateur/liste-demandes-inscription-{id}', 'demandes_inscription_detail')->where('id', '(.*)')->middleware('adminSession');
+    Route::get('/administrateur/deconnexion', 'deconnexion')->middleware('adminSession');
+    Route::post('/administrateur/demande-inscription', 'validation_refus_demande_inscription')->middleware('adminSession');
+    Route::get('/administrateur/utilisateurs', 'liste_utilisateurs')->middleware('adminSession');
+    Route::post('/administrateur/utilisateur/suppression', 'suppression_utilisateur')->middleware('adminSession');
+    Route::post('/administrateur/utilisateur/modification-fonction', 'modification_fonction_utilisateur')->middleware('adminSession');
+    Route::post('/administrateur/inscription-utilisateur', 'inscription')->middleware('adminSession');
+    Route::get('/administrateur/recherche-utilisateurs', 'recherche_utilisateurs')->middleware('adminSession');
+    Route::get('/administrateur/mot_de_passe_oublie', 'mot_de_passe_oublie')->middleware('adminSession');
+    Route::post('/administrateur/mot_de_passe_oublie/reinitialisation', 'mot_de_passe_oublie_reinitialisation')->middleware('adminSession');
+    Route::post('/administrateur/mot_de_passe_oublie/refus', 'mot_de_passe_oublie_refus')->middleware('adminSession');
+    Route::get('/administrateur/plateforme-de-discussion', 'plateforme_de_discussion')->middleware('adminSession');
+    Route::post('/administrateur/plateforme-de-discussion/publier-sujet', 'publier_sujet')->middleware('adminSession');
+    Route::post('/administrateur/plateforme-de-discussion/commenter', 'plateforme_de_discussion_commenter')->middleware('adminSession');
+    Route::post('/administrateur/plateforme-de-discussion/ajouter-theme', 'ajouter_theme')->middleware('adminSession');
+});
 
-Route::get('/utilisateur/deconnexion', [utilisateur::class, 'deconnexion'])->middleware('utilisateurSession');
 
-Route::get('/ATR/profil', [atr::class, 'profil'])->middleware('utilisateurSession');
-Route::post('/ATR/profil/changer-mot-de-passe', [utilisateur::class, 'changer_mot_de_passe'])->middleware('utilisateurSession');
-Route::post('/ATR/profil/changer-photo-de-profil', [utilisateur::class, 'changer_photo_de_profil'])->middleware('utilisateurSession');
-Route::post('/ATR/modification-de-profil', [utilisateur::class, 'modification_de_profil'])->middleware('utilisateurSession');
-Route::get('/ATR/plateforme-de-discussion', [utilisateur::class, 'plateforme_de_discussion'])->middleware('utilisateurSession');
-Route::post('/ATR/plateforme-de-discussion/commenter', [utilisateur::class, 'plateforme_de_discussion_commenter'])->middleware('utilisateurSession');
-Route::post('/ATR/plateforme-de-discussion/publier-sujet', [utilisateur::class, 'publier_sujet'])->middleware('utilisateurSession');
 
-Route::get('/GCR/profil', [gcr::class, 'profil'])->middleware('utilisateurSession');
-Route::post('/GCR/profil/changer-mot-de-passe', [utilisateur::class, 'changer_mot_de_passe'])->middleware('utilisateurSession');
-Route::post('/GCR/profil/changer-photo-de-profil', [utilisateur::class, 'changer_photo_de_profil'])->middleware('utilisateurSession');
-Route::post('/GCR/modification-de-profil', [utilisateur::class, 'modification_de_profil'])->middleware('utilisateurSession');
-Route::get('/GCR/plateforme-de-discussion', [utilisateur::class, 'plateforme_de_discussion'])->middleware('utilisateurSession');
-Route::post('/GCR/plateforme-de-discussion/commenter', [utilisateur::class, 'plateforme_de_discussion_commenter'])->middleware('utilisateurSession');
-Route::post('/GCR/plateforme-de-discussion/publier-sujet', [utilisateur::class, 'publier_sujet'])->middleware('utilisateurSession');
+Route::controller(utilisateur::class)->group(function() {
+    Route::get('/utilisateur/deconnexion', 'deconnexion')->middleware('utilisateurSession');
+    Route::post('/ATR/profil/changer-mot-de-passe', 'changer_mot_de_passe')->middleware('utilisateurSession');
+    Route::post('/ATR/profil/changer-photo-de-profil', 'changer_photo_de_profil')->middleware('utilisateurSession');
+    Route::post('/ATR/modification-de-profil', 'modification_de_profil')->middleware('utilisateurSession');
+    Route::get('/ATR/plateforme-de-discussion', 'plateforme_de_discussion')->middleware('utilisateurSession');
+    Route::post('/ATR/plateforme-de-discussion/commenter', 'plateforme_de_discussion_commenter')->middleware('utilisateurSession');
+    Route::post('/ATR/plateforme-de-discussion/publier-sujet', 'publier_sujet')->middleware('utilisateurSession');
 
-Route::get('/RLS/profil', [rls::class, 'profil'])->middleware('utilisateurSession');
-Route::post('/RLS/profil/changer-mot-de-passe', [utilisateur::class, 'changer_mot_de_passe'])->middleware('utilisateurSession');
-Route::post('/RLS/profil/changer-photo-de-profil', [utilisateur::class, 'changer_photo_de_profil'])->middleware('utilisateurSession');
-Route::post('/RLS/modification-de-profil', [utilisateur::class, 'modification_de_profil'])->middleware('utilisateurSession');
-Route::get('/RLS/plateforme-de-discussion', [utilisateur::class, 'plateforme_de_discussion'])->middleware('utilisateurSession');
-Route::post('/RLS/plateforme-de-discussion/commenter', [utilisateur::class, 'plateforme_de_discussion_commenter'])->middleware('utilisateurSession');
-Route::post('/RLS/plateforme-de-discussion/publier-sujet', [utilisateur::class, 'publier_sujet'])->middleware('utilisateurSession');
+    Route::post('/GCR/profil/changer-mot-de-passe', 'changer_mot_de_passe')->middleware('utilisateurSession');
+    Route::post('/GCR/profil/changer-photo-de-profil', 'changer_photo_de_profil')->middleware('utilisateurSession');
+    Route::post('/GCR/modification-de-profil', 'modification_de_profil')->middleware('utilisateurSession');
+    Route::get('/GCR/plateforme-de-discussion', 'plateforme_de_discussion')->middleware('utilisateurSession');
+    Route::post('/GCR/plateforme-de-discussion/commenter', 'plateforme_de_discussion_commenter')->middleware('utilisateurSession');
+    Route::post('/GCR/plateforme-de-discussion/publier-sujet', 'publier_sujet')->middleware('utilisateurSession');
+
+    Route::post('/RLS/profil/changer-mot-de-passe', 'changer_mot_de_passe')->middleware('utilisateurSession');
+    Route::post('/RLS/profil/changer-photo-de-profil', 'changer_photo_de_profil')->middleware('utilisateurSession');
+    Route::post('/RLS/modification-de-profil', 'modification_de_profil')->middleware('utilisateurSession');
+    Route::get('/RLS/plateforme-de-discussion', 'plateforme_de_discussion')->middleware('utilisateurSession');
+    Route::post('/RLS/plateforme-de-discussion/commenter', 'plateforme_de_discussion_commenter')->middleware('utilisateurSession');
+    Route::post('/RLS/plateforme-de-discussion/publier-sujet', 'publier_sujet')->middleware('utilisateurSession');
+});
+
+Route::controller(atr::class)->group(function() {
+    Route::get('/ATR/profil', 'profil')->middleware('utilisateurSession');
+});
+
+Route::controller(gcr::class)->group(function() {
+    Route::get('/GCR/profil', 'profil')->middleware('utilisateurSession');
+});
+
+Route::controller(rls::class)->group(function() {
+    Route::get('/RLS/profil', 'profil')->middleware('utilisateurSession');
+});

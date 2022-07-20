@@ -1,9 +1,3 @@
-<?php
-    $header = 'admin.header';
-    $nav_gauche = 'admin.nav-gauche';
-    $publier_sujet = asset('/administrateur/plateforme-de-discussion/publier-sujet');
-    $commenter = asset('/administrateur/plateforme-de-discussion/commenter');
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -128,9 +122,9 @@
 </head>
 <body>
   <div class="container-scroller" id="container">
-    @include($header)
+    @include('admin.header')
     <div class="container-fluid page-body-wrapper">
-        @include($nav_gauche)
+        @include('admin.nav-gauche')
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
@@ -245,7 +239,7 @@
                   <div class="card">
                     <div class="card-body" style="margin: 1%">
                       <h3>Ajout d'un nouveau sujet</h3>
-                      <form action="{{ $publier_sujet }}" method="post">
+                      <form action="{{ asset('/administrateur/plateforme-de-discussion/publier-sujet') }}" method="post">
                         @csrf
                         @if (isset($_GET['id_theme']))
                           <input type="hidden" name="id_theme" value="{{ $_GET['id_theme'] }}">
@@ -281,6 +275,27 @@
                             @endif
                           @endfor
                         </select>
+                      </div>
+                      <button class="btn btn-sm btn-primary" type="button" onclick="document.getElementById('rowAjoutTheme').removeAttribute('style')">Ajouter un thème</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="display: none" id="rowAjoutTheme">
+                <div class="col-md-12 mb-4 stretch-card">
+                  <div class="card">
+                    <div class="card-body" style="margin: 1%">
+                      <h3>Nouveau thème de discussion</h3><br>
+                      <div class="form-group">
+                        <form action="{{ asset('/administrateur/plateforme-de-discussion/ajouter-theme') }}" method="post">
+                          @csrf
+                          <div class="input-group">
+                            <input class="form-control" name="theme" placeholder="Écrivez ici votre nouveau thème de discussion"/>
+                            <div class="input-group-append">
+                              <button class="btn btn-sm btn-primary" type="submit">Ajouter</button>
+                            </div>
+                          </div>
+                        </form>
                       </div>
                     </div>
                   </div>
@@ -352,7 +367,7 @@
                           @endfor
                         </div>
                         <hr style="color: lightgray; width: 109%; margin-left: -4.5%; margin-top: 0">
-                        <form action="{{ $commenter }}" method="post">
+                        <form action="{{ asset('/administrateur/plateforme-de-discussion/commenter') }}" method="post">
                           @csrf
                           <input type="hidden" name="id_sujet" value="<?php if(isset($_GET['id_sujet'])) { echo $_GET['id_sujet']; } else { echo $sujet[0]->id; } ?>">
                           <textarea class="form-control" name="commentaire" id="commenter" style="width: 100%" rows="10" wrap="on" placeholder="Votre commentaire ..."></textarea>

@@ -12,4 +12,11 @@ class theme extends Model
     public static function getAll() {
         return DB::select("SELECT * FROM theme");
     }
+    public static function add($theme, $id_admin) {
+        try {
+            DB::insert(sprintf("INSERT INTO theme VALUES (default, '%s', %d)", $theme, $id_admin));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

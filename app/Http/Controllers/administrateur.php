@@ -225,6 +225,16 @@ class administrateur extends Controller
         }
         return view('admin.plateforme_de_discussion', ['theme'=>$theme, 'sujet'=>$sujet, 'utilisateur_sujet'=>$utilisateur_sujet, 'commentaire'=>$commentaire, 'utilisateur_commentaire'=>$utilisateur_commentaire]);
     }
+    public function ajouter_theme(Request $request) {
+        try {
+            $theme = $request->input('theme');
+            theme::add($theme, Session::get('administrateur')->id);
+            return back();
+        } catch (\Throwable $th) {
+            
+            return back()->with('errorPublicationSujet', $th->getMessage());
+        }
+    }
     public function publier_sujet(Request $request) {
         try {
             $id_theme = $request->input('id_theme');
