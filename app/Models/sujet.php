@@ -29,4 +29,18 @@ class sujet extends Model
             throw $th;
         }
     }
+    public static function deleteById($id) {
+        try {
+            DB::delete(sprintf("DELETE FROM sujet WHERE id = %d", $id));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    public static function updateById($id, $sujet) {
+        try {
+            DB::delete(sprintf("UPDATE sujet SET sujet = '%s' WHERE id = %d", $sujet, $id));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

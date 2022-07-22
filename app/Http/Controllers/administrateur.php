@@ -25,6 +25,25 @@ use Pusher;
 
 class administrateur extends Controller
 {
+    public function modifier_sujet(request $request) {
+        try {
+            $id_sujet = $request->input('id_sujet');
+            $sujet = $request->input('sujet');
+            sujet::updateById($id_sujet, $sujet);
+            return back()->with('success', "Sujet modifié!");
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+    public function supprimer_sujet(request $request) {
+        try {
+            $id_sujet = $request->input('id_sujet');
+            sujet::deleteById($id_sujet);
+            return back()->with('success', "Sujet supprimé!");
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
     public function mot_de_passe_oublie() {
         $mot_de_passe_oublie = mot_de_passe_oublie::getAll(5);
         $utilisateurs = [];

@@ -193,19 +193,19 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title">Confirmation de suppression d'utilisateur</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  <h5 class="modal-title">Confirmation de suppression d'utilisateur</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                <h6>Voulez-vous vraiment supprimer cet utilisateur?</h6>
-                <h6>Veuillez écrire le motif ci-dessous:</h6>
-                <p>
+                  <h6>Voulez-vous vraiment supprimer cet utilisateur?</h6>
+                  <h6>Veuillez écrire le motif ci-dessous:</h6>
+                  <p>
                     <textarea class="form-control" rows="4" id="motifTextarea{{$utilisateurs[$i]->id}}" required></textarea>
-                </p>
+                  </p>
                 </div>
                 <div class="modal-footer">
-                <button type="submit" class="btn btn-inverse-danger btn-fw" onclick="document.getElementById('motifSuppression'+{{$utilisateurs[$i]->id}}).value = document.getElementById('motifTextarea'+{{$utilisateurs[$i]->id}}).value;$('#suppression'+{{$utilisateurs[$i]->id}}).click();" data-bs-dismiss="modal">Oui</button>
-                <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Non</button>
+                  <button type="submit" class="btn btn-inverse-danger btn-fw" onclick="document.getElementById('motifSuppression'+{{$utilisateurs[$i]->id}}).value = document.getElementById('motifTextarea'+{{$utilisateurs[$i]->id}}).value;$('#suppression'+{{$utilisateurs[$i]->id}}).click();" data-bs-dismiss="modal">Oui</button>
+                  <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Non</button>
                 </div>
             </div>
         </div>

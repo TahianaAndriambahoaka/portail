@@ -175,7 +175,7 @@
                             @for ($i = 0; $i < count($sujet); $i++)
                               @if (isset($_GET['id_sujet']))
                                 @if ($sujet[$i]->id == $_GET['id_sujet'])
-                                  <tr style="background-color: lightgray" onclick="let queryParams = new URLSearchParams(window.location.search), id_sujet={{ $sujet[$i]->id }};queryParams.set('id_sujet', id_sujet);history.replaceState(null, null, '?' + queryParams.toString());window.location.reload();">
+                                  <tr style="background-color: lightgray">
                                     <td style="width: 10%; text-align: center">
                                       <div class="hovertext" data-hover="{{ $utilisateur_sujet[$i]->prenom }} {{ $utilisateur_sujet[$i]->nom }}">
                                         <img src="{{asset('images/photo_de_profil/'.$utilisateur_sujet[$i]->photo_de_profil)}}" style="height: 50px; width: 50px"><br><br>
@@ -187,10 +187,25 @@
                                         $varTexteArea= str_replace('<br />', '<br/>', nl2br($sujet[$i]->sujet));
                                         echo $varTexteArea;
                                       ?>
+                                    </td>
+                                    <td style="width: 0px" onclick="let queryParams = new URLSearchParams(window.location.search), id_sujet={{ $sujet[$i]->id }};queryParams.set('id_sujet', id_sujet);history.replaceState(null, null, '?' + queryParams.toString());window.location.reload();">
+                                      <button type="button" style="border: none; background-color: #ffffff00">
+                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAACZUlEQVRoge2YwUsUcRTHP29KD2FQUIdcyDp3iNZ0BaHsoHbt4CU6pMSeXclY6uIhgkREsMBdAoVO0SUqMluDiDBUsv4BCRfSxVhU7FBszesgwsw66cy2O7tb87n93nvD7/ud95v3g4GAgICAgP8ZcQoOz62cB/O6iLSiHPZblA1hDZV3gg71Nte/3ZnOY3huOS5wxylXZhTVeCwSGrQGbSJHZpc7VZjMj1cQKqKdvU2h1HbAsGZNkX4qVzyAqEq/NWDkZSP+6imIFuvCZgChzlcphXHQujD+VFUtVL2B/V6KpxIJVtPpUmkB4GhDAxejUdf1njqgUvoB5XULTx3w8mb8ouq/gcBAuQmmULEJplC1ERgoN75NIa/TxS2+TaFSDbBgCpWbf87AZllUeGPDurAZUGTOXy0FYdNo74Cpg4D6qcYjiqjtz5zNQF9L/StU4ziYmEokeJlM7rnDZjbL89FRV7UeUZAbsabQtDW44yOORUKDAm0gz4Dsdnw1nebr0tKuO6wsLjI5NsZaJoOaZrGEZ0GeGgbnYs3HhvKTrq+XcHu3Aiykxh2fCXf0RFG9B9QovDC05vKH6eSGU20x8XSROXGqq6u2dr3uPqrXABXk7kLr8ZsMDBStBbvxVwYa26JHzPXc460jx3dFowup8Yek9ny0aBRs4Exnz2k1c08ETgBfTFMvfXo9MV9Eba4o6CZubL/aJabOsCV+Zl9Oz5ZDPBRgINzRfVuRR8ABhQc/Dn27MP9mIlMCba5wfYQE/azISZRbwE9V7fs4PTFaQm2ucN2BXyJXEN4Ds2JIRyWID6gEfgMQ5MIVabyvzQAAAABJRU5ErkJggg==">
+                                      </button>
+                                    </td>
+                                    <td style="width: 0px">
+                                      <button data-bs-toggle="modal" data-bs-target="#modalModificationSujet{{$sujet[$i]->id}}" type="button" style="border: none; background-color: #ffffff00">
+                                        <img src="data:image/png;base64,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">
+                                      </button>
+                                    </td>
+                                    <td style="width: 0px">
+                                      <button data-bs-toggle="modal" data-bs-target="#modalValiderSuppressionSujet{{$sujet[$i]->id}}" type="button" style="border: none; background-color: #ffffff00">
+                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAD30lEQVRoge2YT0xcVRTGf/feCe3MEHdE2g6Dy0Y3blzoorUMRQiJy8YulEQTYnCltVKQUv4EEmuhLoxpk7qx0cTqzqSiAlZMdeHGpNG1dqZqrAubwLxh5N3jAosMb+a9287LKIEvuclk5uTc77vnO++eN7CLXexsqLgS3Xn6mV4tXAQOROxY0CL96U8+/DSOfRNxJAFQf/kXJIr8OjJrcBHIxrFvbAJkbS1zD+Ftce0baSG5cqUJaydR6llE9sW1cQR+QanLKDWqjh0rhwVGV0BkAngNkbjIuWA/IoP/fD4VFqgdkj1XP5/7hEhfVEi0gMbZphpaowKcHqO3Hnq0of65iwM/fR/Jz+0ppGK7LmKHkwC13QXEd1/Hj51hoW0vQIV4SICi+KxaIak1SRX+ZPbE4lnLHq1IKVO3O10usvUKVFmiFMtiaX7lJQ7euI7q6WQFWzPeQ1A9nRy8cZ30ywMsi0VqxLpWvS4LFcXngRMDPPji8wC0n5/iZwXFuUVSWypRFIvuydE+O4UyhtaBF1AKlt+6QFoZJxrV4FSBWgdURmjpO/5vnDG0z05hejrwsBtxHhbT07FB/i5a+o5TFltPAeqzUFIb8kMTiO9XiMjOTKG7cxQRigi6O0d2ppK8+D754UmSJlGXhZyifnv48ZqjhCcWOg/Tfn56C0FL/tQYUi6Tnd1K3pIfPIN/9YuA1Taj9cdvI/m5CXjkidBZyBOLeuoI2TcnA6cMBL67efI0du5LUjrcAK0/fBPJz7EHVOhKaQOfX+PmiZGAnQInPzSOfHaNtDGReV3g2APRK6k1LHwVEFFJfgx7dZ6U0U45XRDzTRzefEpp5J7yRcOtAg7H5YlA7kmy5yr7YCOD0WSmR0n0drHiW6ecsQmI8moJQXUdIXtuItCwlT2hyUyfxnR3ULS2kT1Q+7r3RKDzEG1vjFWSt5bC65PkT44GGrvt7Dim9yhFkdDcMQqovjyx0HWYtrPBk88PnsHOLSKLX6/fB5tFaE1magR19BAlbF1NXJeFSmLJTAwHyBeGxmF+ibQxpI2B+SUKQ+OBSuwfeZVVqW2l2ATUKvEebfjj/Y8C5GV+iZQxG3EpY5AqIm5fukyTMo2wUPUNUokEK++8y++X3sMWPQrDE8hCJfnNIlhYF7H25x1+nXmb0gcfk0w0YBa6/Viu5ighQNH3WRVLymj2RozGJfEpWUsTmqQJf6Fp+W4hkp/jvxIhvwHNCUMzbjN9UhmS+v7n/63YGe/E215A2Ev9f42dUYH/swC3e0BTcBoe41352AQoUf1KqULU9BjjyqN0vwu3XexiF9scfwNH0V60TyzEiwAAAABJRU5ErkJggg==">
+                                      </button>
                                     </td>
                                   </tr>
                                 @else
-                                  <tr onclick="let queryParams = new URLSearchParams(window.location.search), id_sujet={{ $sujet[$i]->id }};queryParams.set('id_sujet', id_sujet);history.replaceState(null, null, '?' + queryParams.toString());window.location.reload();">
+                                  <tr>
                                     <td style="width: 10%; text-align: center">
                                       <div class="hovertext" data-hover="{{ $utilisateur_sujet[$i]->prenom }} {{ $utilisateur_sujet[$i]->nom }}">
                                         <img src="{{asset('images/photo_de_profil/'.$utilisateur_sujet[$i]->photo_de_profil)}}" style="height: 50px; width: 50px"><br><br>
@@ -202,11 +217,26 @@
                                         $varTexteArea= str_replace('<br />', '<br/>', nl2br($sujet[$i]->sujet));
                                         echo $varTexteArea;
                                       ?>
+                                    </td>
+                                    <td style="width: 0px" onclick="let queryParams = new URLSearchParams(window.location.search), id_sujet={{ $sujet[$i]->id }};queryParams.set('id_sujet', id_sujet);history.replaceState(null, null, '?' + queryParams.toString());window.location.reload();">
+                                      <button type="button" style="border: none; background-color: #ffffff00">
+                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAACZUlEQVRoge2YwUsUcRTHP29KD2FQUIdcyDp3iNZ0BaHsoHbt4CU6pMSeXclY6uIhgkREsMBdAoVO0SUqMluDiDBUsv4BCRfSxVhU7FBszesgwsw66cy2O7tb87n93nvD7/ud95v3g4GAgICAgP8ZcQoOz62cB/O6iLSiHPZblA1hDZV3gg71Nte/3ZnOY3huOS5wxylXZhTVeCwSGrQGbSJHZpc7VZjMj1cQKqKdvU2h1HbAsGZNkX4qVzyAqEq/NWDkZSP+6imIFuvCZgChzlcphXHQujD+VFUtVL2B/V6KpxIJVtPpUmkB4GhDAxejUdf1njqgUvoB5XULTx3w8mb8ouq/gcBAuQmmULEJplC1ERgoN75NIa/TxS2+TaFSDbBgCpWbf87AZllUeGPDurAZUGTOXy0FYdNo74Cpg4D6qcYjiqjtz5zNQF9L/StU4ziYmEokeJlM7rnDZjbL89FRV7UeUZAbsabQtDW44yOORUKDAm0gz4Dsdnw1nebr0tKuO6wsLjI5NsZaJoOaZrGEZ0GeGgbnYs3HhvKTrq+XcHu3Aiykxh2fCXf0RFG9B9QovDC05vKH6eSGU20x8XSROXGqq6u2dr3uPqrXABXk7kLr8ZsMDBStBbvxVwYa26JHzPXc460jx3dFowup8Yek9ny0aBRs4Exnz2k1c08ETgBfTFMvfXo9MV9Eba4o6CZubL/aJabOsCV+Zl9Oz5ZDPBRgINzRfVuRR8ABhQc/Dn27MP9mIlMCba5wfYQE/azISZRbwE9V7fs4PTFaQm2ucN2BXyJXEN4Ds2JIRyWID6gEfgMQ5MIVabyvzQAAAABJRU5ErkJggg==">
+                                      </button>
+                                    </td>
+                                    <td style="width: 0px">
+                                      <button data-bs-toggle="modal" data-bs-target="#modalModificationSujet{{$sujet[$i]->id}}" type="button" style="border: none; background-color: #ffffff00">
+                                        <img src="data:image/png;base64,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">
+                                      </button>
+                                    </td>
+                                    <td style="width: 0px">
+                                      <button data-bs-toggle="modal" data-bs-target="#modalValiderSuppressionSujet{{$sujet[$i]->id}}" type="button" style="border: none; background-color: #ffffff00">
+                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAD30lEQVRoge2YT0xcVRTGf/feCe3MEHdE2g6Dy0Y3blzoorUMRQiJy8YulEQTYnCltVKQUv4EEmuhLoxpk7qx0cTqzqSiAlZMdeHGpNG1dqZqrAubwLxh5N3jAosMb+a9287LKIEvuclk5uTc77vnO++eN7CLXexsqLgS3Xn6mV4tXAQOROxY0CL96U8+/DSOfRNxJAFQf/kXJIr8OjJrcBHIxrFvbAJkbS1zD+Ftce0baSG5cqUJaydR6llE9sW1cQR+QanLKDWqjh0rhwVGV0BkAngNkbjIuWA/IoP/fD4VFqgdkj1XP5/7hEhfVEi0gMbZphpaowKcHqO3Hnq0of65iwM/fR/Jz+0ppGK7LmKHkwC13QXEd1/Hj51hoW0vQIV4SICi+KxaIak1SRX+ZPbE4lnLHq1IKVO3O10usvUKVFmiFMtiaX7lJQ7euI7q6WQFWzPeQ1A9nRy8cZ30ywMsi0VqxLpWvS4LFcXngRMDPPji8wC0n5/iZwXFuUVSWypRFIvuydE+O4UyhtaBF1AKlt+6QFoZJxrV4FSBWgdURmjpO/5vnDG0z05hejrwsBtxHhbT07FB/i5a+o5TFltPAeqzUFIb8kMTiO9XiMjOTKG7cxQRigi6O0d2ppK8+D754UmSJlGXhZyifnv48ZqjhCcWOg/Tfn56C0FL/tQYUi6Tnd1K3pIfPIN/9YuA1Taj9cdvI/m5CXjkidBZyBOLeuoI2TcnA6cMBL67efI0du5LUjrcAK0/fBPJz7EHVOhKaQOfX+PmiZGAnQInPzSOfHaNtDGReV3g2APRK6k1LHwVEFFJfgx7dZ6U0U45XRDzTRzefEpp5J7yRcOtAg7H5YlA7kmy5yr7YCOD0WSmR0n0drHiW6ecsQmI8moJQXUdIXtuItCwlT2hyUyfxnR3ULS2kT1Q+7r3RKDzEG1vjFWSt5bC65PkT44GGrvt7Dim9yhFkdDcMQqovjyx0HWYtrPBk88PnsHOLSKLX6/fB5tFaE1magR19BAlbF1NXJeFSmLJTAwHyBeGxmF+ibQxpI2B+SUKQ+OBSuwfeZVVqW2l2ATUKvEebfjj/Y8C5GV+iZQxG3EpY5AqIm5fukyTMo2wUPUNUokEK++8y++X3sMWPQrDE8hCJfnNIlhYF7H25x1+nXmb0gcfk0w0YBa6/Viu5ighQNH3WRVLymj2RozGJfEpWUsTmqQJf6Fp+W4hkp/jvxIhvwHNCUMzbjN9UhmS+v7n/63YGe/E215A2Ev9f42dUYH/swC3e0BTcBoe41352AQoUf1KqULU9BjjyqN0vwu3XexiF9scfwNH0V60TyzEiwAAAABJRU5ErkJggg==">
+                                      </button>
                                     </td>
                                   </tr>
                                 @endif
                               @else
-                                <tr onclick="let queryParams = new URLSearchParams(window.location.search), id_sujet={{ $sujet[$i]->id }};queryParams.set('id_sujet', id_sujet);history.replaceState(null, null, '?' + queryParams.toString());window.location.reload();">
+                                <tr>
                                   <td style="width: 10%; text-align: center">
                                     <div class="hovertext" data-hover="{{ $utilisateur_sujet[$i]->prenom }} {{ $utilisateur_sujet[$i]->nom }}">
                                       <img src="{{asset('images/photo_de_profil/'.$utilisateur_sujet[$i]->photo_de_profil)}}" style="height: 50px; width: 50px"><br><br>
@@ -218,6 +248,21 @@
                                       $varTexteArea= str_replace('<br />', '<br/>', nl2br($sujet[$i]->sujet));
                                       echo $varTexteArea;
                                     ?>
+                                  </td>
+                                  <td style="width: 0px" onclick="let queryParams = new URLSearchParams(window.location.search), id_sujet={{ $sujet[$i]->id }};queryParams.set('id_sujet', id_sujet);history.replaceState(null, null, '?' + queryParams.toString());window.location.reload();">
+                                    <button type="button" style="border: none; background-color: #ffffff00">
+                                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAACZUlEQVRoge2YwUsUcRTHP29KD2FQUIdcyDp3iNZ0BaHsoHbt4CU6pMSeXclY6uIhgkREsMBdAoVO0SUqMluDiDBUsv4BCRfSxVhU7FBszesgwsw66cy2O7tb87n93nvD7/ud95v3g4GAgICAgP8ZcQoOz62cB/O6iLSiHPZblA1hDZV3gg71Nte/3ZnOY3huOS5wxylXZhTVeCwSGrQGbSJHZpc7VZjMj1cQKqKdvU2h1HbAsGZNkX4qVzyAqEq/NWDkZSP+6imIFuvCZgChzlcphXHQujD+VFUtVL2B/V6KpxIJVtPpUmkB4GhDAxejUdf1njqgUvoB5XULTx3w8mb8ouq/gcBAuQmmULEJplC1ERgoN75NIa/TxS2+TaFSDbBgCpWbf87AZllUeGPDurAZUGTOXy0FYdNo74Cpg4D6qcYjiqjtz5zNQF9L/StU4ziYmEokeJlM7rnDZjbL89FRV7UeUZAbsabQtDW44yOORUKDAm0gz4Dsdnw1nebr0tKuO6wsLjI5NsZaJoOaZrGEZ0GeGgbnYs3HhvKTrq+XcHu3Aiykxh2fCXf0RFG9B9QovDC05vKH6eSGU20x8XSROXGqq6u2dr3uPqrXABXk7kLr8ZsMDBStBbvxVwYa26JHzPXc460jx3dFowup8Yek9ny0aBRs4Exnz2k1c08ETgBfTFMvfXo9MV9Eba4o6CZubL/aJabOsCV+Zl9Oz5ZDPBRgINzRfVuRR8ABhQc/Dn27MP9mIlMCba5wfYQE/azISZRbwE9V7fs4PTFaQm2ucN2BXyJXEN4Ds2JIRyWID6gEfgMQ5MIVabyvzQAAAABJRU5ErkJggg==">
+                                    </button>
+                                  </td>
+                                  <td style="width: 0px">
+                                    <button data-bs-toggle="modal" data-bs-target="#modalModificationSujet{{$sujet[$i]->id}}" type="button" style="border: none; background-color: #ffffff00">
+                                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABmJLR0QA/wD/AP+gvaeTAAAGnElEQVR4nO2aW2wcVxnHf2du612vvbvEdhMndmInrilpUwpNojQKDSpSGwkJaJtKBVVUQoKCmhYoDxXigScCqDyAEC88tIEHeEIVIlWi1IS0aQihpU1iJ3XS5tLYji87G2/svc3OzOFhWTvrSzN7s9dl/9JoZs7MfOf7/893vjlnzkAdddRRRx111FFHHf+fEMvtgFfIp3/a4LYN/0boYifqzcsiEP2GePH1eLl2V4QA8idPdUmn7T2ccPNMoXojLUID94sXDw+UY1sp27sqQ/7soTul23KugDyAE2lwT+nvyH2bP1OO/ZqMgL5/DuzRFOUlAV1NsTHfxnfPKsHJyYJ75FQCzp6H5kRG6bm2Tfx68EwpddWcAP84cf5JoYkDgJ4vU2ybu0+8RWh8PFfguMgz5yCVzp2HpzPKPVc/J/Z/cK7Y+mqqC/Sd6J9HHsDVNPof2Em8rQ1cF/n+xVnyAJNBn3t6w3/k871biq2zZgQ4cqL/YU1V/8At5AN+H9u2dLPjvk00hoL073iAaDwB8amCZ10ksZjuGxpoOxX9Xs9dxdRbMwLoqvoLhNDy5wG/jy2962jw6eiaSks4yPhUmmN7vsxER8fMc2nX5Wo6RTRrMX3D8CWuRI4WU2/NCCCQG/LHAb/Blt51GHpOD9txGbwyipW1sXWdN/c+wURHBxnXZdhKkZXujJ3keNMdQ49uX+e13poQQB7atSbkfDAT+ndtbC8gf/ztQaKx2bC3dZ2/f/VrnFkVxpFynj1rOJj1WveyCyAPbl2NL3DszuxfAppMArOvJsdxeevtQUYnCgd8WctiLB7j1MOPEFuzpuCaP5K81P2vvjGv9avluV8e5Gu7WgmEjiH0Xp0kEfcCE+q9RG9aZKws7w5cYdwsTHhZy8I0x5Gui6sojHVvJDJ6Hf/0NEZzJtUQULb+6sJHnofIyyaAPLh1NYHm4wi9N19myCki7gVG5GYuDU0ylUgXPJPNZomZE0h3ts+7ikK0s5Pu62etcNfEjtV/emewGD+WpQvkWn7VUYTeM/da0PmIzSPPQMYsKM9aFmZ0DNd15tnL+P2c3rNnf9vvB94r1pclF0C+tqsVf+MbCO3T8y86YJ4inPo3u5P78MlcJN8a9othtKFzqBR/llQAL+TzLR9xLrI78RwiE70teYEwLVf9ayk+LVkOKIZ8HsIyccZOMqJuxxXGYqZTmlD2/vCZx0uaDC2JAKWQz2RhOAa6O0mre5pRbQfOfBFSQjEe+/53Hjtcqm9VF6AU8uksDMUgH/U+GafVOcOE9lls0ZgrFEwYqtj7/LcfL5l8zkwVUQnyt8IV/ssnQ/tfisu108lM8uCPn/2mOf+u4lA1AUoN+6EYOAuQF4IPFfjiphe4Vkk/qyLASiEPVRCg1LAfXgbyUGEBVhp5qOBASL5MGHvs9QXJOxmInqw58lChCJAvE8bgCHA/RhgCnaA35Vo9Y0LiCriFU/RaIA8VEKCAvEfUCnkoU4CVTh5Au/0tC6Ma5IXO7k3PUdKsrlSUFAHVIt+zxOShBAE+SeShSAE+aeSh2HGAwatUiDyCC67NF5aTfM4Nj5CHV23HME4yMgrM/xY/F7Xe8nl4jwDD+BGhMKxtB/Hxuq2Els/D+2tQN7YB0NwMqgZD1xactHto+Yd6XmCkZI8rjGIioH3muDEAnZ2gFn5QWilhfys8CSCPtN6HphVGi98P69fD/9bwUtbHz+f9AR6sNfLgtQso+tfnFllZSSqrk27qIHV5CCu58HpknnzHdxkuz9XqwNNH0Udann1FNWRT46dMopMOo6bNjZsuiZRLxhY4jY2QTIFTuGpT6+TBowBfWfutX57t+5Jih/qRDSbzVqSFAk1BSKfBtnNFK4A8eMgBH/58b8gc7lDjyTRHDzxJ9Or6RSyp0L4GAn50jUFDYVetkwcPAkjJ5+2sTtKZxs4YHP/jU4uK4MNJR1qDf+uKsHPDD7hecW+rAE8jwVef+F124FxoJmFqPosHn35Ftq+9lNAV+33VtfsU3AMtj5rnq+dqdeDpLdB1z6G7fZHuQ+m0LxwOxy8Gms0/B82233buO2ZV28E66qijqqjkwogPCAANczY/ufGGIJdz8nuY/Ss0P4y0yc2183sHSAHpOVsSyFTC6XIECAJ3AC1ACFj0D4YqwQLiQBQYBRKlGClVgHuBdWU8X2lI4BpQ9F8ipS6N3f6T0ApBOS3YCKxm+bpABrjJMnWBhbBYEmxg8eQ3NwkulAznJsCKJsH/AkGXPeA8Fy3tAAAAAElFTkSuQmCC">
+                                    </button>
+                                  </td>
+                                  <td style="width: 0px">
+                                    <button data-bs-toggle="modal" data-bs-target="#modalValiderSuppressionSujet{{$sujet[$i]->id}}" type="button" style="border: none; background-color: #ffffff00">
+                                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAD30lEQVRoge2YT0xcVRTGf/feCe3MEHdE2g6Dy0Y3blzoorUMRQiJy8YulEQTYnCltVKQUv4EEmuhLoxpk7qx0cTqzqSiAlZMdeHGpNG1dqZqrAubwLxh5N3jAosMb+a9287LKIEvuclk5uTc77vnO++eN7CLXexsqLgS3Xn6mV4tXAQOROxY0CL96U8+/DSOfRNxJAFQf/kXJIr8OjJrcBHIxrFvbAJkbS1zD+Ftce0baSG5cqUJaydR6llE9sW1cQR+QanLKDWqjh0rhwVGV0BkAngNkbjIuWA/IoP/fD4VFqgdkj1XP5/7hEhfVEi0gMbZphpaowKcHqO3Hnq0of65iwM/fR/Jz+0ppGK7LmKHkwC13QXEd1/Hj51hoW0vQIV4SICi+KxaIak1SRX+ZPbE4lnLHq1IKVO3O10usvUKVFmiFMtiaX7lJQ7euI7q6WQFWzPeQ1A9nRy8cZ30ywMsi0VqxLpWvS4LFcXngRMDPPji8wC0n5/iZwXFuUVSWypRFIvuydE+O4UyhtaBF1AKlt+6QFoZJxrV4FSBWgdURmjpO/5vnDG0z05hejrwsBtxHhbT07FB/i5a+o5TFltPAeqzUFIb8kMTiO9XiMjOTKG7cxQRigi6O0d2ppK8+D754UmSJlGXhZyifnv48ZqjhCcWOg/Tfn56C0FL/tQYUi6Tnd1K3pIfPIN/9YuA1Taj9cdvI/m5CXjkidBZyBOLeuoI2TcnA6cMBL67efI0du5LUjrcAK0/fBPJz7EHVOhKaQOfX+PmiZGAnQInPzSOfHaNtDGReV3g2APRK6k1LHwVEFFJfgx7dZ6U0U45XRDzTRzefEpp5J7yRcOtAg7H5YlA7kmy5yr7YCOD0WSmR0n0drHiW6ecsQmI8moJQXUdIXtuItCwlT2hyUyfxnR3ULS2kT1Q+7r3RKDzEG1vjFWSt5bC65PkT44GGrvt7Dim9yhFkdDcMQqovjyx0HWYtrPBk88PnsHOLSKLX6/fB5tFaE1magR19BAlbF1NXJeFSmLJTAwHyBeGxmF+ibQxpI2B+SUKQ+OBSuwfeZVVqW2l2ATUKvEebfjj/Y8C5GV+iZQxG3EpY5AqIm5fukyTMo2wUPUNUokEK++8y++X3sMWPQrDE8hCJfnNIlhYF7H25x1+nXmb0gcfk0w0YBa6/Viu5ighQNH3WRVLymj2RozGJfEpWUsTmqQJf6Fp+W4hkp/jvxIhvwHNCUMzbjN9UhmS+v7n/63YGe/E215A2Ev9f42dUYH/swC3e0BTcBoe41352AQoUf1KqULU9BjjyqN0vwu3XexiF9scfwNH0V60TyzEiwAAAABJRU5ErkJggg==">
+                                    </button>
                                   </td>
                                 </tr>
                               @endif
@@ -392,6 +437,58 @@
   </div>
 
 
+  {{-- modal --}}
+    @for ($i = 0; $i < count($sujet); $i++)
+      <div class="modal fade" id="modalValiderSuppressionSujet{{ $sujet[$i]->id }}" style="border-radius: 10%">
+        <div class="modal-dialog">
+            <div class="modal-content">
+              <form action="{{ asset('/administrateur/plateforme-de-discussion/sujet/suppression') }}" method="post">
+                @csrf
+                <input type="hidden" name="id_sujet" value="{{ $sujet[$i]->id }}">
+                <div class="modal-header">
+                  <h5 class="modal-title">Confirmation de suppression de sujet</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  <h6>Voulez-vous vraiment supprimer ce sujet?</h6>
+                </div>
+                <div class="modal-footer">
+                <button type="submit" class="btn btn-inverse-danger btn-fw" data-bs-dismiss="modal">Oui</button>
+                <button type="button" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Non</button>
+                </div>
+              </form>
+            </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modalModificationSujet{{ $sujet[$i]->id }}" style="border-radius: 10%">
+        <div class="modal-dialog">
+            <div class="modal-content">
+              <form action="{{ asset('/administrateur/plateforme-de-discussion/sujet/modification') }}" method="post">
+                @csrf
+                <input type="hidden" name="id_sujet" value="{{ $sujet[$i]->id }}">
+                <div class="modal-header">
+                  <h5 class="modal-title">Modification de sujet</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  <h6>Veuillez faire votre modification ci-dessous:</h6>
+                  <p>
+                      <textarea name="sujet" class="form-control" rows="4" id="modificationSujet{{$sujet[$i]->id}}" required>{{ $sujet[$i]->sujet }}</textarea>
+                  </p>
+                </div>
+                <div class="modal-footer">
+                <button type="submit" class="btn btn-inverse-warning btn-fw">Modifier</button>
+                <button type="button" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Annuler</button>
+                </div>
+              </form>
+            </div>
+        </div>
+      </div>
+    @endfor
+  {{-- fin modal --}}
+
+
   <div id="loader" class="visible" style="position: fixed; top:40%; left:45%;">
     <img src = "{{asset('images/loader.svg')}}" alt="Chargement..."/>
   </div>
@@ -446,11 +543,18 @@
         }
       <?php } ?>
     });
-  </script>
-  <script>
+    
     function change_id_themes_discussion() {
       window.location.href = "?id_theme="+document.getElementById('id_themes_discussion').value;
     }
+
+    // function modifier_sujet(id_sujet) {
+    //   console.log('modifier sujet '+id_sujet);
+    // }
+
+    // function supprimer_sujet(id_sujet) {
+    //   console.log('supprimer sujet '+id_sujet);
+    // }
 
     new EmojiPicker({
         trigger: [

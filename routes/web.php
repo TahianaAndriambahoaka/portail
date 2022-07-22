@@ -51,6 +51,8 @@ Route::controller(administrateur::class)->group(function() {
     Route::post('/administrateur/plateforme-de-discussion/publier-sujet', 'publier_sujet')->middleware('adminSession');
     Route::post('/administrateur/plateforme-de-discussion/commenter', 'plateforme_de_discussion_commenter')->middleware('adminSession');
     Route::post('/administrateur/plateforme-de-discussion/ajouter-theme', 'ajouter_theme')->middleware('adminSession');
+    Route::post('/administrateur/plateforme-de-discussion/sujet/suppression', 'supprimer_sujet')->middleware('adminSession');
+    Route::post('/administrateur/plateforme-de-discussion/sujet/modification', 'modifier_sujet')->middleware('adminSession');
 });
 
 
