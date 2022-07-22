@@ -179,19 +179,13 @@
     </div>
     {{-- fin modal Validation Modif --}}
     
-    {{-- modal Suppression --}}
-    <form action="{{asset('/administrateur/utilisateur/suppression')}}" method="POST" id="formSuppression">
-        @csrf
-        <input type="hidden" name="id_utilisateur" value="{{ $utilisateurs[$i]->id }}">
-        <input type="hidden" name="motif" id="motifSuppression{{ $utilisateurs[$i]->id }}">
-        <input type="submit" value="Supprimer" id="suppression{{ $utilisateurs[$i]->id }}" style="display: none">
-    </form>
-    {{-- fin modal Suppression --}}
-
     {{-- modal Validation Suppression --}}
     <div class="modal fade" id="modalValiderSuppression{{ $utilisateurs[$i]->id }}" style="border-radius: 10%">
         <div class="modal-dialog">
             <div class="modal-content">
+              <form action="{{asset('/administrateur/utilisateur/suppression')}}" method="POST" id="formSuppression">
+                @csrf
+                <input type="hidden" name="id_utilisateur" value="{{ $utilisateurs[$i]->id }}">
                 <div class="modal-header">
                   <h5 class="modal-title">Confirmation de suppression d'utilisateur</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -200,13 +194,14 @@
                   <h6>Voulez-vous vraiment supprimer cet utilisateur?</h6>
                   <h6>Veuillez écrire le motif ci-dessous:</h6>
                   <p>
-                    <textarea class="form-control" rows="4" id="motifTextarea{{$utilisateurs[$i]->id}}" required></textarea>
+                    <textarea name="motif" class="form-control" rows="4" id="motifTextarea{{$utilisateurs[$i]->id}}" required></textarea>
                   </p>
                 </div>
                 <div class="modal-footer">
-                  <button type="submit" class="btn btn-inverse-danger btn-fw" onclick="document.getElementById('motifSuppression'+{{$utilisateurs[$i]->id}}).value = document.getElementById('motifTextarea'+{{$utilisateurs[$i]->id}}).value;$('#suppression'+{{$utilisateurs[$i]->id}}).click();" data-bs-dismiss="modal">Oui</button>
-                  <button type="submit" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Non</button>
+                  <button type="submit" class="btn btn-inverse-danger btn-fw">Oui</button>
+                  <button type="button" class="btn btn-inverse-info btn-fw" data-bs-dismiss="modal">Non</button>
                 </div>
+              </form>
             </div>
         </div>
     </div>
