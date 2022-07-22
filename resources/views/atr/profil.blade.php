@@ -79,7 +79,8 @@
                   <div class="row" style="margin: 3%">
                     <h3>Modification de profil</h3>
                       @if ($message = Session::get('successProfil'))
-                        <p class="text-center alert alert-success animate__animated animate__bounceInRight mt-5" style="margin-left: auto; margin-right: auto">{{$message}}</p>
+                        <p id="test" class="text-center alert alert-success animate__animated animate__bounceInRight mt-5" style="margin-left: auto; margin-right: auto">{{$message}}</p>
+                        <script>window.setTimeout(function(){ document.getElementById("test").classList.remove('animate__bounceInRight'); document.getElementById("test").classList.add('animate__fadeOutLeftBig'); }, 3000);window.setTimeout(function(){ document.getElementById("test").style.display='none'; }, 3400);</script>
                       @endif
                       @if ($message = Session::get('errorProfil'))
                         <br>
