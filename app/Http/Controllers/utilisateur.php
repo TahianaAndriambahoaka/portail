@@ -36,7 +36,7 @@ class utilisateur extends Controller
             $commentaire = $com;
             for ($j=0; $j < count($com); $j++) { 
                 $personne = personne::getById($com[$j]->id_personne)[0];
-                $personne->photo_de_profil = 'default_profile_picture.jpg';
+                $personne->photo_de_profil = 'admin.png';
                 if ($personne->est_admin) {
                     $personne->id_admin = admin::getByIdPersonne($personne->id)[0]->id;
                     $utilisateur_commentaire[] = $personne;
@@ -48,7 +48,7 @@ class utilisateur extends Controller
         $utilisateur_sujet = [];
         for ($i=0; $i < count($sujet); $i++) { 
             $personne = personne::getById($sujet[$i]->id_personne)[0];
-            $personne->photo_de_profil = 'default_profile_picture.jpg';
+            $personne->photo_de_profil = 'admin.png';
             if ($personne->est_admin) {
                 $personne->id_admin = admin::getByIdPersonne($personne->id)[0]->id;
                 $utilisateur_sujet[] = $personne;
